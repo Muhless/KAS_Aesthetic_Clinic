@@ -7,20 +7,20 @@
     <title>@yield('title', '- KAS Aesthetic Clinic')</title>
     <link rel="icon" type="image/png" href="{{ asset('images/logo_kas.png') }}">
 
+    {{--  --}}
+    <script src="//unpkg.com/alpinejs" defer></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    {{--  --}}
 </head>
 
-<body class="bg-gray-100 text-gray-900">
-
-    <!-- Sidebar + Content -->
+<body class="bg-gray-100 text-gray-900 min-h-screen">
     <div class="flex min-h-screen">
-
-        <!-- Sidebar -->
         @include('layouts.sidebar')
-
-        <!-- Content -->
-        <main class="flex-1 p-6">
-            @yield('content')
+        <main class="flex-1 flex flex-col">
+            <x-topbar />
+            <div class="flex-1 p-6 overflow-auto bg-white">
+                @yield('content')
+            </div>
         </main>
 
     </div>
