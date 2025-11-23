@@ -1,0 +1,60 @@
+<aside class="w-64 bg-white shadow-xl hidden md:flex flex-col border-r border-pink-100">
+    <div class="p-3 border-b flex justify-center">
+        <div class="w-20">
+            <img src="{{ asset('images/logo_kas.png') }}" class="w-full object-contain" />
+        </div>
+    </div>
+
+    {{-- Navigation --}}
+    <nav class="p-4 flex-1 space-y-1">
+        <a href="/"
+            class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-pink-50 hover:text-pink-600 transition-all">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001 1h4a1 1 0 001-1v-4a1 1 0 00-1-1h-4a1 1 0 00-1 1v4z" />
+            </svg>
+            Dashboard
+        </a>
+
+        <a href="/patient"
+            class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-pink-50 hover:text-pink-600 transition-all">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M5.121 17.804A8 8 0 1118.48 4.465" />
+            </svg>
+            Pasien
+        </a>
+
+        <a href="/treatment"
+            class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-pink-50 hover:text-pink-600 transition-all">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-4-4m0 0l4-4m-4 4h14" />
+            </svg>
+            Treatment
+        </a>
+
+        <a href="#"
+            class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-pink-50 hover:text-pink-600 transition-all">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2-1.343-2-3-2zm-9 8s1-4 9-4 9 4 9 4H3z" />
+            </svg>
+            Transaksi
+        </a>
+
+        <a href="#"
+            class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-pink-50 hover:text-pink-600 transition-all">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 17v-2m6 2v-2M3 13h18M5 10h14M7 7h10" />
+            </svg>
+            Laporan
+        </a>
+    </nav>
+
+</aside>

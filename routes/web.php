@@ -3,5 +3,15 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('pages.dashboard');
 });
+
+Route::get('/patient', function () {
+    return view('pages.patients.index');
+});
+
+Route::get('/treatment', function(){
+    return view('pages.treatments.index');
+});
+
+
