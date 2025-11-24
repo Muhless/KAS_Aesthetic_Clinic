@@ -13,8 +13,7 @@
                 <x-dashboard.card title="Pendapatan" value="128" />
 
             </div>
-            <x-dashboard.queue/>
-            <x-dashboard.table />
+            <x-dashboard.nextQueue />
             <x-dashboard.table />
         </div>
         {{-- kanan --}}
