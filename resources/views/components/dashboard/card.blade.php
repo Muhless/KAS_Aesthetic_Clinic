@@ -1,5 +1,5 @@
-  <div class="bg-primary-400 p-6 rounded-md shadow-lg border border-primary-50 hover:shadow-xl transition-all">
-      <div class="flex items-center justify-between mb-3">
+  <div class="bg-primary-400 p-3 rounded-md shadow-lg border border-primary-50 hover:shadow-xl transition-all">
+      <div class="flex items-center justify-between">
           <h3 class="text-white text-lg">{{ $title }}</h3>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
               class="size-4 text-white cursor-pointer">

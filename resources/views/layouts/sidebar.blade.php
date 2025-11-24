@@ -1,4 +1,5 @@
-<aside class="w-64 bg-white shadow-xl hidden md:flex flex-col border-r border-primary-100">
+<aside
+    class="w-64 bg-primary-50 shadow-xl hidden md:flex flex-col border-r border-primary-100 fixed inset-y-0 left-0 overflow-y-auto">
     <div class="p-3 flex justify-center">
         <div class="w-15">
             <img src="{{ asset('images/logo_kas.png') }}" class="w-full object-contain" />

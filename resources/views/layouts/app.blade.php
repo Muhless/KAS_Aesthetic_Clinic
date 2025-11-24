@@ -14,11 +14,11 @@
 </head>
 
 <body class="bg-gray-100 text-gray-900 min-h-screen">
-    <div class="flex min-h-screen">
+    <div class="flex min-h-screen overflow-hidden">
         @include('layouts.sidebar')
-        <main class="flex-1 flex flex-col">
-            <x-topbar />
-            <div class="flex-1 p-6 overflow-auto bg-white">
+        <main class="flex-1 ml-64 flex flex-col">
+            {{-- <x-topbar /> --}}
+            <div class="flex-1overflow-y-auto bg-neutral-light">
                 @yield('content')
             </div>
         </main>
