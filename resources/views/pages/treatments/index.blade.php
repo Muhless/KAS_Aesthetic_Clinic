@@ -3,43 +3,35 @@
 @section('title', 'Daftar Treatment')
 
 @section('content')
+    <div class="p-6">
+        <div class="flex items-center justify-between mb-6">
+            <h1 class="text-3xl font-bold text-primary-400">Treatment</h1>
 
-    <div class="flex items-center justify-between mb-6">
-        <h1 class="text-3xl font-bold text-gray-800">Daftar Treatment</h1>
-        <a href="/treatments/create" class="bg-pink-600 text-white px-4 py-2 rounded-lg hover:bg-pink-700">
-            + Tambah Treatment
-        </a>
-    </div>
+            <div x-data="{ open: false }">
+                <button @click="open = true"
+                    class="cursor-pointer text-sm w-52 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg shadow">
+                    Tambah Treatment
+                </button>
+                <x-patient.modal />
+            </div>
+        </div>
 
-    {{-- Tabel Treatment --}}
-    <div class="bg-white shadow rounded-lg overflow-hidden">
-        <table class="min-w-full text-left border-collapse">
-            <thead class="bg-pink-100 text-gray-700">
-                <tr>
-                    <th class="px-6 py-3 font-semibold">#</th>
-                    <th class="px-6 py-3 font-semibold">Nama Treatment</th>
-                    <th class="px-6 py-3 font-semibold">Kategori</th>
-                    <th class="px-6 py-3 font-semibold">Harga</th>
-                    <th class="px-6 py-3 font-semibold">Durasi</th>
-                    <th class="px-6 py-3 font-semibold text-center">Aksi</th>
-                </tr>
-            </thead>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
 
-            <tbody>
-                {{-- Contoh data dummy, nanti diganti dari controller --}}
-                <tr class="border-t">
-                    <td class="px-6 py-3">1</td>
-                    <td class="px-6 py-3">Facial Premium</td>
-                    <td class="px-6 py-3">Skincare</td>
-                    <td class="px-6 py-3">Rp 250.000</td>
-                    <td class="px-6 py-3">45 Menit</td>
-                    <td class="px-6 py-3 text-center space-x-2">
-                        <a href="#" class="text-blue-600 hover:underline">Edit</a>
-                        <a href="#" class="text-red-600 hover:underline">Hapus</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+            <x-treatment.card title="Facial Glow Whitening"
+                description="Perawatan untuk mencerahkan wajah dengan serum whitening premium." :price="250000" />
+
+            <x-treatment.card title="Laser Acne Removal"
+                description="Menghilangkan jerawat dan bekas jerawat menggunakan teknologi laser." :price="450000" />
+
+            <x-treatment.card title="Anti Aging Premium"
+                description="Perawatan untuk mengencangkan kulit dan mengurangi kerutan." :price="650000" />
+
+            <x-treatment.card title="Laser Acne Removal"
+                description="Menghilangkan jerawat dan bekas jerawat menggunakan teknologi laser." :price="450000" />
+
+        </div>
+
     </div>
 
 @endsection

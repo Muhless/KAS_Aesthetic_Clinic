@@ -1,7 +1,7 @@
   <div class="bg-white rounded-md shadow-xl p-5">
       <div class="flex justify-between items-center mb-3">
           <h3 class="text-2xl font-bold text-primary-600">Antrian</h3>
-          <button class="bg-primary-400 text-white w-40 text-sm py-2 rounded-md">Tambah Antrian</button>
+          <button type="button" class="cursor-pointer bg-primary-400 text-white w-40 text-sm py-2 rounded-md">Tambah Antrian</button>
       </div>
 
       <div class="overflow-x-auto bg-white">
