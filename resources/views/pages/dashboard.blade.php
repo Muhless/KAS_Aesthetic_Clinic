@@ -19,13 +19,14 @@
         {{-- kanan --}}
         <div class="bg-primary-50 p-6 h-screen space-y-3">
             <div class="flex flex-col justify-between h-full">
-                <div>
+                <div class="space-y-14">
                     <x-dashboard.user />
-                    <x-dashboard.greeting />
+                    {{-- <x-dashboard.greeting /> --}}
+                    <x-dashboard.doctor />
                 </div>
 
                 <div class="space-y-3">
-                    <x-dashboard.doctor />
+                    <x-dashboard.promo />
                 </div>
             </div>
         </div>
