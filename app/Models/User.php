@@ -10,10 +10,16 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+    protected $table = 'users';
+
     protected $fillable = [
+        'nama',
+        'role',
+        'phone',
+        'email',
+        'birth_date',
         'username',
         'password',
-        'role'
     ];
 
     protected $hidden = [
@@ -25,14 +31,23 @@ class User extends Authenticatable
     {
         return [
             'password' => 'hashed',
+            'email_verified_at' => 'datetime',
         ];
     }
 
     /**
-     * Override default login key (email) → username
+     * Override default login key (email → username)
      */
     public function username()
     {
         return 'username';
+    }
+
+    /**
+     * Optional: pastikan email selalu lowercase
+     */
+    public function setEmailAttribute($value)
+    {
+        $this->attributes['email'] = strtolower($value);
     }
 }
