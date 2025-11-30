@@ -1,10 +1,18 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+
+
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
+
+
+
 
 Route::get('/', function () {
     return view('pages.dashboard');
-});
+})->middleware('auth');
 
 // doctor
 Route::get('/doctor', function () {
