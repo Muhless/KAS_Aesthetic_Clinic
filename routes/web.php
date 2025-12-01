@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 use App\Models\User;
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -23,9 +24,7 @@ Route::get('/', function () {
 })->middleware('auth');
 
 // doctor
-Route::get('/doctor', function () {
-    return view('pages.doctor.index');
-});
+Route::get('/doctor',[UserController::class,'dokterIndex']);
 
 // end doctor
 
