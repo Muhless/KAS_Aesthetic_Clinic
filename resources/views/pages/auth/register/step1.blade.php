@@ -45,9 +45,9 @@
             <!-- Nomor HP -->
             <div class="mb-4">
                 <label class="block text-gray-600 mb-1 font-medium">No HP (opsional)</label>
-                <input type="text" name="phone" value="{{ old('phone') }}"
+                <input type="text" name="no_telepon" value="{{ old('no_telepon') }}"
                     class="text-black w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-400 focus:outline-none">
-                @error('phone')
+                @error('no_telepon')
                     <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
                 @enderror
             </div>
@@ -55,26 +55,25 @@
             <!-- Tanggal Lahir -->
             <div class="mb-4">
                 <label class="block text-gray-600 mb-1 font-medium">Tanggal Lahir (opsional)</label>
-                <input type="date" name="birth_date" value="{{ old('birth_date') }}"
+                <input type="date" name="tanggal_lahir" value="{{ old('tanggal_lahir') }}"
                     class="text-black w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-400 focus:outline-none">
-                @error('birth_date')
+                @error('tanggal_lahir')
                     <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
                 @enderror
             </div>
 
-            <!-- Role -->
+            <!-- role -->
             <div class="mb-4">
                 <label class="block text-gray-600 mb-1 font-medium">Role</label>
 
                 <select name="role"
-                    class="text-black w-full px-4 py-2 border border-gray-300 rounded-lg
-               bg-white focus:bg-white
-               focus:ring-2 focus:ring-primary-400 focus:outline-none"
+                    class="text-black w-full px-4 py-2 border border-gray-300 rounded-lg bg-white focus:bg-white focus:ring-2 focus:ring-primary-400 focus:outline-none"
                     required>
-                    <option value="" disabled selected>Pilih Role</option>
+                    <option value="" disabled selected>Pilih role</option>
                     <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>
                     <option value="dokter" {{ old('role') == 'dokter' ? 'selected' : '' }}>Dokter</option>
                     <option value="terapis" {{ old('role') == 'terapis' ? 'selected' : '' }}>Terapis</option>
+                    <option value="kasir" {{ old('role') == 'kasir' ? 'selected' : '' }}>Kasir</option>
                 </select>
 
                 @error('role')
@@ -82,32 +81,10 @@
                 @enderror
             </div>
 
-            <!-- Username -->
-            <div class="mb-4">
-                <label class="block text-gray-600 mb-1 font-medium">Username</label>
-                <input type="text" name="username" value="{{ old('username') }}"
-                    class="text-black w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-400 focus:outline-none"
-                    required>
-                @error('username')
-                    <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
-                @enderror
-            </div>
-
-            <!-- Password -->
-            <div class="mb-4">
-                <label class="block mb-1 font-medium text-gray-600">Password</label>
-                <input type="password" name="password"
-                    class="w-full px-4 py-2 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-400 focus:outline-none"
-                    required>
-                @error('password')
-                    <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
-                @enderror
-            </div>
-
             <!-- Button -->
             <button type="submit"
                 class="w-full bg-primary-600 cursor-pointer hover:bg-primary-700 text-white py-2 rounded-lg shadow transition">
-                Daftar
+                Selanjutnya
             </button>
 
             <p class="text-center text-gray-600 text-sm mt-4">

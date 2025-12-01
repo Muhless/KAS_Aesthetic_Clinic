@@ -16,51 +16,68 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'username' => 'required|username',
-            'password' => 'required'
+            'akun' => 'required|string',
+            'password' => 'required',
         ]);
 
-        $credentials = $request->only('username', 'password');
+        $credentials = $request->only('akun', 'password');
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended('/dashboard');
+            return redirect()->intended('/');
         }
 
         return back()->withErrors([
-            'username' => 'username atau password salah.',
+            'akun' => 'Akun atau password salah.',
         ]);
     }
 
-    public function showRegister()
-{
-    return view('pages.auth.register');
-}
+    public function showRegisterStep1()
+    {
+        return view('pages.auth.register.step1');
+    }
 
-public function register(Request $request)
-{
-    $request->validate([
-        'nama'       => 'required|string|max:255',
-        'username'   => 'required|string|max:50|unique:users,username',
-        'email'      => 'nullable|email|unique:users,email',
-        'phone'      => 'nullable|string|max:20',
-        'birth_date' => 'nullable|date',
-        'role'       => 'required|in:admin,dokter,resepsionis,terapis',
-        'password'   => 'required|string|min:5',
-    ]);
+    public function registerStep1(Request $request)
+    {
+        $validated = $request->validate([
+            'nama' => 'required|string|max:255',
+            'email' => 'nullable|email|unique:users,email',
+            'no_telepon' => 'nullable|string|max:20',
+            'tanggal_lahir' => 'nullable|date',
+            'role' => 'required|in:admin,dokter,terapis,kasir',
+        ]);
 
-    User::create([
-        'nama'       => $request->nama,
-        'username'   => $request->username,
-        'email'      => $request->email,
-        'phone'      => $request->phone,
-        'birth_date' => $request->birth_date,
-        'role'       => $request->role,
-        'password'   => $request->password, // otomatis hashed oleh cast()
-    ]);
+        session(['reg_data_step1' => $validated]);
 
-    return redirect('/login')->with('success', 'Registrasi berhasil! Silakan login.');
-}
+        return redirect('/register/account');
+    }
 
+    public function showRegisterStep2()
+    {
+        if (!session()->has('reg_data_step1')) {
+            return redirect('/register');
+        }
 
+        return view('pages.auth.register.step2');
+    }
+
+    public function registerStep2(Request $request)
+    {
+        $request->validate([
+            'akun' => 'required|string|max:50|unique:users,akun',
+            'password' => 'required|string|min:5',
+        ]);
+
+        $step1 = session('reg_data_step1');
+
+        User::create([
+            ...$step1,
+            'akun' => $request->akun,
+            'password' => $request->password,
+        ]);
+
+        session()->forget('reg_data_step1');
+
+        return redirect('/login')->with('success', 'Registrasi berhasil! Silakan login.');
+    }
 }

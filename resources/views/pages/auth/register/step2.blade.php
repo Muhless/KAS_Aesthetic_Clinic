@@ -6,19 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="{{ asset('images/logo_kas.png') }}">
 
-    <title>Login - KAS Aesthetic Clinic</title>
+    <title>Register - KAS Aesthetic Clinic</title>
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body class="bg-gray-100 h-screen flex items-center justify-center">
 
     <div class="w-full max-w-sm bg-white p-6 rounded-xl shadow-lg">
-        <h2 class="text-2xl font-semibold text-center mb-6 text-black">Login</h2>
+        <h2 class="text-2xl font-semibold text-center mb-6 text-black">
+            Buat Akun Login
+        </h2>
 
-        <form action="/login" method="POST">
+        <form action="/register/account" method="POST">
             @csrf
 
-            <!-- username -->
+            <!-- Username -->
             <div class="mb-4">
                 <label class="block text-gray-600 mb-1 font-medium">Username</label>
                 <input type="text" name="akun" value="{{ old('akun') }}"
@@ -43,8 +46,13 @@
             <!-- Button -->
             <button type="submit"
                 class="w-full bg-primary-600 cursor-pointer hover:bg-primary-700 text-white py-2 rounded-lg shadow transition">
-                Masuk
+                Daftar
             </button>
+
+            <p class="text-center text-gray-600 text-sm mt-4">
+                Sudah punya akun?
+                <a href="/login" class="text-primary-600 hover:underline">Masuk</a>
+            </p>
 
         </form>
     </div>

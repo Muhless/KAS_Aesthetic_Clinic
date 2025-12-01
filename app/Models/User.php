@@ -12,40 +12,20 @@ class User extends Authenticatable
 
     protected $table = 'users';
 
-    protected $fillable = [
-        'nama',
-        'role',
-        'phone',
-        'email',
-        'birth_date',
-        'username',
-        'password',
-    ];
+    protected $fillable = ['nama', 'role', 'no_telepon', 'email', 'tanggal_lahir', 'akun', 'password'];
 
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    protected function casts(): array
-    {
-        return [
-            'password' => 'hashed',
-            'email_verified_at' => 'datetime',
-        ];
-    }
-
-    /**
-     * Override default login key (email → username)
-     */
     public function username()
     {
-        return 'username';
+        return 'akun';
     }
 
-    /**
-     * Optional: pastikan email selalu lowercase
-     */
+    protected $hidden = ['password', 'remember_token'];
+
+    protected $casts = [
+        'password' => 'hashed',
+        'tanggal_lahir' => 'date',
+    ];
+
     public function setEmailAttribute($value)
     {
         $this->attributes['email'] = strtolower($value);
