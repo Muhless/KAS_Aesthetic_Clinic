@@ -9,12 +9,16 @@
 
         </div>
         <div class="leading-tight">
-            <h1 class="font-semibold">Muhta Nuryadi</h1>
-            <p class="text-sm">Admin</p>
+            <h1 class="font-semibold">{{ auth()->user()->dokter->nama ?? 'Tidak ada data' }}</h1>
+            <p class="text-sm">{{ auth()->user()->role }}</p>
         </div>
         <div class="w-10 h-10 rounded-full overflow-hidden">
-            <img src="images/1.jpg" alt="user_picture" class="w-full h-full object-cover">
+            <img src="{{ auth()->user()->dokter->foto
+                ? asset('storage/' . auth()->user()->dokter->foto)
+                : asset('images/default.png') }}"
+                alt="user_picture" class="w-full h-full object-cover">
         </div>
+
     </div>
-   
+
 </div>

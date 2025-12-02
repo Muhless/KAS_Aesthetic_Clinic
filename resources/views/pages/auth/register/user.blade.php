@@ -15,22 +15,42 @@
 
     <div class="w-full max-w-sm bg-white p-6 rounded-xl shadow-lg">
         <h2 class="text-2xl font-semibold text-center mb-6 text-black">
-            Buat Akun Login
+            Buat Akun
         </h2>
 
-        <form action="/register/account" method="POST">
+        <form action="/register" method="POST">
             @csrf
+
+            {{-- role --}}
+            <div class="mb-4">
+                <label class="block text-gray-600 mb-1 font-medium">Role</label>
+
+                <select name="role"
+                    class="text-black w-full px-4 py-2 border border-gray-300 rounded-lg bg-white focus:bg-white focus:ring-2 focus:ring-primary-400 focus:outline-none"
+                    required>
+                    <option value="" disabled selected>Pilih role</option>
+                    <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>
+                    <option value="dokter" {{ old('role') == 'dokter' ? 'selected' : '' }}>Dokter</option>
+                    <option value="perawat" {{ old('role') == 'perawat' ? 'selected' : '' }}>Perawat</option>
+                </select>
+
+                @error('role')
+                    <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
+                @enderror
+            </div>
 
             <!-- Username -->
             <div class="mb-4">
                 <label class="block text-gray-600 mb-1 font-medium">Username</label>
-                <input type="text" name="akun" value="{{ old('akun') }}"
+                <input type="text" name="username" value="{{ old('username') }}"
                     class="text-black w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-400 focus:outline-none"
                     required>
-                @error('akun')
+                @error('username')
                     <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
                 @enderror
             </div>
+
+
 
             <!-- Password -->
             <div class="mb-4">

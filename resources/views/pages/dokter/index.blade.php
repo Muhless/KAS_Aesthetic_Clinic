@@ -15,10 +15,12 @@
                 <x-patient.modal />
             </div>
         </div>
-        <div class="p-2 bg-white">
-            <x-doctor.table />
-
+        <div class="grid grid-cols-4 gap-4">
+            @foreach ($dokters as $dokter)
+                <x-dokter.card :dokter="$dokter" />
+            @endforeach
         </div>
+
     </div>
 
 @endsection

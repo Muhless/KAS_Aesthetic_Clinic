@@ -21,10 +21,10 @@
             <!-- username -->
             <div class="mb-4">
                 <label class="block text-gray-600 mb-1 font-medium">Username</label>
-                <input type="text" name="akun" value="{{ old('akun') }}"
+                <input type="text" name="username" value="{{ old('username') }}"
                     class="text-black w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-400 focus:outline-none"
                     required>
-                @error('akun')
+                @error('username')
                     <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
                 @enderror
             </div>

@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Dokter;
+use App\Models\Perawat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -16,11 +19,11 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'akun' => 'required|string',
+            'username' => 'required|string',
             'password' => 'required',
         ]);
 
-        $credentials = $request->only('akun', 'password');
+        $credentials = $request->only('username', 'password');
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
@@ -28,56 +31,150 @@ class AuthController extends Controller
         }
 
         return back()->withErrors([
-            'akun' => 'Akun atau password salah.',
+            'username' => 'username atau password salah.',
         ]);
     }
 
-    public function showRegisterStep1()
+    public function showRegisterUser()
     {
-        return view('pages.auth.register.step1');
+        return view('pages.auth.register.user');
     }
 
-    public function registerStep1(Request $request)
+    public function registerUser(Request $request)
     {
         $validated = $request->validate([
-            'nama' => 'required|string|max:255',
-            'email' => 'nullable|email|unique:users,email',
-            'no_telepon' => 'nullable|string|max:20',
-            'tanggal_lahir' => 'nullable|date',
-            'role' => 'required|in:admin,dokter,terapis,kasir',
+            'username' => 'required|string|max:50|unique:users,username',
+            'password' => 'required|string|min:5',
+            'role' => 'required|in:admin,dokter,perawat',
         ]);
 
-        session(['reg_data_step1' => $validated]);
+        session(['reg_data_user' => $validated]);
 
-        return redirect('/register/account');
+        return match ($validated['role']) {
+            'admin' => redirect('/register/admin'),
+            'dokter' => redirect('/register/dokter'),
+            'perawat' => redirect('/register/perawat'),
+        };
     }
 
-    public function showRegisterStep2()
+    public function showRegisterAdmin()
     {
-        if (!session()->has('reg_data_step1')) {
+        if (!session()->has('reg_data_user')) {
             return redirect('/register');
         }
 
-        return view('pages.auth.register.step2');
+        return view('pages.auth.register.admin');
     }
 
-    public function registerStep2(Request $request)
+    // public function registerAdmin(Request $request)
+    // {
+    //     $user = session('reg_data_user');
+
+    //     $validated = $request->validate([
+    //         'username' => 'required|string|max:50|unique:users,username',
+    //         'password' => 'required|string|min:5',
+    //     ]);
+
+    //     $user = User::create([
+    //         'username' => $validated['username'],
+    //         'password' => bcrypt($validated['password']),
+    //         'role' => $user['role'],
+    //     ]);
+
+    //     session()->forget('reg_data_user');
+
+    //     return redirect('/login')->with('success', 'Registrasi admin berhasil.');
+    // }
+
+    public function showRegisterDokter()
     {
-        $request->validate([
-            'akun' => 'required|string|max:50|unique:users,akun',
-            'password' => 'required|string|min:5',
+        if (!session()->has('reg_data_user')) {
+            return redirect('/register');
+        }
+
+        return view('pages.auth.register.dokter');
+    }
+
+    public function registerDokter(Request $request)
+    {
+        $userSession = session('reg_data_user');
+
+        if (!$userSession) {
+            return redirect('/register');
+        }
+
+        $validated = $request->validate([
+            'nama' => 'required|string|max:255',
+            'no_telepon' => 'nullable|string',
+            'email' => 'nullable|email',
+            'tanggal_lahir' => 'nullable|date',
         ]);
 
-        $step1 = session('reg_data_step1');
-
-        User::create([
-            ...$step1,
-            'akun' => $request->akun,
-            'password' => $request->password,
+        $user = User::create([
+            'username' => $userSession['username'],
+            'password' => bcrypt($userSession['password']),
+            'role' => $userSession['role'],
         ]);
 
-        session()->forget('reg_data_step1');
+        Dokter::create([
+            'user_id' => $user->id,
+            'nama' => $validated['nama'],
+            'no_telepon' => $validated['no_telepon'],
+            'email' => $validated['email'],
+            'tanggal_lahir' => $validated['tanggal_lahir'],
+        ]);
 
-        return redirect('/login')->with('success', 'Registrasi berhasil! Silakan login.');
+        session()->forget('reg_data_user');
+
+        return redirect('/login')->with('success', 'Registrasi dokter berhasil.');
+    }
+
+    public function showRegisterPerawat()
+    {
+        if (!session()->has('reg_data_user')) {
+            return redirect('/register');
+        }
+
+        return view('pages.auth.register.perawat');
+    }
+
+    public function registerPerawat(Request $request)
+    {
+        $user = session('reg_data_user');
+
+        $validated = $request->validate([
+            'nama' => 'required|string|max:255',
+            'no_telepon' => 'nullable|string',
+            'email' => 'nullable|email',
+            'tanggal_lahir' => 'nullable|date',
+        ]);
+
+        $user = User::create([
+            'username' => $validated['username'],
+            'password' => bcrypt($validated['password']),
+            'role' => $user['role'],
+        ]);
+
+        Perawat::create([
+            'user_id' => $user->id,
+            'nama' => $validated['nama'],
+            'nomor_telepon' => $validated['no_telepon'],
+            'email' => $validated['email'],
+            'tanggal_lahir' => $validated['tanggal_lahir'],
+        ]);
+
+        session()->forget('reg_data_user');
+
+        return redirect('/login')->with('success', 'Registrasi perawat berhasil.');
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/login');
     }
 }
