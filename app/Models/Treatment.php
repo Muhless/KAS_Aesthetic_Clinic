@@ -27,14 +27,5 @@ class Treatment extends Model
         'created_at' => 'datetime',
     ];
 
-    // Relasi: treatment belongs to category
-    public function category()
-    {
-        return $this->belongsTo(TreatmentCategory::class);
-    }
 
-    public function transactions()
-    {
-        return $this->hasMany(Transaction::class);
-    }
 }

@@ -40,6 +40,8 @@
                 @enderror
             </div>
 
+
+
             <!-- Button -->
             <button type="submit"
                 class="w-full bg-primary-600 cursor-pointer hover:bg-primary-700 text-white py-2 rounded-lg shadow transition">
@@ -47,6 +49,14 @@
             </button>
 
         </form>
+        <div class="text-center mt-2">
+
+            <p>Belum punya akun ?
+                <span>
+                    <a href="/register" class="text-sm hover:underline hover:text-primary-500">Buat disini!</a>
+                </span>
+            </p>
+        </div>
     </div>
 
 </body>

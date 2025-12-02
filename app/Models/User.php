@@ -12,22 +12,28 @@ class User extends Authenticatable
 
     protected $table = 'users';
 
-    protected $fillable = ['nama', 'role', 'no_telepon', 'email', 'tanggal_lahir', 'akun', 'password'];
+    protected $fillable = ['username', 'password','role'];
 
     public function username()
     {
-        return 'akun';
+        return 'username';
     }
 
     protected $hidden = ['password', 'remember_token'];
 
     protected $casts = [
         'password' => 'hashed',
-        'tanggal_lahir' => 'date',
     ];
 
-    public function setEmailAttribute($value)
+  public function dokter()
     {
-        $this->attributes['email'] = strtolower($value);
+        return $this->hasOne(Dokter::class);
     }
+
+    public function perawat()
+    {
+        return $this->hasOne(Perawat::class);
+    }
+
+
 }

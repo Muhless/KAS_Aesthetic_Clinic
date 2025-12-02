@@ -13,7 +13,7 @@
 
 
         <tbody class="divide-y">
-            @foreach ($dokters as $i => $dokter)
+            {{-- @foreach ($dokters as $i => $dokter)
                 <tr class="hover:bg-primary-50/20 transition">
                     <td class="py-4 px-2 text-center">{{ $i + 1 }}</td>
                     <td class="py-4 px-2 font-semibold">{{ $dokter->nama }}</td>
@@ -31,7 +31,7 @@
                     </td>
 
                 </tr>
-            @endforeach
+            @endforeach --}}
 
         </tbody>
 
