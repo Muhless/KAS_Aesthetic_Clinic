@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DokterController;
+use App\Http\Controllers\JadwalPraktekController;
 use App\Http\Controllers\UserController;
 use App\Models\Dokter;
 use App\Models\User;
@@ -48,10 +49,21 @@ Route::middleware('auth')->group(function () {
             Route::get('/', [DokterController::class, 'index'])->name('index');
             Route::get('/create', [DokterController::class, 'create'])->name('create');
             Route::post('/', [DokterController::class, 'store'])->name('store');
+            Route::get('/detail/{id}', [DokterController::class, 'detail'])->name('detail');
             Route::patch('/{id}', [DokterController::class, 'update'])->name('update');
             Route::delete('/{id}', [DokterController::class, 'destroy'])->name('destroy');
+
         });
     // end doctor
+
+    // jadwal praktek
+    Route::prefix('jadwal-praktek')->group(function () {
+        Route::get('dokter/{dokterId}', [JadwalPraktekController::class, 'index']);
+        Route::post('/', [JadwalPraktekController::class, 'store']);
+        Route::patch('{id}/status', [JadwalPraktekController::class, 'updateStatus']);
+        Route::delete('{id}', [JadwalPraktekController::class, 'destroy']);
+    });
+    // end jadwal praktek
 
     Route::get('/perawat', [AdminController::class, 'adminIndex']);
 

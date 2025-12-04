@@ -26,4 +26,22 @@ class Dokter extends Model
     {
         $this->attributes['email'] = strtolower($value);
     }
+
+
+public function jadwalPraktek()
+{
+    return $this->hasMany(JadwalPraktek::class);
+}
+
+// Mendapatkan jadwal hari ini
+public function jadwalHariIni()
+{
+    $hari = now()->locale('id')->dayName; // Senin, Selasa, dll
+
+    return $this->jadwalPraktek()
+        ->where('hari', $hari)
+        ->where('aktif', true)
+        ->first();
+}
+
 }

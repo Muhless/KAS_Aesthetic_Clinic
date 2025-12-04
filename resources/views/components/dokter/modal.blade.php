@@ -7,14 +7,14 @@
 
         <h2 class="text-xl font-semibold mb-2">Ubah Data Dokter</h2>
 
-        <form :action="'/dokter/' + form.id" method="POST" enctype="multipart/form-data" class="space-y-4">
-            @csrf
-            @method('PATCH')
+        <form @submit.prevent="submitForm" class="space-y-4">
+            {{-- <form :action="'/dokter/' + form.id" method="POST" enctype="multipart/form-data" class="space-y-4"> --}}
+            {{-- @csrf
+            @method('PATCH') --}}
 
             <div>
                 <label class="block text-sm font-medium">Nama</label>
-                <input type="text" name="nama" x-model="form.nama"
-                    class="w-full mt-1 px-3 py-2 border rounded-lg">
+                <input type="text" name="nama" x-model="form.nama" class="w-full mt-1 px-3 py-2 border rounded-lg">
             </div>
 
             <div>
@@ -31,7 +31,7 @@
 
             <div>
                 <label class="block text-sm font-medium">Spesialis</label>
-                <input type="text" name="text" x-model="form.spesialis"
+                <input type="text" name="spesialis" x-model="form.spesialis"
                     class="w-full mt-1 px-3 py-2 border rounded-lg">
             </div>
 
@@ -39,6 +39,9 @@
                 <label class="block text-sm font-medium">Tanggal Lahir</label>
                 <input type="date" name="tanggal_lahir" x-model="form.tanggal_lahir"
                     class="w-full mt-1 px-3 py-2 border rounded-lg">
+                <!-- Debug (opsional, bisa dihapus nanti) -->
+                <small class="text-gray-500" x-show="form.tanggal_lahir"
+                    x-text="'Format: ' + form.tanggal_lahir"></small>
             </div>
 
             <div>
