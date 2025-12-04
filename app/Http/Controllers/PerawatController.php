@@ -15,7 +15,7 @@ class PerawatController extends Controller
     {
         $response = Http::get(env('API_URL') . '/perawat');
 
-        $perawats = $response->json()['data']; // Sesuaikan struktur JSON API
+        $perawats = $response->json()['data']; 
 
         return view('pages.perawat.index', compact('perawats'));
     }

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Data Pasien')
+@section('title', 'Halaman Pasien - KAS Aesthetic Clinic')
 
 @section('content')
     <div class="p-6">
@@ -12,13 +12,13 @@
                     class="cursor-pointer text-sm w-52 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg shadow">
                     Tambah Pasien
                 </button>
-                <x-patient.modal />
+                <x-pasien.modal />
             </div>
 
         </div>
 
         <div class="bg-white p-2 rounded-md">
-            <x-patient.table />
+            <x-pasien.table />
         </div>
 
     </div>

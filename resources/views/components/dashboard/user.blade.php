@@ -13,8 +13,8 @@
             <p class="text-sm">{{ auth()->user()->role }}</p>
         </div>
         <div class="w-10 h-10 rounded-full overflow-hidden">
-            <img src="{{ auth()->user()->dokter->foto
-                ? asset('storage/' . auth()->user()->dokter->foto)
+            <img src="{{ optional(auth()->user()->dokter)->foto
+                ? asset('storage/' . optional(auth()->user()->dokter)->foto)
                 : asset('images/default.png') }}"
                 alt="user_picture" class="w-full h-full object-cover">
         </div>

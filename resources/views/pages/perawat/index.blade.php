@@ -4,8 +4,16 @@
 
 @section('content')
     <div class="p-6">
-        <h1 class="text-2xl font-semibold mb-4">Daftar Admin</h1>
-
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-3xl font-bold text-primary-400">Perawat</h1>
+            <div x-data="{ open: false }">
+                <button @click="open = true"
+                    class="cursor-pointer text-sm w-52 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg shadow">
+                    Tambah Reservasi
+                </button>
+                <x-perawat.modal />
+            </div>
+        </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             @foreach ($admins as $admin)
                 <div class="bg-white shadow-md rounded-lg p-4 border">
