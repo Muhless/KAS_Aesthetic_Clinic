@@ -3,7 +3,7 @@
 @section('title', 'Halaman Reservasi')
 
 @section('content')
-    <div class="p-6 ">
+    <div class="p-6">
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-3xl font-bold text-primary-400">Reservasi</h1>
 
@@ -14,6 +14,9 @@
                 </button>
                 <x-reservasi.modal />
             </div>
+        </div>
+        <div>
+            <x-dokter.table />
         </div>
     </div>
 
