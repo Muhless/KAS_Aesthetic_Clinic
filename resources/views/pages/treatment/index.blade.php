@@ -12,7 +12,7 @@
                     class="cursor-pointer text-sm w-52 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg shadow">
                     Tambah Treatment
                 </button>
-                <x-patient.modal />
+                <x-treatment.modal />
             </div>
         </div>
 

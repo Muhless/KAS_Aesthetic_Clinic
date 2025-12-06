@@ -11,14 +11,13 @@ class PerawatController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function perawatIndex()
-    {
-        $response = Http::get(env('API_URL') . '/perawat');
+public function index()
+{
+     $perawats = Perawat::all();
 
-        $perawats = $response->json()['data']; 
+    return view('pages.perawat.index', compact('perawats'));
+}
 
-        return view('pages.perawat.index', compact('perawats'));
-    }
 
     /**
      * Store a newly created resource in storage.

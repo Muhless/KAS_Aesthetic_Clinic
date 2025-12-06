@@ -18,7 +18,7 @@
         </div>
 
         <div class="bg-white p-2 rounded-md">
-            <x-pasien.table />
+            <x-pasien.table :pasiens="$pasiens" />
         </div>
 
     </div>

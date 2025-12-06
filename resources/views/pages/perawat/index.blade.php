@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Halaman Produk')
+@section('title', 'Halaman Perawat')
 
 @section('content')
     <div class="p-6">
@@ -9,24 +9,30 @@
             <div x-data="{ open: false }">
                 <button @click="open = true"
                     class="cursor-pointer text-sm w-52 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg shadow">
-                    Tambah Reservasi
+                    Tambah Perawat
                 </button>
                 <x-perawat.modal />
             </div>
         </div>
+
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            @foreach ($admins as $admin)
+            @foreach ($perawats as $perawat)
                 <div class="bg-white shadow-md rounded-lg p-4 border">
+
                     <h2 class="text-lg font-semibold mb-1">
-                        {{ $admin->nama }}
+                        {{ $perawat['nama'] ?? '-' }}
                     </h2>
 
                     <p class="text-gray-600 text-sm mb-2">
-                        {{ $admin->email }}
+                        {{ $perawat['email'] ?? '-' }}
                     </p>
 
-                    <span class="inline-block text-xs bg-blue-100 text-blue-600 px-2 py-1 rounded">
-                        Role: {{ $admin->role }}
+                    <p class="text-gray-600 text-sm mb-2">
+                        {{ $perawat['nomor_telepon'] ?? '-' }}
+                    </p>
+
+                    <span class="inline-block text-xs bg-green-100 text-green-600 px-2 py-1 rounded">
+                        Perawat
                     </span>
                 </div>
             @endforeach

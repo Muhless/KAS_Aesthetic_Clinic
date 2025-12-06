@@ -5,26 +5,22 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Treatment extends Model
+class Produk extends Model
 {
     use HasFactory;
 
-    protected $table = 'treatments';
-
     protected $fillable = [
         'nama',
+        'kategori',
         'deskripsi',
         'harga',
-        'durasi',
+        'stok',
         'foto',
         'status',
     ];
 
     protected $casts = [
         'harga' => 'integer',
-        'durasi' => 'integer',
-        'created_at' => 'datetime',
+        'stok' => 'integer',
     ];
-
-
 }
