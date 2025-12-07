@@ -11,6 +11,14 @@ use Illuminate\Http\Request;
 class ReservasiController extends Controller
 {
 
+      public function api()
+    {
+        return response()->json([
+            'status' => 'success',
+            'data' => Reservasi::all(),
+        ]);
+    }
+
     public function index()
     {
         $reservasis = Reservasi::with(['pasien', 'dokter', 'treatment'])

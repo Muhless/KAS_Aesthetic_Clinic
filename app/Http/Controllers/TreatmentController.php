@@ -8,42 +8,44 @@ use Illuminate\Support\Facades\Storage;
 
 class TreatmentController extends Controller
 {
-    /**
-     * Display a listing of treatments.
-     */
-    public function index()
+
+      public function api()
     {
-         $treatments = Treatment::with('user')->get();
-        return view('pages.treatment.index', compact('treatments'));
-    }
-
-    /**
-     * Store a newly created treatment.
-     */
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'nama'        => 'required|string|max:255',
-            'deskripsi'   => 'nullable|string',
-            'harga'       => 'required|integer|min:0',
-            'durasi'      => 'nullable|integer',
-            'foto'        => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'status'      => 'required|in:tersedia,tidak_tersedia',
-        ]);
-
-        // Upload foto jika ada
-        if ($request->hasFile('foto')) {
-            $validated['foto'] = $request->file('foto')->store('treatments', 'public');
-        }
-
-        $treatment = Treatment::create($validated);
-
         return response()->json([
-            'success' => true,
-            'message' => 'Treatment berhasil dibuat',
-            'data' => $treatment
+            'status' => 'success',
+            'data' => Treatment::all(),
         ]);
     }
+
+ public function index()
+{
+    $treatments = Treatment::all();
+    return view('pages.treatment.index', compact('treatments'));
+}
+
+public function store(Request $request)
+{
+    $validated = $request->validate([
+        'nama'        => 'required|string|max:255',
+        'deskripsi'   => 'nullable|string',
+        'harga'       => 'required|integer|min:0',
+        'durasi'      => 'nullable|integer',
+        'foto'        => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        'status'      => 'required|in:tersedia,tidak_tersedia',
+    ]);
+
+    // Upload foto jika ada
+    if ($request->hasFile('foto')) {
+        $validated['foto'] = $request->file('foto')->store('treatments', 'public');
+    }
+
+    Treatment::create($validated);
+
+    return redirect()
+        ->route('treatment.index')
+        ->with('success', 'Treatment berhasil ditambahkan.');
+}
+
 
     /**
      * Display a single treatment.
@@ -97,12 +99,7 @@ class TreatmentController extends Controller
         }
 
         $treatment->update($validated);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Treatment berhasil diperbarui',
-            'data' => $treatment
-        ]);
+    return redirect()->route('treatment.index')->with('success', 'Treatment berhasil diubah.');
     }
 
     /**

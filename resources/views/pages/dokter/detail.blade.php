@@ -4,8 +4,28 @@
 
 @section('content')
     <div class="py-12">
+        @if (session('success'))
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4 relative"
+                x-data="{ show: true }" x-show="show" x-transition>
+                <span class="block sm:inline">{{ session('success') }}</span>
+                <button @click="show = false" class="absolute top-0 right-0 px-4 py-3">
+                    <span class="text-2xl">&times;</span>
+                </button>
+            </div>
+        @endif
+
+        <!-- Error Messages -->
+        @if ($errors->any())
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                <ul class="list-disc list-inside">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-md">
 
                 <!-- Header Profile -->
                 <div class="p-8 border-b border-gray-200">
@@ -67,7 +87,7 @@
                     <div class="flex items-center justify-between mb-6">
                         <h2 class="text-2xl font-bold text-gray-900">Jadwal Praktek</h2>
                         <a href="#"
-                            class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 flex items-center gap-2">
+                            class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 flex items-center gap-2">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
@@ -84,7 +104,7 @@
             return $hari[$jadwal->hari] ?? 8;
         }) as $jadwal)
                                 <div
-                                    class="border rounded-lg p-4 {{ $jadwal->aktif ? 'bg-green-50 border-green-200' : 'bg-gray-50 border-gray-200' }}">
+                                    class="border rounded-md p-4 {{ $jadwal->aktif ? 'bg-green-50 border-green-200' : 'bg-gray-50 border-gray-200' }}">
                                     <div class="flex items-center justify-between mb-2">
                                         <h3 class="font-semibold text-gray-900">{{ $jadwal->hari }}</h3>
                                         <span
@@ -104,7 +124,7 @@
                             @endforeach
                         </div>
                     @else
-                        <div class="text-center py-12 bg-gray-50 rounded-lg">
+                        <div class="text-center py-12 bg-gray-50 rounded-md">
                             <svg class="w-16 h-16 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -113,7 +133,7 @@
                             </svg>
                             <p class="text-gray-600 mb-4">Belum ada jadwal praktek</p>
                             <a href="#"
-                                class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+                                class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M12 4v16m8-8H4"></path>

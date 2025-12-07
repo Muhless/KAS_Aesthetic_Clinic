@@ -26,7 +26,7 @@
                 <label class="block text-gray-600 mb-1 font-medium">Role</label>
 
                 <select name="role"
-                    class="text-black w-full px-4 py-2 border border-gray-300 rounded-lg bg-white focus:bg-white focus:ring-2 focus:ring-primary-400 focus:outline-none"
+                    class="text-black w-full px-4 py-2 border border-gray-300 rounded-md bg-white focus:bg-white focus:ring-2 focus:ring-primary-400 focus:outline-none"
                     required>
                     <option value="" disabled selected>Pilih role</option>
                     <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>
@@ -43,7 +43,7 @@
             <div class="mb-4">
                 <label class="block text-gray-600 mb-1 font-medium">Username</label>
                 <input type="text" name="username" value="{{ old('username') }}"
-                    class="text-black w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-400 focus:outline-none"
+                    class="text-black w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-400 focus:outline-none"
                     required>
                 @error('username')
                     <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
@@ -56,7 +56,7 @@
             <div class="mb-4">
                 <label class="block mb-1 font-medium text-gray-600">Password</label>
                 <input type="password" name="password"
-                    class="w-full px-4 py-2 text-black border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-400 focus:outline-none"
+                    class="w-full px-4 py-2 text-black border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-400 focus:outline-none"
                     required>
                 @error('password')
                     <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
@@ -65,7 +65,7 @@
 
             <!-- Button -->
             <button type="submit"
-                class="w-full bg-primary-600 cursor-pointer hover:bg-primary-700 text-white py-2 rounded-lg shadow transition">
+                class="w-full bg-primary-600 cursor-pointer hover:bg-primary-700 text-white py-2 rounded-md shadow transition">
                 Daftar
             </button>
 

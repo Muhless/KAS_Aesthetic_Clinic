@@ -33,10 +33,10 @@
 
         <!-- Aksi -->
         <div class="flex gap-2 mt-4">
-            <button class="flex-1 bg-red-500 hover:bg-red-600 text-white rounded-lg py-1.5">
+            <button class="flex-1 bg-red-500 hover:bg-red-600 text-white rounded-md py-1.5">
                 Hapus
             </button>
-            <button class="flex-1 bg-primary-600 hover:bg-primary-700 text-white rounded-lg py-1.5">
+            <button class="flex-1 bg-primary-600 hover:bg-primary-700 text-white rounded-md py-1.5">
                 Ubah
             </button>
         </div>

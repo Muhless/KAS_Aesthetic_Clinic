@@ -44,6 +44,14 @@ Route::middleware('auth')->group(function () {
    Route::get('/api/pasien', [PasienController::class, 'api']);
 
     Route::resource('treatment', TreatmentController::class);
+   Route::get('/api/treatment', [TreatmentController::class, 'api']);
+
     Route::resource('produk', ProdukController::class);
+   Route::get('/api/produk', [ProdukController::class, 'api']);
+
     Route::resource('reservasi', ReservasiController::class);
+   Route::get('/api/reservasi', [ReservasiController::class, 'api']);
+
+//    Route::get('/api/transaksi', [PasienController::class, 'api']);
+
 });

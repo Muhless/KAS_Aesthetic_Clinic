@@ -7,6 +7,14 @@ use Illuminate\Http\Request;
 
 class ProdukController extends Controller
 {
+      public function api()
+    {
+        return response()->json([
+            'status' => 'success',
+            'data' => Produk::all(),
+        ]);
+    }
+
       public function index()
     {
          $produks = Produk::with('user')->get();

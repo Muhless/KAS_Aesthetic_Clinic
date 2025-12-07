@@ -11,32 +11,32 @@
 
             <div>
                 <label class="block text-sm font-medium">Nama</label>
-                <input type="text" name="nama" x-model="form.nama" class="w-full mt-1 px-3 py-2 border rounded-lg"
+                <input type="text" name="nama" x-model="form.nama" class="w-full mt-1 px-3 py-2 border rounded-md"
                     required>
             </div>
 
             <div>
                 <label class="block text-sm font-medium">Nomor Telepon</label>
                 <input type="text" name="no_telepon" x-model="form.no_telepon"
-                    class="w-full mt-1 px-3 py-2 border rounded-lg" required>
+                    class="w-full mt-1 px-3 py-2 border rounded-md" required>
             </div>
 
             <div>
                 <label class="block text-sm font-medium">Email</label>
                 <input type="email" name="email" x-model="form.email"
-                    class="w-full mt-1 px-3 py-2 border rounded-lg" required>
+                    class="w-full mt-1 px-3 py-2 border rounded-md" required>
             </div>
 
             <div>
                 <label class="block text-sm font-medium">Spesialis</label>
                 <input type="text" name="spesialis" x-model="form.spesialis"
-                    class="w-full mt-1 px-3 py-2 border rounded-lg">
+                    class="w-full mt-1 px-3 py-2 border rounded-md">
             </div>
 
             <div>
                 <label class="block text-sm font-medium">Tanggal Lahir</label>
                 <input type="date" name="tanggal_lahir" x-model="form.tanggal_lahir"
-                    class="w-full mt-1 px-3 py-2 border rounded-lg">
+                    class="w-full mt-1 px-3 py-2 border rounded-md">
             </div>
 
             <div>
@@ -44,12 +44,12 @@
 
                 <!-- Preview atau Upload Area -->
                 <div @click="$refs.fotoInput.click()"
-                    class="w-full border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-primary-500 hover:bg-primary-50 transition">
+                    class="w-full border-2 border-dashed border-gray-300 rounded-md p-6 text-center cursor-pointer hover:border-primary-500 hover:bg-primary-50 transition">
 
                     <!-- Jika sudah ada preview -->
                     <template x-if="preview">
                         <div class="space-y-2">
-                            <img :src="preview" class="w-32 h-32 rounded-lg object-cover mx-auto border">
+                            <img :src="preview" class="w-32 h-32 rounded-md object-cover mx-auto border">
                             <p class="text-sm text-gray-600">Klik untuk ganti foto</p>
                         </div>
                     </template>
@@ -75,12 +75,12 @@
 
             <div class="flex justify-end gap-2 pt-2">
                 <button @click="open = false" type="button"
-                    class="w-32 cursor-pointer py-2 bg-gray-200 rounded-lg hover:bg-gray-300">
+                    class="w-32 cursor-pointer py-2 bg-gray-200 rounded-md hover:bg-gray-300">
                     Batal
                 </button>
 
                 <button type="submit"
-                    class="w-32 cursor-pointer py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600">
+                    class="w-32 cursor-pointer py-2 bg-primary-500 text-white rounded-md hover:bg-primary-600">
                     Simpan
                 </button>
             </div>

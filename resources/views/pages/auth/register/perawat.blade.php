@@ -25,7 +25,7 @@
             <div class="mb-4">
                 <label class="block text-gray-600 mb-1 font-medium">Nama Lengkap</label>
                 <input type="text" name="nama" value="{{ old('nama') }}"
-                    class="text-black w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-400 focus:outline-none"
+                    class="text-black w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-400 focus:outline-none"
                     required>
                 @error('nama')
                     <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
@@ -36,7 +36,7 @@
             <div class="mb-4">
                 <label class="block text-gray-600 mb-1 font-medium">Email (opsional)</label>
                 <input type="email" name="email" value="{{ old('email') }}"
-                    class="text-black w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-400 focus:outline-none">
+                    class="text-black w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-400 focus:outline-none">
                 @error('email')
                     <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
                 @enderror
@@ -46,7 +46,7 @@
             <div class="mb-4">
                 <label class="block text-gray-600 mb-1 font-medium">No HP (opsional)</label>
                 <input type="text" name="no_telepon" value="{{ old('no_telepon') }}"
-                    class="text-black w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-400 focus:outline-none">
+                    class="text-black w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-400 focus:outline-none">
                 @error('no_telepon')
                     <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
                 @enderror
@@ -56,7 +56,7 @@
             <div class="mb-4">
                 <label class="block text-gray-600 mb-1 font-medium">Tanggal Lahir (opsional)</label>
                 <input type="date" name="tanggal_lahir" value="{{ old('tanggal_lahir') }}"
-                    class="text-black w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-400 focus:outline-none">
+                    class="text-black w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-400 focus:outline-none">
                 @error('tanggal_lahir')
                     <div class="text-red-500 text-sm mt-1">{{ $message }}</div>
                 @enderror
@@ -67,7 +67,7 @@
 
             <!-- Button -->
             <button type="submit"
-                class="w-full bg-primary-600 cursor-pointer hover:bg-primary-700 text-white py-2 rounded-lg shadow transition">
+                class="w-full bg-primary-600 cursor-pointer hover:bg-primary-700 text-white py-2 rounded-md shadow transition">
                 Selanjutnya
             </button>
 

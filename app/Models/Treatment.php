@@ -25,6 +25,9 @@ class Treatment extends Model
         'durasi' => 'integer',
         'created_at' => 'datetime',
     ];
-
+  public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
 }

@@ -12,7 +12,7 @@
                 <p class="text-xs">Disc. 25% • Perawatan pencerahan premium</p>
             </div>
 
-            <span class="px-3 py-1 text-sm font-semibold bg-primary-50 rounded-lg">
+            <span class="px-3 py-1 text-sm font-semibold bg-primary-50 rounded-md">
                 Rp 199K
             </span>
         </div>
@@ -24,7 +24,7 @@
                 <p class="text-xs">Disc. 30% • Menghilangkan jerawat & bekasnya</p>
             </div>
 
-            <span class="px-3 py-1 text-sm font-semibold bg-primary-50 rounded-lg">
+            <span class="px-3 py-1 text-sm font-semibold bg-primary-50 rounded-md">
                 Rp 349K
             </span>
         </div>

@@ -7,6 +7,15 @@ use Illuminate\Http\Request;
 
 class JadwalPraktekController extends Controller
 {
+
+      public function api()
+    {
+        return response()->json([
+            'status' => 'success',
+            'data' => JadwalPraktek::all(),
+        ]);
+    }
+
     // Ambil jadwal berdasarkan dokter
     public function index($dokterId)
     {

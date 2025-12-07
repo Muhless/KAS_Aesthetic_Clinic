@@ -1,6 +1,6 @@
 @props(['perawat'])
 
-<div class="bg-white rounded-lg border border-gray-200 overflow-hidden hover:border-gray-300 transition-colors">
+<div class="bg-white rounded-md border border-gray-200 overflow-hidden hover:border-gray-300 transition-colors">
     <!-- Foto perawat -->
     <div class="relative h-48 bg-gray-50 cursor-pointer">
         <img src="{{ $perawat['foto'] ? asset('storage/' . $perawat['foto']) : asset('images/default.png') }}"
