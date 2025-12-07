@@ -35,4 +35,9 @@ class Pasien extends Model
             ? $this->tanggal_lahir->format('d-m-Y')
             : '-';
     }
+
+     public function getJenisKelaminLabelAttribute()
+    {
+        return $this->jenis_kelamin === 'L' ? 'Laki-laki' : 'Perempuan';
+    }
 }

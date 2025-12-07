@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Admin;
 use App\Models\Dokter;
 use App\Models\Perawat;
 use Illuminate\Http\Request;
@@ -66,25 +67,35 @@ class AuthController extends Controller
         return view('pages.auth.register.admin');
     }
 
-    // public function registerAdmin(Request $request)
-    // {
-    //     $user = session('reg_data_user');
+    public function registerAdmin(Request $request)
+    {
+        $userSession = session('reg_data_user');
 
-    //     $validated = $request->validate([
-    //         'username' => 'required|string|max:50|unique:users,username',
-    //         'password' => 'required|string|min:5',
-    //     ]);
+        if (!$userSession) {
+            return redirect('/register');
+        }
 
-    //     $user = User::create([
-    //         'username' => $validated['username'],
-    //         'password' => bcrypt($validated['password']),
-    //         'role' => $user['role'],
-    //     ]);
+        $validated = $request->validate([
+            'nama' => 'required|string|max:255',
+            'email' => 'nullable|email',
+        ]);
 
-    //     session()->forget('reg_data_user');
+        $user = User::create([
+            'username' => $userSession['username'],
+            'password' => bcrypt($userSession['password']),
+            'role' => $userSession['role'],
+        ]);
 
-    //     return redirect('/login')->with('success', 'Registrasi admin berhasil.');
-    // }
+        Admin::create([
+            'user_id' => $user->id,
+            'nama' => $validated['nama'],
+            'email' => $validated['email'],
+        ]);
+
+        session()->forget('reg_data_user');
+
+        return redirect('/login')->with('success', 'Registrasi admin berhasil.');
+    }
 
     public function showRegisterDokter()
     {
@@ -140,32 +151,41 @@ class AuthController extends Controller
 
     public function registerPerawat(Request $request)
     {
-        $user = session('reg_data_user');
+        try {
+            $userSession = session('reg_data_user');
 
-        $validated = $request->validate([
-            'nama' => 'required|string|max:255',
-            'no_telepon' => 'nullable|string',
-            'email' => 'nullable|email',
-            'tanggal_lahir' => 'nullable|date',
-        ]);
+            if (!$userSession) {
+                return redirect('/register')->with('error', 'Data user tidak ditemukan. Silakan ulangi pendaftaran.');
+            }
 
-        $user = User::create([
-            'username' => $validated['username'],
-            'password' => bcrypt($validated['password']),
-            'role' => $user['role'],
-        ]);
+            $validated = $request->validate([
+                'nama' => 'required|string|max:255',
+                'no_telepon' => 'nullable|string',
+                'email' => 'nullable|email',
+                'tanggal_lahir' => 'nullable|date',
+            ]);
 
-        Perawat::create([
-            'user_id' => $user->id,
-            'nama' => $validated['nama'],
-            'nomor_telepon' => $validated['no_telepon'],
-            'email' => $validated['email'],
-            'tanggal_lahir' => $validated['tanggal_lahir'],
-        ]);
+            $user = User::create([
+                'username' => $userSession['username'],
+                'password' => bcrypt($userSession['password']),
+                'role' => $userSession['role'],
+            ]);
 
-        session()->forget('reg_data_user');
+            Perawat::create([
+                'user_id' => $user->id,
+                'nama' => $validated['nama'],
+                'no_telepon' => $validated['no_telepon'],
+                'email' => $validated['email'],
+                'tanggal_lahir' => $validated['tanggal_lahir'],
+            ]);
 
-        return redirect('/login')->with('success', 'Registrasi perawat berhasil.');
+            session()->forget('reg_data_user');
+
+            return redirect('/login')->with('success', 'Registrasi perawat berhasil.');
+
+        } catch (\Exception $e) {
+            return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     public function logout(Request $request)

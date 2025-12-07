@@ -18,7 +18,7 @@
             Register Akun
         </h2>
 
-        <form action="/register" method="POST">
+        <form action="/register/perawat" method="POST">
             @csrf
 
             <!-- Nama Lengkap -->

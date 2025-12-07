@@ -20,7 +20,7 @@
         @include('layouts.sidebar')
         <main class="flex-1 ml-64 flex flex-col">
             {{-- <x-topbar /> --}}
-            <div class="flex-1overflow-y-auto bg-neutral-light">
+            <div class="flex-1overflow-y-auto">
                 @yield('content')
             </div>
         </main>
