@@ -3,7 +3,7 @@
 <div class="group bg-white rounded-2xl border border-gray-200 overflow-hidden hover:border-primary-300 hover:shadow-xl transition-all duration-300">
 
     <!-- Foto Dokter -->
-    <div class="relative aspect-3/4 bg-linear-to-br from-blue-50 to-indigo-50 overflow-hidden cursor-pointer"
+    <div class="relative aspect-3/4 bg-linear-to-br from-primary-50 to-indigo-50 overflow-hidden cursor-pointer"
          onclick="window.location.href='{{ route('dokter.detail', $dokter['id']) }}'">
         <img src="{{ $dokter['foto'] ? asset('storage/' . $dokter['foto']) : asset('images/default.png') }}"
              alt="{{ $dokter['nama'] }}"
@@ -16,7 +16,7 @@
         <div class="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform -translate-y-2.5 group-hover:translate-y-0">
             <button type="button"
                     @click.stop="editDokter({{ $dokter['id'] }})"
-                    class="p-2.5 bg-white/95 backdrop-blur-md text-gray-700 rounded-xl shadow-lg hover:bg-blue-50 hover:text-blue-600 hover:scale-110 transition-all">
+                    class="p-2.5 bg-white/95 backdrop-blur-md text-gray-700 rounded-xl shadow-lg hover:bg-primary-50 hover:text-primary-600 hover:scale-110 transition-all">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
                     <path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32L19.513 8.2Z" />
                 </svg>
@@ -53,11 +53,11 @@
 
         <!-- Name & Specialty -->
         <div class="mb-4">
-            <h3 class="text-xl font-bold text-gray-900 mb-1 group-hover:text-blue-600 transition-colors">
+            <h3 class="text-xl font-bold text-gray-900 mb-1 group-hover:text-primary-600 transition-colors">
                 {{ $dokter['nama'] }}
             </h3>
             @if(isset($dokter['spesialisasi']))
-                <p class="text-sm font-medium text-blue-600">{{ $dokter['spesialisasi'] }}</p>
+                <p class="text-sm font-medium text-primary-600">{{ $dokter['spesialisasi'] }}</p>
             @endif
         </div>
 
@@ -65,8 +65,8 @@
         <div class="space-y-2.5 mb-4">
             <!-- Email -->
             <div class="flex items-center gap-3 group/item">
-                <div class="shrink-0 w-9 h-9 bg-blue-50 rounded-lg flex items-center justify-center group-hover/item:bg-blue-100 transition-colors">
-                    <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="shrink-0 w-9 h-9 bg-primary-50 rounded-lg flex items-center justify-center group-hover/item:bg-primary-100 transition-colors">
+                    <svg class="w-4 h-4 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                               d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
                         </path>
@@ -117,10 +117,10 @@
 
         <!-- Action Link -->
         <div class="flex items-center justify-between pt-3 border-t border-gray-100">
-            <span class="text-sm font-semibold text-blue-600 group-hover:text-blue-700 transition-colors">
+            <span class="text-sm font-semibold text-primary-600 group-hover:text-primary-700 transition-colors">
                 Lihat Detail Lengkap
             </span>
-            <svg class="w-5 h-5 text-blue-600 transform group-hover:translate-x-1 transition-transform"
+            <svg class="w-5 h-5 text-primary-600 transform group-hover:translate-x-1 transition-transform"
                  fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
             </svg>

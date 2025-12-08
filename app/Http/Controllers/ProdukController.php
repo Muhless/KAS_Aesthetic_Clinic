@@ -22,22 +22,27 @@ class ProdukController extends Controller
     }
 
     // POST /produks
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'nama' => 'required|string',
-            'kategori' => 'nullable|string',
-            'deskripsi' => 'nullable|string',
-            'harga' => 'required|integer|min:0',
-            'stok' => 'required|integer|min:0',
-            'foto' => 'nullable|string',
-            'status' => 'in:aktif,nonaktif',
-        ]);
+   public function store(Request $request)
+{
+    $validated = $request->validate([
+        'nama'        => 'required|string|max:255',
+        'kategori'    => 'nullable|string|max:255',
+        'deskripsi'   => 'nullable|string',
+        'harga'       => 'required|numeric|min:0',
+        'stok'        => 'required|integer|min:0',
+        'foto'        => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        'status'      => 'nullable|in:tersedia,tidak_tersedia',
+    ]);
 
-        $produk = Produk::create($validated);
-
-        return response()->json($produk, 201);
+    if ($request->hasFile('foto')) {
+        $validated['foto'] = $request->file('foto')->store('produk', 'public');
     }
+
+    $produk = Produk::create($validated);
+
+    return redirect()->route('produk.index')
+                     ->with('success', 'Produk berhasil ditambahkan!');
+}
 
     // GET /produks/{id}
     public function show($id)
@@ -70,6 +75,7 @@ class ProdukController extends Controller
     {
         produk::findOrFail($id)->delete();
 
-        return response()->json(['message' => 'Produk berhasil dihapus']);
+          return redirect()->route('produk.index')->with('success', 'Produk berhasil dihapus.');
+
     }
 }

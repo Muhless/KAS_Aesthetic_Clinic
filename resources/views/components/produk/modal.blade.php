@@ -35,11 +35,11 @@
                 <div>
                     <label class="block text-sm font-medium">Nama Produk</label>
                     <input type="text"
-                           name="name"
-                           value="{{ old('name') }}"
+                           name="nama"
+                           value="{{ old('nama') }}"
                            required
                            class="w-full mt-1 px-3 py-2 border rounded-md focus:ring-primary-500 focus:border-primary-500">
-                    @error('name')
+                    @error('nama')
                         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>

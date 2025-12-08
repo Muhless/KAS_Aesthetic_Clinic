@@ -29,3 +29,14 @@
     --color-neutral: #dfe3e6;
     --color-neutral-dark: #4a5560;
 }
+
+/* Hide scrollbar for Chrome, Safari, Opera */
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge, Firefox */
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}

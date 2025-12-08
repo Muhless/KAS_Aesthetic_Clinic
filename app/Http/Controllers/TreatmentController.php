@@ -123,9 +123,6 @@ public function store(Request $request)
 
         $treatment->delete();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Treatment berhasil dihapus'
-        ]);
+    return redirect()->route('treatment.index')->with('success', 'Treatment berhasil dihapus.');
     }
 }

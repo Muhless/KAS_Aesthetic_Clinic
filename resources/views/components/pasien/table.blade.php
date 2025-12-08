@@ -33,10 +33,9 @@
 
                     <td class="py-4 px-2">
                         <div class="flex items-center justify-center space-x-2">
-
                             <div
-                                class="w-8 h-8 bg-yellow-500 hover:bg-yellow-600 rounded-full flex items-center justify-center shadow">
-                                <a href="{{ route('pasien.edit', $pasien->id) }}" class="text-white" title="Edit">
+                                class="w-8 h-8 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-full flex items-center justify-center shadow">
+                                <a href="{{ route('pasien.edit', $pasien->id) }}" title="Edit">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
                                         class="w-4 h-4">
                                         <path
@@ -48,7 +47,7 @@
 
                             <!-- Hapus -->
                             <button type="button" onclick="confirmDelete({{ $pasien->id }}, '{{ $pasien->nama }}')"
-                                class="cursor-pointer w-8 h-8 bg-red-500 hover:bg-red-600 rounded-full flex items-center justify-center shadow text-white"
+                                class="cursor-pointer w-8 h-8 bg-red-50 hover:bg-red-100 text-red-600 rounded-full flex items-center justify-center shadow "
                                 title="Hapus">
 
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"

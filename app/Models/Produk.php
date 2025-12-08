@@ -23,4 +23,9 @@ class Produk extends Model
         'harga' => 'integer',
         'stok' => 'integer',
     ];
+
+     public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

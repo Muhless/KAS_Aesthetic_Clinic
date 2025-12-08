@@ -17,8 +17,6 @@ class Perawat extends Model
         'no_telepon',
         'email',
         'tanggal_lahir',
-        'sip',
-        'jadwal',
         'foto'
     ];
 
