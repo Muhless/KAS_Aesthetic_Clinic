@@ -1,47 +1,152 @@
-  <!-- Modal Overlay -->
-  <div x-show="open" x-transition.opacity @click.self="open = false"
-      class="fixed inset-0 bg-black/50 z-40 flex items-center justify-center">
+<!-- x-data harus ada di sini -->
+<div x-data="{
+    preview: null,
+    handleFileChange(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                this.preview = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+}">
+    <!-- Modal Overlay -->
+    <div x-show="open"
+         x-transition.opacity
+         @click.self="open = false"
+         class="fixed inset-0 bg-black/50 z-40 flex items-center justify-center">
 
-      <!-- Modal Content -->
-      <div x-show="open" x-transition class="bg-white w-full max-w-lg rounded-xl shadow-xl p-6 space-y-4">
+        <!-- Modal Content -->
+        <div x-show="open"
+             x-transition
+             class="bg-white w-full max-w-lg rounded-xl shadow-xl p-6 space-y-4 mx-4">
 
-          <h2 class="text-xl font-semibold mb-2 text-center">Tambah Produk</h2>
+            <h2 class="text-xl font-semibold mb-2 text-center">Tambah Produk</h2>
 
-          <!-- FORM -->
-          <form action="/patient" method="POST" class="space-y-4">
-              @csrf
+            <!-- FORM -->
+            <form action="{{ route('produk.store') }}"
+                  method="POST"
+                  enctype="multipart/form-data"
+                  class="space-y-4">
+                @csrf
 
-              <div>
-                  <label class="block text-sm font-medium">Nama Pasien</label>
-                  <input type="text" name="name"
-                      class="w-full mt-1 px-3 py-2 border rounded-md focus:ring-primary-500 focus:border-primary-500">
-              </div>
+                <div>
+                    <label class="block text-sm font-medium">Nama Produk</label>
+                    <input type="text"
+                           name="name"
+                           value="{{ old('name') }}"
+                           required
+                           class="w-full mt-1 px-3 py-2 border rounded-md focus:ring-primary-500 focus:border-primary-500">
+                    @error('name')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
 
-              <div>
-                  <label class="block text-sm font-medium">Nomor Telepon</label>
-                  <input type="text" name="phone"
-                      class="w-full mt-1 px-3 py-2 border rounded-md focus:ring-primary-500 focus:border-primary-500">
-              </div>
+                <div>
+                    <label class="block text-sm font-medium">Kategori</label>
+                    <input type="text"
+                           name="kategori"
+                           value="{{ old('kategori') }}"
+                           required
+                           class="w-full mt-1 px-3 py-2 border rounded-md focus:ring-primary-500 focus:border-primary-500">
+                    @error('kategori')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
 
-              <div>
-                  <label class="block text-sm font-medium">Tanggal Lahir</label>
-                  <input type="date" name="dob"
-                      class="w-full mt-1 px-3 py-2 border rounded-md focus:ring-primary-500 focus:border-primary-500">
-              </div>
+                <div>
+                    <label class="block text-sm font-medium">Deskripsi</label>
+                    <textarea name="deskripsi"
+                              class="w-full mt-1 px-3 py-2 border rounded-md focus:ring-primary-500 focus:border-primary-500"
+                              rows="2">{{ old('deskripsi') }}</textarea>
+                    @error('deskripsi')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
 
-              <!-- Actions -->
-              <div class="flex justify-end gap-2 pt-2">
-                  <button @click="open = false" type="button"
-                      class="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300">
-                      Batal
-                  </button>
+                <div>
+                    <label class="block text-sm font-medium">Harga</label>
+                    <input type="number"
+                           name="harga"
+                           value="{{ old('harga') }}"
+                           required
+                           class="w-full mt-1 px-3 py-2 border rounded-md focus:ring-primary-500 focus:border-primary-500">
+                    @error('harga')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
 
-                  <button type="submit" class="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700">
-                      Simpan
-                  </button>
-              </div>
+                <div>
+                    <label class="block text-sm font-medium">Stok</label>
+                    <input type="number"
+                           name="stok"
+                           value="{{ old('stok') }}"
+                           required
+                           class="w-full mt-1 px-3 py-2 border rounded-md focus:ring-primary-500 focus:border-primary-500">
+                    @error('stok')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
 
-          </form>
+                <div>
+                    <label class="block text-sm font-medium mb-2">Foto Produk</label>
 
-      </div>
-  </div>
+                    <!-- Upload Area -->
+                    <div @click="$refs.fotoInput.click()"
+                         class="w-full border-2 border-dashed border-gray-300 rounded-md p-6 text-center cursor-pointer hover:border-primary-500 hover:bg-primary-50 transition">
+
+                        <!-- Preview -->
+                        <template x-if="preview">
+                            <div class="space-y-2">
+                                <img :src="preview" class="w-32 h-32 rounded-md object-cover mx-auto border">
+                                <p class="text-sm text-gray-600">Klik untuk ganti foto</p>
+                            </div>
+                        </template>
+
+                        <!-- Upload Icon -->
+                        <template x-if="!preview">
+                            <div class="space-y-2">
+                                <svg class="w-16 h-16 mx-auto text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                </svg>
+                                <p class="text-sm font-medium text-gray-700">Klik untuk upload foto</p>
+                                <p class="text-xs text-gray-500">PNG, JPG hingga 2MB</p>
+                            </div>
+                        </template>
+                    </div>
+
+                    <!-- Hidden File Input -->
+                    <input type="file"
+                           name="foto"
+                           accept="image/*"
+                           x-ref="fotoInput"
+                           @change="handleFileChange($event)"
+                           class="hidden">
+
+                    @error('foto')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Actions -->
+                <div class="flex justify-end gap-2 pt-2">
+                    <button @click="open = false; preview = null"
+                            type="button"
+                            class="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300 transition">
+                        Batal
+                    </button>
+
+                    <button type="submit"
+                            class="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 transition">
+                        Simpan
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>

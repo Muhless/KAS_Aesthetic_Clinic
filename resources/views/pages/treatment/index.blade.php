@@ -5,7 +5,7 @@
 @section('content')
     <div class="p-6">
         @if (session('success'))
-            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4 relative"
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative"
                 x-data="{ show: true }" x-show="show" x-transition>
                 <span class="block sm:inline">{{ session('success') }}</span>
                 <button @click="show = false" class="absolute top-0 right-0 px-4 py-3">
@@ -16,7 +16,7 @@
 
         <!-- Error Messages -->
         @if ($errors->any())
-            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
                 <ul class="list-disc list-inside">
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
@@ -25,7 +25,7 @@
             </div>
         @endif
 
-        <div class="flex items-center justify-between mb-6">
+        <div class="flex items-center justify-between">
             <h1 class="text-3xl font-bold text-primary-400">Treatment</h1>
 
             <div x-data="{ open: false }">
@@ -37,12 +37,11 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div class="px-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
             @forelse ($treatments as $treatment)
-                {{-- Pass data treatment ke component --}}
                 <x-treatment.card :treatment="$treatment" />
             @empty
-                <div class="col-span-full text-center py-12">
+                <div class="col-span-full text-center">
                     <p class="text-gray-500 text-lg">Belum ada treatment</p>
                 </div>
             @endforelse

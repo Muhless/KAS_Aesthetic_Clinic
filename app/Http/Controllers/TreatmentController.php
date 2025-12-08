@@ -31,7 +31,7 @@ public function store(Request $request)
         'harga'       => 'required|integer|min:0',
         'durasi'      => 'nullable|integer',
         'foto'        => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-        'status'      => 'required|in:tersedia,tidak_tersedia',
+        // 'status'      => 'required|in:tersedia,tidak_tersedia',
     ]);
 
     // Upload foto jika ada

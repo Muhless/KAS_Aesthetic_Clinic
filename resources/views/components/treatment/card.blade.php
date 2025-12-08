@@ -1,65 +1,93 @@
 @props(['treatment'])
 
-<div class="bg-white shadow rounded-xl p-4 border border-gray-100 hover:shadow-md transition">
-    <div class="flex items-center justify-between mb-3">
-        <h3 class="text-lg font-semibold text-gray-800 truncate">
-            {{ $treatment->name }}
-        </h3>
+<div
+    class="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md
+           hover:border-primary-300 transition-all duration-300 hover:-translate-y-1">
 
-        {{-- Icon Delete --}}
-        <form action="{{ route('treatment.destroy', $treatment->id) }}" method="POST"
-            onsubmit="return confirm('Yakin ingin menghapus treatment ini?')" class="inline">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="p-2 rounded-md bg-red-500 hover:bg-red-600 text-white transition">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="size-4">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                </svg>
-            </button>
-        </form>
-    </div>
+    {{-- Content --}}
+    <div class="p-5">
 
-    {{-- Foto Treatment --}}
-    @if ($treatment->foto)
-        <div class="mb-3">
-            <img src="{{ asset('storage/' . $treatment->foto) }}" alt="{{ $treatment->name }}"
-                class="w-full h-40 object-cover rounded-lg">
-        </div>
-    @endif
+        {{-- Header --}}
+        <div class="flex items-start justify-between gap-4 mb-4">
 
-    <p class="text-sm text-gray-500 mb-4 line-clamp-2">
-        {{ $treatment->deskripsi ?? 'Tidak ada deskripsi' }}
-    </p>
+            <div class="flex-1">
+                <h3 class="text-lg font-semibold text-gray-900 leading-tight mb-2">
+                    {{ $treatment->nama }}
+                </h3>
 
-    <div class="space-y-1 mb-3">
-        <div class="text-xl font-bold text-primary-600">
-            Rp {{ number_format($treatment->harga, 0, ',', '.') }}
-        </div>
+                {{-- Status --}}
+                <span
+                    class="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium rounded-full
+    {{ $treatment->status === 'tersedia'
+        ? 'bg-green-50 text-green-700 border border-green-200'
+        : 'bg-red-50 text-red-600 border border-red-200' }}">
 
-        @if ($treatment->durasi)
-            <div class="text-sm text-gray-600">
-                <span class="font-medium">Durasi:</span> {{ $treatment->durasi }} menit
+                    <span class="w-2.5 h-2.5 rounded-full bg-current"></span>
+
+                    {{ $treatment->status === 'tidak_tersedia' ? 'Tidak Tersedia' : 'Tersedia' }}
+                </span>
+
             </div>
-        @endif
 
-        <div class="inline-flex items-center">
-            <span
-                class="px-2 py-1 text-xs rounded-full {{ $treatment->status == 'tersedia' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                {{ ucfirst($treatment->status) }}
-            </span>
+            {{-- Action Buttons --}}
+            <div class="flex gap-2">
+                <button @click="openEditModal({{ $treatment->id }})"
+                    class="p-2 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-lg transition cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
+                        <path
+                            d="m2.695 14.762-1.262 3.155a.5.5 0 0 0 .65.65l3.155-1.262a4 4 0 0 0 1.343-.886L17.5 5.501a2.121 2.121 0 0 0-3-3L3.58 13.419a4 4 0 0 0-.885 1.343Z" />
+                    </svg>
+
+                </button>
+
+                <form action="{{ route('treatment.destroy', $treatment->id) }}" method="POST"
+                    onsubmit="return confirm('Hapus {{ $treatment->nama }}?')">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit"
+                        class="p-2 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg transition cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
+                            <path fill-rule="evenodd"
+                                d="M8.75 1A2.75 2.75 0 0 0 6 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 1 0 .23 1.482l.149-.022.841 10.518A2.75 2.75 0 0 0 7.596 19h4.807a2.75 2.75 0 0 0 2.742-2.53l.841-10.52.149.023a.75.75 0 0 0 .23-1.482A41.03 41.03 0 0 0 14 4.193V3.75A2.75 2.75 0 0 0 11.25 1h-2.5ZM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4ZM8.58 7.72a.75.75 0 0 0-1.5.06l.3 7.5a.75.75 0 1 0 1.5-.06l-.3-7.5Zm4.34.06a.75.75 0 1 0-1.5-.06l-.3 7.5a.75.75 0 1 0 1.5.06l.3-7.5Z"
+                                clip-rule="evenodd" />
+                        </svg>
+
+                    </button>
+                </form>
+            </div>
         </div>
-    </div>
 
-    <div class="flex items-center justify-between gap-2 pt-3 border-t">
-        <button @click="openEditModal({{ $treatment->id }})"
-            class="flex-1 cursor-pointer py-1.5 text-sm bg-gray-100 hover:bg-gray-200 rounded-md transition">
-            Edit
-        </button>
-        <a href="{{ route('treatment.show', $treatment->id) }}"
-            class="flex-1 text-center cursor-pointer py-1.5 text-sm bg-primary-600 hover:bg-primary-700 text-white rounded-md transition">
-            Detail
-        </a>
+        {{-- Description --}}
+        <p class="text-sm text-gray-600 mb-4 line-clamp-2">
+            {{ $treatment->deskripsi ?: 'Tidak ada deskripsi.' }}
+        </p>
+
+        {{-- Price & Duration --}}
+        <div class="flex items-center justify-between pt-4 border-t border-gray-200">
+
+            {{-- Harga --}}
+            <div>
+                <div class="text-xs text-gray-500">Harga</div>
+                <div class="text-2xl font-bold text-primary-600">
+                    @if ($treatment->harga >= 1000)
+                        {{ number_format($treatment->harga / 1000, 0) }}<span class="text-lg">K</span>
+                    @else
+                        {{ number_format($treatment->harga, 0) }}
+                    @endif
+                </div>
+            </div>
+
+            {{-- Durasi --}}
+            @if ($treatment->durasi)
+                <div class="text-right">
+                    <div class="text-xs text-gray-500">Durasi</div>
+                    <div class="text-lg font-semibold text-gray-700">
+                        {{ $treatment->durasi }} <span class="text-sm font-normal text-gray-500">menit</span>
+                    </div>
+                </div>
+            @endif
+
+        </div>
+
     </div>
 </div>
