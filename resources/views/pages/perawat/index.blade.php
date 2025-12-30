@@ -5,14 +5,26 @@
 @section('content')
     <div class="p-6" x-data="PerawatModal()">
         <x-notification />
-        <h1 class="text-3xl font-bold text-primary-400">Perawat</h1>
-        <div class="grid grid-cols-4 gap-4 mt-6">
+
+        <div class="flex items-center justify-between mb-6">
+            <h1 class="text-3xl font-bold text-primary-400">Perawat</h1>
+            <div x-data="{ open: false }">
+                <button @click="open = true"
+                    class="cursor-pointer text-sm w-52 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-md shadow">
+                    Tambah Perawat
+                </button>
+                <x-perawat.modal />
+            </div>
+        </div>
+
+        <div
+            class="grid grid-flow-col auto-cols-[290px] gap-4 overflow-x-auto mt-6 pb-2 snap-x snap-mandatory scrollbar-hide">
             @foreach ($perawats as $perawat)
                 <x-perawat.card :perawat="$perawat" />
             @endforeach
         </div>
 
-        {{-- <x-perawat.modal /> --}}
+        <x-perawat.modal />
 
         <script>
             function PerawatModal() {

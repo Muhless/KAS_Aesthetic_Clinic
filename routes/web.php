@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DokterController;
 use App\Http\Controllers\PasienController;
+use App\Http\Controllers\PendaftaranController;
 use App\Http\Controllers\PerawatController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\ReservasiController;
@@ -33,24 +34,28 @@ Route::middleware('auth')->group(function () {
         return view('pages.dashboard');
     });
 
-    Route::resource('dokter', DokterController::class);
-   Route::get('/api/dokter', [DokterController::class, 'api']);
-   Route::get('/dokter/detail/{id}', [DokterController::class, 'detail'])->name('dokter.detail');
-
-   Route::resource('perawat', PerawatController::class);
-   Route::get('/api/perawat', [PerawatController::class, 'api']);
+      Route::resource('reservasi', ReservasiController::class);
+   Route::get('/api/reservasi', [ReservasiController::class, 'api']);
 
     Route::resource('pasien', PasienController::class);
    Route::get('/api/pasien', [PasienController::class, 'api']);
 
-    Route::resource('treatment', TreatmentController::class);
-   Route::get('/api/treatment', [TreatmentController::class, 'api']);
+    Route::resource('perawat', PerawatController::class);
+   Route::get('/api/perawat', [PerawatController::class, 'api']);
 
-    Route::resource('produk', ProdukController::class);
+    Route::resource('dokter', DokterController::class);
+   Route::get('/api/dokter', [DokterController::class, 'api']);
+   Route::get('/dokter/detail/{id}', [DokterController::class, 'detail'])->name('dokter.detail');
+
+
+
+   Route::resource('produk', ProdukController::class);
    Route::get('/api/produk', [ProdukController::class, 'api']);
 
-    Route::resource('reservasi', ReservasiController::class);
-   Route::get('/api/reservasi', [ReservasiController::class, 'api']);
+   Route::resource('treatment', TreatmentController::class);
+  Route::get('/api/treatment', [TreatmentController::class, 'api']);
+
+
 
 //    Route::get('/api/transaksi', [PasienController::class, 'api']);
 

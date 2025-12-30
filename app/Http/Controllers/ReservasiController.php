@@ -2,32 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Reservasi;
+use App\Models\Pendaftaran;
 use App\Models\Dokter;
 use App\Models\Pasien;
+use App\Models\Reservasi;
 use App\Models\Treatment;
 use Illuminate\Http\Request;
 
 class ReservasiController extends Controller
 {
 
-      public function api()
+    public function api()
     {
         return response()->json([
             'status' => 'success',
-            'data' => Reservasi::all(),
+            'data' => Pendaftaran::all(),
         ]);
     }
 
-    public function index()
-    {
-        $reservasis = Reservasi::with(['pasien', 'dokter', 'treatment'])
-            ->orderBy('tanggal', 'desc')
-            ->orderBy('waktu', 'asc')
-            ->get();
+public function index()
+{
+    return view('pages.reservasi.index');
+}
 
-        return view('pages.reservasi.index', compact('reservasis'));
-    }
 
     public function create()
     {
@@ -35,47 +32,47 @@ class ReservasiController extends Controller
         $dokters = Dokter::all();
         $treatments = Treatment::all();
 
-        return view('reservasi.create', compact('patients', 'dokters', 'treatments'));
+        return view('pages.pendaftaran.create', compact('patients', 'dokters', 'treatments'));
     }
 
-//    public function store(Request $request)
-// {
-//     $validated = $request->validate([
-//         'pasien_id'     => 'required|exists:pasiens,id',
-//         'dokter_id'     => 'required|exists:dokters,id',
-//         'treatment_id'  => 'required|exists:treatments,id',
-//         'tanggal'       => 'required|date',
-//         'waktu'         => 'nullable',
-//         'keluhan'       => 'nullable|string',
-//     ]);
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'pasien_id'     => 'required|exists:pasiens,id',
+            'dokter_id'     => 'required|exists:dokters,id',
+            'treatment_id'  => 'required|exists:treatments,id',
+            'tanggal'       => 'required|date',
+            'waktu'         => 'nullable',
+            'keluhan'       => 'nullable|string',
+        ]);
 
-// $validated['status'] = 'tertunda';
-// $validated['user_id'] = auth()->id();
+        $validated['status'] = 'tertunda';
+        // $validated['user_id'] = auth()->id();
 
-//     Reservasi::create($validated);
+        Pendaftaran::create($validated);
 
-//     return redirect()->route('pages.reservasi.index')->with('success', 'Reservasi berhasil dibuat.');
-// }
+        return redirect()->route('pendaftaran.index')->with('success', 'Pendaftaran berhasil dibuat.');
+    }
 
     public function show($id)
     {
-        $reservasi = Reservasi::with(['pasien', 'dokter', 'treatment'])->findOrFail($id);
-        return view('reservasi.show', compact('reservasi'));
+        $pendaftaran = Pendaftaran::with(['pasien', 'dokter', 'treatment'])->findOrFail($id);
+        return view('pages.pendaftaran.show', compact('pendaftaran'));
     }
 
     public function edit($id)
     {
-        $reservasi = Reservasi::findOrFail($id);
+        $pendaftaran = Pendaftaran::findOrFail($id);
         $patients = Pasien::all();
         $dokters = Dokter::all();
         $treatments = Treatment::all();
 
-        return view('reservasi.edit', compact('reservasi', 'patients', 'dokters', 'treatments'));
+        return view('pages.pendaftaran.edit', compact('pendaftaran', 'patients', 'dokters', 'treatments'));
     }
 
     public function update(Request $request, $id)
     {
-        $reservasi = Reservasi::findOrFail($id);
+        $pendaftaran = Pendaftaran::findOrFail($id);
 
         $validated = $request->validate([
             'pasien_id'     => 'required|exists:pasiens,id',
@@ -87,15 +84,15 @@ class ReservasiController extends Controller
             'status'        => 'nullable|string|in:tertunda,diproses,selesai,dibatalkan',
         ]);
 
-        $reservasi->update($validated);
+        $pendaftaran->update($validated);
 
-        return redirect()->route('reservasi.index')->with('success', 'Reservasi berhasil diperbarui.');
+        return redirect()->route('pendaftaran.index')->with('success', 'Pendaftaran berhasil diperbarui.');
     }
 
     public function destroy($id)
     {
-        Reservasi::destroy($id);
+        Pendaftaran::destroy($id);
 
-        return redirect()->route('reservasi.index')->with('success', 'Reservasi berhasil dihapus.');
+        return redirect()->route('pendaftaran.index')->with('success', 'Pendaftaran berhasil dihapus.');
     }
 }
