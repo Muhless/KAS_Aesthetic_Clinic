@@ -69,12 +69,10 @@
             <div>
                 <div class="text-xs text-gray-500">Harga</div>
                 <div class="text-2xl font-bold text-primary-600">
-                    @if ($treatment->harga >= 1000)
-                        {{ number_format($treatment->harga / 1000, 0) }}<span class="text-lg">K</span>
-                    @else
-                        {{ number_format($treatment->harga, 0) }}
-                    @endif
+                    <span class="text-base font-medium">Rp</span>
+                    {{ number_format($treatment->harga, 0, ',', '.') }}
                 </div>
+
             </div>
 
             {{-- Durasi --}}

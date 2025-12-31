@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DokterController;
+use App\Http\Controllers\KeuanganController;
 use App\Http\Controllers\PasienController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PendaftaranController;
@@ -56,8 +57,8 @@ Route::middleware('auth')->group(function () {
    Route::resource('treatment', TreatmentController::class);
   Route::get('/api/treatment', [TreatmentController::class, 'api']);
 
-  Route::resource('pembayaran', PembayaranController::class);
-  Route::get('/api/pembayaran', [PembayaranController::class, 'api']);
+  Route::resource('keuangan', KeuanganController::class);
+  Route::get('/api/keuangan', [KeuanganController::class, 'api']);
 
 //    Route::get('/api/transaksi', [PasienController::class, 'api']);
 

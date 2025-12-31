@@ -1,7 +1,6 @@
 @props(['pembayaran'])
 
 @php
-    // Hitung total tagihan
     $totalProduk = array_sum(array_column($pembayaran['produk'], 'subtotal'));
     $totalTagihan = $pembayaran['harga_dokter'] + $pembayaran['harga_treatment'] + $totalProduk;
 @endphp
@@ -9,7 +8,6 @@
 <div
     class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl transition-shadow duration-300">
 
-    <!-- Header dengan ID Antrian -->
     <div class="bg-linear-to-r from-primary-500 to-primary-600 px-6 py-4">
         <div class="flex items-center justify-between">
             <div>
