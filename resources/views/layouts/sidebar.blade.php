@@ -78,7 +78,7 @@
 
             Treatment
         </a>
-        <a href="/treatment"
+        <a href="/pembayaran"
             class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-all">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
                 <path

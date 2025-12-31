@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 
 class ReservasiController extends Controller
 {
-
     public function api()
     {
         return response()->json([
@@ -20,11 +19,10 @@ class ReservasiController extends Controller
         ]);
     }
 
-public function index()
-{
-    return view('pages.reservasi.index');
-}
-
+    public function index()
+    {
+        return view('pages.reservasi.index');
+    }
 
     public function create()
     {
@@ -38,12 +36,12 @@ public function index()
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'pasien_id'     => 'required|exists:pasiens,id',
-            'dokter_id'     => 'required|exists:dokters,id',
-            'treatment_id'  => 'required|exists:treatments,id',
-            'tanggal'       => 'required|date',
-            'waktu'         => 'nullable',
-            'keluhan'       => 'nullable|string',
+            'pasien_id' => 'required|exists:pasiens,id',
+            'dokter_id' => 'required|exists:dokters,id',
+            'treatment_id' => 'required|exists:treatments,id',
+            'tanggal' => 'required|date',
+            'waktu' => 'nullable',
+            'keluhan' => 'nullable|string',
         ]);
 
         $validated['status'] = 'tertunda';
@@ -75,13 +73,13 @@ public function index()
         $pendaftaran = Pendaftaran::findOrFail($id);
 
         $validated = $request->validate([
-            'pasien_id'     => 'required|exists:pasiens,id',
-            'dokter_id'     => 'required|exists:dokters,id',
-            'treatment_id'  => 'required|exists:treatments,id',
-            'tanggal'       => 'required|date',
-            'waktu'         => 'nullable',
-            'keluhan'       => 'nullable|string',
-            'status'        => 'nullable|string|in:tertunda,diproses,selesai,dibatalkan',
+            'pasien_id' => 'required|exists:pasiens,id',
+            'dokter_id' => 'required|exists:dokters,id',
+            'treatment_id' => 'required|exists:treatments,id',
+            'tanggal' => 'required|date',
+            'waktu' => 'nullable',
+            'keluhan' => 'nullable|string',
+            'status' => 'nullable|string|in:tertunda,diproses,selesai,dibatalkan',
         ]);
 
         $pendaftaran->update($validated);

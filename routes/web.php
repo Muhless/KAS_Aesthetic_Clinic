@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DokterController;
 use App\Http\Controllers\PasienController;
+use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PendaftaranController;
 use App\Http\Controllers\PerawatController;
 use App\Http\Controllers\ProdukController;
@@ -55,7 +56,8 @@ Route::middleware('auth')->group(function () {
    Route::resource('treatment', TreatmentController::class);
   Route::get('/api/treatment', [TreatmentController::class, 'api']);
 
-
+  Route::resource('pembayaran', PembayaranController::class);
+  Route::get('/api/pembayaran', [PembayaranController::class, 'api']);
 
 //    Route::get('/api/transaksi', [PasienController::class, 'api']);
 

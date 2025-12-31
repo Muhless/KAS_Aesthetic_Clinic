@@ -18,7 +18,7 @@
         </div>
 
         <div class="bg-white p-2 rounded-md">
-            <x-reservasi.reservasi />
+            <x-reservasi.tabel />
         </div>
 
     </div>
