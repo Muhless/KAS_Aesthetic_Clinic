@@ -9,7 +9,7 @@ class Dokter extends Model
 {
     use HasFactory;
 
-    protected $table = 'dokters';
+    protected $table = 'dokter';
 
     protected $fillable = ['user_id', 'nama', 'no_telepon', 'email', 'tanggal_lahir', 'str', 'sip', 'spesialis', 'jadwal_praktik', 'foto'];
 
