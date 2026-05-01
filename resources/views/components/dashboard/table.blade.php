@@ -1,7 +1,8 @@
   <div class="bg-white rounded-md shadow-xl p-5">
       <div class="flex justify-between items-center mb-3">
           <h3 class="text-2xl font-bold text-primary-600">Pasien Hari Ini</h3>
-          <button type="button" class="cursor-pointer bg-primary-400 text-white w-40 text-sm py-2 rounded-md">Tambah Antrian</button>
+          <button type="button" class="cursor-pointer bg-primary-400 text-white w-40 text-sm py-2 rounded-md">Tambah
+              Antrian</button>
       </div>
 
       <div class="overflow-x-auto bg-white">
@@ -49,7 +50,7 @@
                       </td>
                   </tr>
 
-                   <tr class="hover:bg-primary-50/20 transition">
+                  <tr class="hover:bg-primary-50/20 transition">
                       <td class="py-4 px-2 font-semibold">Rina Rani</td>
                       <td>Facial Treatment</td>
                       <td>15:00</td>
@@ -60,7 +61,7 @@
                       </td>
                   </tr>
 
-                   <tr class="hover:bg-primary-50/20 transition">
+                  <tr class="hover:bg-primary-50/20 transition">
                       <td class="py-4 px-2 font-semibold">Rika Amelia</td>
                       <td>Laser Acne</td>
                       <td>15:00</td>

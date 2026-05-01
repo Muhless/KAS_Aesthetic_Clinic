@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="p-6">
-      <x-notification/>
+        <x-notification />
 
         <div class="flex items-center justify-between">
             <h1 class="text-3xl font-bold text-primary-400">Treatment</h1>

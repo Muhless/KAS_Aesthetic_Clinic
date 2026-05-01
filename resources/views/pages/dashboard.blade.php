@@ -17,7 +17,7 @@
                     <p class="text-xs text-slate-400">{{ ucfirst(auth()->user()->role) }}</p>
                 </div>
                 <div
-                    class="w-9 h-9 bg-sky-100 rounded-xl flex items-center justify-center text-sky-600 font-semibold text-sm">
+                    class="w-9 h-9 bg-primary-100 rounded-xl flex items-center justify-center text-primary-600 font-semibold text-sm">
                     {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                 </div>
             </div>
@@ -28,8 +28,8 @@
             <div class="bg-white rounded-2xl p-5 border border-slate-100">
                 <div class="flex items-center justify-between mb-4">
                     <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">Reservasi</p>
-                    <div class="w-8 h-8 bg-sky-50 rounded-lg flex items-center justify-center">
-                        <svg class="w-4 h-4 text-sky-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="w-8 h-8 bg-primary-50 rounded-lg flex items-center justify-center">
+                        <svg class="w-4 h-4 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
@@ -88,8 +88,8 @@
             <div class="lg:col-span-2 space-y-5">
 
                 {{-- Pasien Selanjutnya --}}
-                <div class="bg-sky-500 rounded-2xl p-5 text-white">
-                    <p class="text-sky-100 text-xs font-medium uppercase tracking-wider mb-4">Pasien Selanjutnya</p>
+                <div class="bg-primary-500 rounded-2xl p-5 text-white">
+                    <p class="text-primary-100 text-xs font-medium uppercase tracking-wider mb-4">Pasien Selanjutnya</p>
                     <div class="flex items-center gap-4">
                         <div
                             class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center font-semibold text-lg shrink-0">
@@ -97,7 +97,7 @@
                         </div>
                         <div class="flex-1 min-w-0">
                             <p class="font-semibold text-lg truncate">Ny. Rina Rani</p>
-                            <p class="text-sky-100 text-sm truncate">Facial Treatment &bull; Dr. Muhta Nuryadi</p>
+                            <p class="text-primary-100 text-sm truncate">Facial Treatment &bull; Dr. Muhta Nuryadi</p>
                         </div>
                         <div class="text-right shrink-0">
                             <p class="text-2xl font-semibold">15:00</p>
@@ -111,7 +111,7 @@
                     <div class="flex items-center justify-between px-5 py-4 border-b border-slate-50">
                         <h2 class="font-semibold text-slate-800 text-sm">Pasien Hari Ini</h2>
                         <button
-                            class="text-xs bg-sky-500 hover:bg-sky-600 text-white px-3 py-1.5 rounded-lg transition cursor-pointer">
+                            class="text-xs bg-primary-500 hover:bg-primary-600 text-white px-3 py-1.5 rounded-lg transition cursor-pointer">
                             + Tambah Antrian
                         </button>
                     </div>
@@ -154,7 +154,7 @@
                                     <td class="px-5 py-3.5 text-slate-500">15:00</td>
                                     <td class="px-5 py-3.5">
                                         <span
-                                            class="text-xs px-2.5 py-1 rounded-full bg-sky-50 text-sky-600 font-medium">Proses</span>
+                                            class="text-xs px-2.5 py-1 rounded-full bg-primary-50 text-primary-600 font-medium">Proses</span>
                                     </td>
                                 </tr>
                                 <tr class="hover:bg-slate-50 transition">
@@ -184,7 +184,7 @@
                     <div class="divide-y divide-slate-50">
                         <div class="flex items-center gap-3 px-5 py-3.5">
                             <div
-                                class="w-9 h-9 bg-sky-100 rounded-xl flex items-center justify-center text-sky-600 font-semibold text-xs shrink-0">
+                                class="w-9 h-9 bg-primary-100 rounded-xl flex items-center justify-center text-primary-600 font-semibold text-xs shrink-0">
                                 MN</div>
                             <div class="flex-1 min-w-0">
                                 <p class="text-sm font-medium text-slate-800 truncate">Dr. Muhta Nuryadi</p>
@@ -218,7 +218,7 @@
                         </div>
                         <div class="flex items-center justify-between">
                             <div class="flex items-center gap-2">
-                                <span class="w-2 h-2 bg-sky-400 rounded-full"></span>
+                                <span class="w-2 h-2 bg-primary-400 rounded-full"></span>
                                 <span class="text-xs text-slate-500">Proses</span>
                             </div>
                             <span class="text-xs font-semibold text-slate-800">1</span>

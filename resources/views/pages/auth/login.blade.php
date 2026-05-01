@@ -9,15 +9,15 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="min-h-screen flex items-center justify-center bg-sky-50">
+<body class="min-h-screen flex items-center justify-center bg-primary-50">
 
-    <div class="w-full max-w-sm bg-white rounded-2xl shadow-md p-8 border border-sky-100">
+    <div class="w-full max-w-sm bg-white rounded-2xl shadow-md p-8 border border-primary-100">
 
         {{-- Header --}}
         <div class="text-center mb-8">
             <img src="{{ asset('images/logo_kas.png') }}" alt="Logo" class="w-12 h-12 object-contain mx-auto mb-3">
-            <h1 class="text-xl font-semibold text-sky-900">KAS Aesthetic Clinic</h1>
-            <p class="text-sm text-sky-400 mt-1">Management Portal</p>
+            <h1 class="text-xl font-semibold text-primary-900">KAS Aesthetic Clinic</h1>
+            <p class="text-sm text-primary-400 mt-1">Management Portal</p>
         </div>
 
         <form action="/login" method="POST" class="space-y-4">
@@ -25,9 +25,9 @@
 
             {{-- Username --}}
             <div>
-                <label class="block text-sm font-medium text-sky-700 mb-1">Username</label>
+                <label class="block text-sm font-medium text-primary-700 mb-1">Username</label>
                 <input type="text" name="username" value="{{ old('username') }}"
-                    class="w-full px-4 py-2.5 rounded-lg border border-sky-200 bg-sky-50 text-sky-900 text-sm focus:outline-none focus:ring-2 focus:ring-sky-300 focus:border-transparent transition"
+                    class="w-full px-4 py-2.5 rounded-lg border border-primary-200 bg-primary-50 text-primary-900 text-sm focus:outline-none focus:ring-2 focus:ring-primary-300 focus:border-transparent transition"
                     required>
                 @error('username')
                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -36,9 +36,9 @@
 
             {{-- Password --}}
             <div>
-                <label class="block text-sm font-medium text-sky-700 mb-1">Password</label>
+                <label class="block text-sm font-medium text-primary-700 mb-1">Password</label>
                 <input type="password" name="password"
-                    class="w-full px-4 py-2.5 rounded-lg border border-sky-200 bg-sky-50 text-sky-900 text-sm focus:outline-none focus:ring-2 focus:ring-sky-300 focus:border-transparent transition"
+                    class="w-full px-4 py-2.5 rounded-lg border border-primary-200 bg-primary-50 text-primary-900 text-sm focus:outline-none focus:ring-2 focus:ring-primary-300 focus:border-transparent transition"
                     required>
                 @error('password')
                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -47,7 +47,7 @@
 
             {{-- Button --}}
             <button type="submit"
-                class="w-full mt-2 py-2.5 bg-sky-500 hover:bg-sky-600 text-white text-sm font-medium rounded-lg transition cursor-pointer">
+                class="w-full mt-2 py-2.5 bg-primary-500 hover:bg-primary-600 text-white text-sm font-medium rounded-lg transition cursor-pointer">
                 Masuk
             </button>
 

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DokterController;
 use App\Http\Controllers\KeuanganController;
+use App\Http\Controllers\KunjunganController;
 use App\Http\Controllers\PasienController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PendaftaranController;
@@ -41,6 +42,8 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('pasien', PasienController::class);
    Route::get('/api/pasien', [PasienController::class, 'api']);
+// routes/web.php
+Route::post('/kunjungan', [KunjunganController::class, 'store'])->name('kunjungan.store');
 
     Route::resource('perawat', PerawatController::class);
    Route::get('/api/perawat', [PerawatController::class, 'api']);

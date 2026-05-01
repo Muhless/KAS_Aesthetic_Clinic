@@ -212,7 +212,7 @@
                             <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
                         @enderror
                     </div>
-<hr class="sm:col-span-2">
+                    <hr class="sm:col-span-2">
                     {{-- Jadwal --}}
                     {{-- <div class="sm:col-span-2">
                         <label for="jadwal" class="block text-sm font-medium text-gray-700 mb-1.5">
@@ -258,7 +258,7 @@
                         @enderror
                     </div>
 
-                        {{-- Password --}}
+                    {{-- Password --}}
                     <div x-data="{ showPass: false }" class="sm:col-span-2">
                         <label for="password_perawat" class="block text-sm font-medium text-gray-700 mb-1.5">
                             Password <span class="text-red-500">*</span>

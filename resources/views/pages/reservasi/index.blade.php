@@ -15,7 +15,7 @@
             </div>
             <div x-data="{ open: false }">
                 <button @click="open = true"
-                    class="cursor-pointer flex items-center gap-2 text-sm px-4 py-2.5 bg-sky-500 hover:bg-sky-600 text-white rounded-xl transition shadow-sm">
+                    class="cursor-pointer flex items-center gap-2 text-sm px-4 py-2.5 bg-primary-500 hover:bg-primary-600 text-white rounded-xl transition shadow-sm">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                     </svg>

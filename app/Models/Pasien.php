@@ -32,6 +32,11 @@
                 : '-';
         }
 
+        public function kunjungans()
+{
+    return $this->hasMany(Kunjungan::class)->latest('tanggal');
+}
+
         public function getJenisKelaminLabelAttribute()
         {
             return $this->jenis_kelamin === 'L' ? 'Laki-laki' : 'Perempuan';

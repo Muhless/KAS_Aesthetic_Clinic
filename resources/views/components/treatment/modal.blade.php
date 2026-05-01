@@ -12,56 +12,56 @@
     }
 }"> --}}
 
-    <!-- Modal Overlay -->
-    <div x-show="open" x-transition.opacity @click.self="open = false"
-        class="fixed inset-0 bg-black/50 z-40 flex items-center justify-center">
+<!-- Modal Overlay -->
+<div x-show="open" x-transition.opacity @click.self="open = false"
+    class="fixed inset-0 bg-black/50 z-40 flex items-center justify-center">
 
-        <!-- Modal Content -->
-        <div x-show="open" x-transition class="bg-white w-full max-w-lg rounded-xl shadow-xl p-6 space-y-4">
+    <!-- Modal Content -->
+    <div x-show="open" x-transition class="bg-white w-full max-w-lg rounded-xl shadow-xl p-6 space-y-4">
 
-            <h2 class="text-xl font-semibold mb-2 text-center">Tambah Treatment</h2>
+        <h2 class="text-xl font-semibold mb-2 text-center">Tambah Treatment</h2>
 
-            <!-- FORM -->
-            <form action="{{ route('treatment.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
-                @csrf
+        <!-- FORM -->
+        <form action="{{ route('treatment.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
+            @csrf
 
-                <div>
-                    <label class="block text-sm font-medium">Nama Treatment</label>
-                    <input type="text" name="nama" value="{{ old('nama') }}" required
-                        class="w-full mt-1 px-3 py-2 border rounded-md focus:ring-primary-500 focus:border-primary-500">
-                    @error('nama')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
+            <div>
+                <label class="block text-sm font-medium">Nama Treatment</label>
+                <input type="text" name="nama" value="{{ old('nama') }}" required
+                    class="w-full mt-1 px-3 py-2 border rounded-md focus:ring-primary-500 focus:border-primary-500">
+                @error('nama')
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                @enderror
+            </div>
 
-                <div>
-                    <label class="block text-sm font-medium">Deskripsi</label>
-                    <textarea name="deskripsi"
-                        class="w-full mt-1 px-3 py-2 border rounded-md focus:ring-primary-500 focus:border-primary-500" rows="2">{{ old('deskripsi') }}</textarea>
-                    @error('deskripsi')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
+            <div>
+                <label class="block text-sm font-medium">Deskripsi</label>
+                <textarea name="deskripsi"
+                    class="w-full mt-1 px-3 py-2 border rounded-md focus:ring-primary-500 focus:border-primary-500" rows="2">{{ old('deskripsi') }}</textarea>
+                @error('deskripsi')
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                @enderror
+            </div>
 
-                <div>
-                    <label class="block text-sm font-medium">Harga</label>
-                    <input type="number" name="harga" value="{{ old('harga') }}" required
-                        class="w-full mt-1 px-3 py-2 border rounded-md focus:ring-primary-500 focus:border-primary-500">
-                    @error('harga')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
+            <div>
+                <label class="block text-sm font-medium">Harga</label>
+                <input type="number" name="harga" value="{{ old('harga') }}" required
+                    class="w-full mt-1 px-3 py-2 border rounded-md focus:ring-primary-500 focus:border-primary-500">
+                @error('harga')
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                @enderror
+            </div>
 
-                <div>
-                    <label class="block text-sm font-medium">Durasi (menit)</label>
-                    <input type="number" name="durasi" value="{{ old('durasi') }}"
-                        class="w-full mt-1 px-3 py-2 border rounded-md focus:ring-primary-500 focus:border-primary-500">
-                    @error('durasi')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
+            <div>
+                <label class="block text-sm font-medium">Durasi (menit)</label>
+                <input type="number" name="durasi" value="{{ old('durasi') }}"
+                    class="w-full mt-1 px-3 py-2 border rounded-md focus:ring-primary-500 focus:border-primary-500">
+                @error('durasi')
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                @enderror
+            </div>
 
-                {{-- <div>
+            {{-- <div>
                     <label class="block text-sm font-medium mb-2">Foto Treatment</label>
 
                     <!-- Preview atau Upload Area -->
@@ -99,21 +99,21 @@
                     @enderror
                 </div> --}}
 
-                <!-- Actions -->
-                <div class="flex justify-end gap-2 pt-2">
-                    <button @click="open = false; preview = null" type="button"
-                        class="w-32 py-2 bg-gray-200 rounded-md hover:bg-gray-300 transition">
-                        Batal
-                    </button>
+            <!-- Actions -->
+            <div class="flex justify-end gap-2 pt-2">
+                <button @click="open = false; preview = null" type="button"
+                    class="w-32 py-2 bg-gray-200 rounded-md hover:bg-gray-300 transition">
+                    Batal
+                </button>
 
-                    <button type="submit"
-                        class="py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 transition w-32">
-                        Simpan
-                    </button>
-                </div>
+                <button type="submit"
+                    class="py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 transition w-32">
+                    Simpan
+                </button>
+            </div>
 
-            </form>
+        </form>
 
-        </div>
     </div>
+</div>
 </div>
