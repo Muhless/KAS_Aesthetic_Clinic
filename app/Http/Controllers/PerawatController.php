@@ -48,39 +48,47 @@ class PerawatController extends Controller
         return view('pages.perawat.create');
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'nama' => ['required'],
-            'no_telepon' => ['required'],
-            'email' => ['required', 'email'],
-            'tanggal_lahir' => ['required', 'date'],
-            'password' => ['required', 'min:6'],
-            'foto' => ['nullable', 'image', 'max:2048'],
-        ]);
+   public function store(Request $request)
+{
+    $request->validate([
+        'username'      => ['required', 'unique:users,username'],
+        'nama'          => ['required', 'string', 'max:255'],
+        'no_telepon'    => ['nullable', 'string', 'max:20'],
+        'email'         => ['nullable', 'email', 'unique:perawat,email'],
+        'tanggal_lahir' => ['required', 'date'],
+        'sip'           => ['required', 'string', 'max:255'],
+        'str'           => ['nullable', 'string', 'max:255'],
+        'jadwal'        => ['nullable', 'string', 'max:255'],
+        'password'      => ['required', 'min:8'],
+        'foto'          => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:2048'],
+    ]);
 
-        $user = User::create([
-            'akun' => $request->email,
-            'password' => $request->password,
-            'role' => 'perawat',
-        ]);
-
-        $fotoPath = null;
-        if ($request->hasFile('foto')) {
-            $fotoPath = $request->file('foto')->store('perawat', 'public');
-        }
-
-        Perawat::create([
-            'user_id' => $user->id,
-            'nama' => $request->nama,
-            'no_telepon' => $request->no_telepon,
-            'email' => strtolower($request->email),
-            'tanggal_lahir' => $request->tanggal_lahir,
-            'foto' => $fotoPath,
-        ]);
-
-        return redirect()->route('perawat.index')->with('success', 'Perawat berhasil ditambahkan.');
+    $fotoPath = null;
+    if ($request->hasFile('foto')) {
+        $fotoPath = $request->file('foto')->store('perawat/foto', 'public');
     }
+
+    $user = User::create([
+        'username' => $request->username,
+        'password' => bcrypt($request->password), // ← wajib di-hash
+        'role'     => 'perawat',
+    ]);
+
+    Perawat::create([
+        'user_id'       => $user->id,
+        'nama'          => $request->nama,
+        'no_telepon'    => $request->no_telepon,
+        'email'         => $request->email ? strtolower($request->email) : null,
+        'tanggal_lahir' => $request->tanggal_lahir,
+        'sip'           => $request->sip,
+        'str'           => $request->str,
+        'jadwal'        => $request->jadwal,
+        'foto'          => $fotoPath,
+    ]);
+
+    return redirect()->route('perawat.index')
+        ->with('success', 'Perawat berhasil ditambahkan.');
+}
 
     public function update(Request $request, $id)
     {

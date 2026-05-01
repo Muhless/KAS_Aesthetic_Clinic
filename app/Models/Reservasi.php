@@ -11,18 +11,18 @@ class Reservasi extends Model
 
     protected $table = 'reservasis';
 
-    protected $fillable = [
-        'user_id',
-        'pasien_id',
-        'dokter_id',
-        'treatment_id',
-        'tanggal',
-        'waktu',
-        'status',
-        'keluhan',
-        'cancel_reason',
-        'cancelled_by',
-    ];
+   protected $fillable = [
+    'user_id',
+    'pasien_id',
+    'dokter_id',
+    'treatment_id',
+    'tanggal',
+    'waktu',
+    'status',
+    'keluhan',
+    'cancel_reason',
+    'cancelled_by',
+];
 
     protected $casts = [
         'tanggal' => 'date',
