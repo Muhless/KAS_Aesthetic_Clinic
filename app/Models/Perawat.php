@@ -9,7 +9,6 @@ class Perawat extends Model
 {
     use HasFactory;
 
-    protected $table = 'perawat';
 
     protected $fillable = [
         'user_id',

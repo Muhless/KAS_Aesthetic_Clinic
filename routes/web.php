@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\AntrianController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DokterController;
 use App\Http\Controllers\KeuanganController;
 use App\Http\Controllers\KunjunganController;
@@ -33,36 +35,33 @@ Route::post('/register/perawat', [AuthController::class, 'registerPerawat']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/', function () {
-        return view('pages.dashboard');
-    });
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
-      Route::resource('reservasi', ReservasiController::class);
-   Route::get('/api/reservasi', [ReservasiController::class, 'api']);
+    Route::resource('antrian', AntrianController::class)->only(['index', 'store', 'update', 'destroy']);
+
+    Route::resource('reservasi', ReservasiController::class);
+    Route::get('/api/reservasi', [ReservasiController::class, 'api']);
 
     Route::resource('pasien', PasienController::class);
-   Route::get('/api/pasien', [PasienController::class, 'api']);
-// routes/web.php
-Route::post('/kunjungan', [KunjunganController::class, 'store'])->name('kunjungan.store');
+    Route::get('/api/pasien', [PasienController::class, 'api']);
+    // routes/web.php
+    Route::post('/kunjungan', [KunjunganController::class, 'store'])->name('kunjungan.store');
 
     Route::resource('perawat', PerawatController::class);
-   Route::get('/api/perawat', [PerawatController::class, 'api']);
+    Route::get('/api/perawat', [PerawatController::class, 'api']);
 
     Route::resource('dokter', DokterController::class);
-   Route::get('/api/dokter', [DokterController::class, 'api']);
-   Route::get('/dokter/detail/{id}', [DokterController::class, 'detail'])->name('dokter.detail');
+    Route::get('/api/dokter', [DokterController::class, 'api']);
+    Route::get('/dokter/detail/{id}', [DokterController::class, 'detail'])->name('dokter.detail');
 
+    Route::resource('produk', ProdukController::class);
+    Route::get('/api/produk', [ProdukController::class, 'api']);
 
+    Route::resource('treatment', TreatmentController::class);
+    Route::get('/api/treatment', [TreatmentController::class, 'api']);
 
-   Route::resource('produk', ProdukController::class);
-   Route::get('/api/produk', [ProdukController::class, 'api']);
+    Route::resource('keuangan', KeuanganController::class);
+    Route::get('/api/keuangan', [KeuanganController::class, 'api']);
 
-   Route::resource('treatment', TreatmentController::class);
-  Route::get('/api/treatment', [TreatmentController::class, 'api']);
-
-  Route::resource('keuangan', KeuanganController::class);
-  Route::get('/api/keuangan', [KeuanganController::class, 'api']);
-
-//    Route::get('/api/transaksi', [PasienController::class, 'api']);
-
+    //    Route::get('/api/transaksi', [PasienController::class, 'api']);
 });

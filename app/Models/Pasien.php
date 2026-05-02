@@ -7,7 +7,6 @@
     {
         use HasFactory;
 
-        protected $table = 'pasiens';
 
         protected $fillable = [
             'nama',
