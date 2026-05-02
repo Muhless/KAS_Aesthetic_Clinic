@@ -1,43 +1,40 @@
 <?php
-    namespace App\Models;
-    use Illuminate\Database\Eloquent\Factories\HasFactory;
-    use Illuminate\Database\Eloquent\Model;
+namespace App\Models;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-    class Pasien extends Model
-    {
-        use HasFactory;
-
-
-        protected $fillable = [
-            'nama',
-            'tanggal_lahir',
-            'jenis_kelamin',
-            'nomor_telepon',
-        ];
-
-        protected $casts = [
-            'tanggal_lahir' => 'date',
-        ];
-
-        public function reservasi()
-        {
-            return $this->hasMany(Reservasi::class);
-        }
-
-        public function getTanggalLahirFormattedAttribute()
-        {
-            return $this->tanggal_lahir
-                ? $this->tanggal_lahir->format('d-m-Y')
-                : '-';
-        }
-
-        public function kunjungans()
+class Pasien extends Model
 {
-    return $this->hasMany(Kunjungan::class)->latest('tanggal');
-}
+    use HasFactory;
+protected $table = 'pasiens';
+    protected $fillable = ['nama', 'tanggal_lahir', 'jenis_kelamin', 'nomor_telepon'];
 
-        public function getJenisKelaminLabelAttribute()
-        {
-            return $this->jenis_kelamin === 'L' ? 'Laki-laki' : 'Perempuan';
-        }
+    protected $casts = [
+        'tanggal_lahir' => 'date',
+    ];
+
+    public function reservasi()
+    {
+        return $this->hasMany(Reservasi::class);
     }
+
+    public function getTanggalLahirFormattedAttribute()
+    {
+        return $this->tanggal_lahir ? $this->tanggal_lahir->format('d-m-Y') : '-';
+    }
+
+    public function pelayanans()
+    {
+        return $this->hasMany(Pelayanan::class)->latest('tanggal');
+    }
+
+    public function kunjungans()
+    {
+        return $this->hasMany(Kunjungan::class)->latest('tanggal');
+    }
+
+    public function getJenisKelaminLabelAttribute()
+    {
+        return $this->jenis_kelamin === 'L' ? 'Laki-laki' : 'Perempuan';
+    }
+}

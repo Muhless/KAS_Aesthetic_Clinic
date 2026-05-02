@@ -6,17 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Pemeriksaan extends Model
 {
-
     protected $fillable = [
-        'kunjungan_id',
-        'diagnosa',
-        'tindakan',
-        'resep',
-        'catatan',
+        'pelayanan_id', 'treatment_id',
+        'diagnosa', 'tindakan', 'resep', 'catatan',
     ];
 
-    public function kunjungan()
-    {
-        return $this->belongsTo(Kunjungan::class);
-    }
+    public function pelayanan() { return $this->belongsTo(Pelayanan::class); }
+    public function treatment() { return $this->belongsTo(Treatment::class); }
 }

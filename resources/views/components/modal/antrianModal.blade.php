@@ -36,7 +36,7 @@
           </div>
 
           {{-- Form --}}
-          <form action="{{ route('antrian.store') }}" method="POST">
+          <form action="{{ route('pelayanan.store') }}" method="POST">
               @csrf
               <div class="px-6 py-5 space-y-4">
 

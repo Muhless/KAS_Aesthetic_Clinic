@@ -11,12 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-       Schema::create('kunjungan', function (Blueprint $table) {
+     Schema::create('pelayanans', function (Blueprint $table) {
     $table->id();
     $table->foreignId('pasien_id')->constrained('pasiens')->onDelete('cascade');
-    $table->foreignId('dokter_id')->constrained('dokter')->onDelete('cascade');
+    $table->foreignId('dokter_id')->nullable()->constrained('dokters')->onDelete('set null');
+    $table->foreignId('reservasi_id')->nullable()->constrained('reservasis')->onDelete('set null');
     $table->date('tanggal');
-    $table->string('keluhan')->nullable();
+    $table->integer('nomor_antrian');
+    $table->enum('status', ['menunggu', 'dipanggil', 'selesai'])->default('menunggu');
+    $table->text('keluhan')->nullable();
     $table->timestamps();
 });
     }

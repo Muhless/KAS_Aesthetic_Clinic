@@ -11,14 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-    Schema::create('pemeriksaans', function (Blueprint $table) {
+       Schema::create('pembayaran_items', function (Blueprint $table) {
     $table->id();
-    $table->foreignId('pelayanan_id')->constrained('pelayanans')->onDelete('cascade');
+    $table->foreignId('pembayaran_id')->constrained('pembayarans')->onDelete('cascade');
+    $table->enum('jenis', ['treatment', 'produk']);
     $table->foreignId('treatment_id')->nullable()->constrained('treatments')->onDelete('set null');
-    $table->text('diagnosa')->nullable();
-    $table->text('tindakan')->nullable();
-    $table->text('resep')->nullable();
-    $table->text('catatan')->nullable();
+    $table->foreignId('produk_id')->nullable()->constrained('produks')->onDelete('set null');
+    $table->integer('qty')->default(1);
+    $table->decimal('harga_satuan', 12, 2);
+    $table->decimal('subtotal', 12, 2);
     $table->timestamps();
 });
     }
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pemeriksaan');
+        Schema::dropIfExists('pembayaran_items');
     }
 };

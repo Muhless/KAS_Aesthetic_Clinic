@@ -1,4 +1,3 @@
-{{-- Tabel Reservasi Hari Ini --}}
 <div class="bg-white rounded-2xl border border-slate-100 overflow-hidden">
     <div class="flex items-center justify-between px-5 py-4 border-b border-slate-50">
         <div>
@@ -30,7 +29,8 @@
                         {{-- Pasien --}}
                         <td class="px-5 py-3.5">
                             <div class="flex items-center gap-2.5">
-                                <div class="w-7 h-7 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center font-semibold text-xs shrink-0">
+                                <div
+                                    class="w-7 h-7 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center font-semibold text-xs shrink-0">
                                     {{ strtoupper(substr($reservasi->pasien->nama ?? '?', 0, 1)) }}
                                 </div>
                                 <span class="font-medium text-slate-800">{{ $reservasi->pasien->nama ?? '—' }}</span>
@@ -56,15 +56,20 @@
                         <td class="px-5 py-3.5">
                             @php $status = strtolower($reservasi->status); @endphp
                             @if ($status == 'tertunda')
-                                <span class="text-xs px-2.5 py-1 rounded-full bg-amber-50 text-amber-600 font-medium">Tertunda</span>
+                                <span
+                                    class="text-xs px-2.5 py-1 rounded-full bg-amber-50 text-amber-600 font-medium">Tertunda</span>
                             @elseif ($status == 'dikonfirmasi')
-                                <span class="text-xs px-2.5 py-1 rounded-full bg-blue-50 text-blue-600 font-medium">Dikonfirmasi</span>
+                                <span
+                                    class="text-xs px-2.5 py-1 rounded-full bg-blue-50 text-blue-600 font-medium">Dikonfirmasi</span>
                             @elseif ($status == 'selesai')
-                                <span class="text-xs px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-600 font-medium">Selesai</span>
+                                <span
+                                    class="text-xs px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-600 font-medium">Selesai</span>
                             @elseif ($status == 'dibatalkan')
-                                <span class="text-xs px-2.5 py-1 rounded-full bg-red-50 text-red-500 font-medium">Dibatalkan</span>
+                                <span
+                                    class="text-xs px-2.5 py-1 rounded-full bg-red-50 text-red-500 font-medium">Dibatalkan</span>
                             @else
-                                <span class="text-xs px-2.5 py-1 rounded-full bg-slate-100 text-slate-500 font-medium">{{ ucfirst($status) }}</span>
+                                <span
+                                    class="text-xs px-2.5 py-1 rounded-full bg-slate-100 text-slate-500 font-medium">{{ ucfirst($status) }}</span>
                             @endif
                         </td>
 
@@ -79,8 +84,10 @@
                                         <input type="hidden" name="status" value="dikonfirmasi">
                                         <button type="submit" title="Konfirmasi"
                                             class="w-7 h-7 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-full flex items-center justify-center transition shadow-sm">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                    d="M5 13l4 4L19 7" />
                                             </svg>
                                         </button>
                                     </form>
@@ -88,27 +95,55 @@
 
                                 {{-- Check-in → jadi antrian --}}
                                 @if ($status == 'dikonfirmasi')
-                                    <form action="{{ route('antrian.store') }}" method="POST">
+                                    <form action="{{ route('pelayanan.store') }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="pasien_id" value="{{ $reservasi->pasien_id }}">
                                         <input type="hidden" name="dokter_id" value="{{ $reservasi->dokter_id }}">
                                         <input type="hidden" name="tanggal" value="{{ $reservasi->tanggal }}">
                                         <button type="submit" title="Check-in ke Antrian"
                                             class="w-7 h-7 bg-primary-50 hover:bg-primary-100 text-primary-600 rounded-full flex items-center justify-center transition shadow-sm">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                                            </svg>
+                                        </button>
+                                    </form>
+                                @endif
+
+                                {{-- Check-in --}}
+                                @if ($reservasi->status == 'dikonfirmasi')
+                                    <form action="{{ route('pelayanan.store') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="pasien_id" value="{{ $reservasi->pasien_id }}">
+                                        <input type="hidden" name="dokter_id" value="{{ $reservasi->dokter_id }}">
+                                        <input type="hidden" name="tanggal" value="{{ $reservasi->tanggal }}">
+                                        <input type="hidden" name="reservasi_id" value="{{ $reservasi->id }}">
+                                        <input type="hidden" name="keluhan" value="{{ $reservasi->keluhan }}">
+                                        <button type="submit" title="Check-in"
+                                            class="w-8 h-8 bg-primary-50 hover:bg-primary-100 text-primary-600 rounded-full flex items-center justify-center shadow">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                                fill="currentColor" class="w-4 h-4">
+                                                <path fill-rule="evenodd"
+                                                    d="M3 4.25A2.25 2.25 0 0 1 5.25 2h5.5A2.25 2.25 0 0 1 13 4.25v2a.75.75 0 0 1-1.5 0v-2a.75.75 0 0 0-.75-.75h-5.5a.75.75 0 0 0-.75.75v11.5c0 .414.336.75.75.75h5.5a.75.75 0 0 0 .75-.75v-2a.75.75 0 0 1 1.5 0v2A2.25 2.25 0 0 1 10.75 18h-5.5A2.25 2.25 0 0 1 3 15.75V4.25Z"
+                                                    clip-rule="evenodd" />
+                                                <path fill-rule="evenodd"
+                                                    d="M19 10a.75.75 0 0 0-.75-.75H8.704l1.048-1.08a.75.75 0 1 0-1.004-1.11l-2.5 2.25a.75.75 0 0 0 0 1.08l2.5 2.25a.75.75 0 1 0 1.004-1.11l-1.048-1.08h9.546A.75.75 0 0 0 19 10Z"
+                                                    clip-rule="evenodd" />
                                             </svg>
                                         </button>
                                     </form>
                                 @endif
 
                                 {{-- Detail --}}
-                                <a href="{{ route('reservasi.show', $reservasi->id) }}"
-                                    title="Detail"
+                                <a href="{{ route('reservasi.show', $reservasi->id) }}" title="Detail"
                                     class="w-7 h-7 bg-slate-50 hover:bg-slate-100 text-slate-500 rounded-full flex items-center justify-center transition shadow-sm">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                     </svg>
                                 </a>
 
@@ -121,7 +156,8 @@
                         <td colspan="6" class="py-12 text-center">
                             <div class="flex flex-col items-center gap-2 text-slate-400">
                                 <div class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-slate-300"
+                                        fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                                             d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                     </svg>

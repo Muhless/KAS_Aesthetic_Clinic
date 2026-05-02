@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\AntrianController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
@@ -8,7 +7,9 @@ use App\Http\Controllers\DokterController;
 use App\Http\Controllers\KeuanganController;
 use App\Http\Controllers\KunjunganController;
 use App\Http\Controllers\PasienController;
+use App\Http\Controllers\PelayananController;
 use App\Http\Controllers\PembayaranController;
+use App\Http\Controllers\PemeriksaanController;
 use App\Http\Controllers\PendaftaranController;
 use App\Http\Controllers\PerawatController;
 use App\Http\Controllers\ProdukController;
@@ -37,15 +38,12 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::resource('antrian', AntrianController::class)->only(['index', 'store', 'update', 'destroy']);
 
     Route::resource('reservasi', ReservasiController::class);
     Route::get('/api/reservasi', [ReservasiController::class, 'api']);
 
     Route::resource('pasien', PasienController::class);
     Route::get('/api/pasien', [PasienController::class, 'api']);
-    // routes/web.php
-    Route::post('/kunjungan', [KunjunganController::class, 'store'])->name('kunjungan.store');
 
     Route::resource('perawat', PerawatController::class);
     Route::get('/api/perawat', [PerawatController::class, 'api']);
@@ -63,5 +61,14 @@ Route::middleware('auth')->group(function () {
     Route::resource('keuangan', KeuanganController::class);
     Route::get('/api/keuangan', [KeuanganController::class, 'api']);
 
-    //    Route::get('/api/transaksi', [PasienController::class, 'api']);
+    Route::resource('pelayanan', PelayananController::class);
+    Route::resource('pembayaran', PembayaranController::class);
+    Route::post('pemeriksaan', [PemeriksaanController::class, 'store'])->name('pemeriksaan.store');
+
+    Route::resource('pelayanan', PelayananController::class);
+    Route::resource('pembayaran', PembayaranController::class);
+    Route::post('pemeriksaan', [PemeriksaanController::class, 'store'])->name('pemeriksaan.store');
+    Route::post('pembayaran/{id}/item', [PembayaranController::class, 'addItem'])->name('pembayaran.addItem');
+    Route::delete('pembayaran/item/{id}', [PembayaranController::class, 'removeItem'])->name('pembayaran.removeItem');
+    Route::post('pembayaran/{id}/bayar', [PembayaranController::class, 'bayar'])->name('pembayaran.bayar');
 });

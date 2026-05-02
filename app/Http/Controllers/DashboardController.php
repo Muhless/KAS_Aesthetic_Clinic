@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Antrian;
 use App\Models\Pasien;
 use App\Models\Dokter;
+use App\Models\Pelayanan;
 use App\Models\Perawat;
 use App\Models\Reservasi;
 
@@ -12,7 +12,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $antriansHariIni = Antrian::with(['pasien', 'dokter'])
+        $pelayanansHariIni = Pelayanan::with(['pasien', 'dokter'])
             ->whereDate('tanggal', today())
             ->orderBy('nomor_antrian')
             ->get();
@@ -22,7 +22,7 @@ class DashboardController extends Controller
             ->orderBy('waktu')
             ->get();
 
-        $pasienSelanjutnya = Antrian::with(['pasien', 'dokter'])
+        $pasienSelanjutnya = Pelayanan::with(['pasien', 'dokter'])
             ->whereDate('tanggal', today())
             ->where('status', 'menunggu')
             ->orderBy('nomor_antrian')
@@ -31,8 +31,9 @@ class DashboardController extends Controller
         $totalPasien = Pasien::count();
         $totalDokter = Dokter::count();
         $totalPerawat = Perawat::count();
-        $totalAntrian = $antriansHariIni->where('status', 'menunggu')->count();
+        $totalPelayanan = $pelayanansHariIni->count();
+        // $totalPelayanan = $pelayanansHariIni->where('status', 'menunggu')->count();
 
-        return view('pages.dashboard', compact('antriansHariIni', 'reservasisHariIni', 'pasienSelanjutnya', 'totalPasien', 'totalDokter', 'totalPerawat', 'totalAntrian'));
+        return view('pages.dashboard', compact('pelayanansHariIni', 'reservasisHariIni', 'pasienSelanjutnya', 'totalPasien', 'totalDokter', 'totalPerawat','totalPelayanan'));
     }
 }

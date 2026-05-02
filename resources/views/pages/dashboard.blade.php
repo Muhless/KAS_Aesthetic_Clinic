@@ -26,7 +26,7 @@
         {{-- Stat Cards --}}
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
             <x-card.reservasiCard :totalReservasi="$reservasisHariIni->count()" />
-            <x-card.antrianCard :totalAntrian="$totalAntrian" />
+            <x-card.pelayananCard :totalPelayanan="$totalPelayanan" />
             <x-card.dokterStatCard :totalDokter="$totalDokter" />
             <x-card.perawatStatCard :totalPerawat="$totalPerawat" />
         </div>
@@ -35,24 +35,16 @@
 
             {{-- Kiri --}}
             <div class="lg:col-span-2 space-y-5">
-
                 <x-card.pasienSelanjutnyaCard :pasienSelanjutnya="$pasienSelanjutnya"/>
-
-                <x-table.antrianTable :antriansHariIni="$antriansHariIni" />
-                <x-table.pasienTable :antriansHariIni="$antriansHariIni" />
+                <x-table.antrianTable :pelayanansHariIni="$pelayanansHariIni" />
+                <x-table.pasienTable :pelayanansHariIni="$pelayanansHariIni" />
                 <x-table.reservasiTable :reservasisHariIni="$reservasisHariIni" />
             </div>
 
             {{-- Kanan --}}
             <div class="space-y-5">
-
-                {{-- Dokter Hari Ini --}}
                 <x-card.dokterCard />
                 <x-card.perawatCard />
-
-
-
-
             </div>
         </div>
     </div>

@@ -130,7 +130,8 @@
 
                                             {{-- Panggil --}}
                                             @if ($antrian->status == 'menunggu')
-                                                <form action="{{ route('antrian.update', $antrian->id) }}" method="POST">
+                                                <form action="{{ route('pelayanan.update', $antrian->id) }}"
+                                                    method="POST">
                                                     @csrf @method('PUT')
                                                     <input type="hidden" name="status" value="dipanggil">
                                                     <button type="submit" title="Panggil"
@@ -147,7 +148,8 @@
 
                                             {{-- Selesai --}}
                                             @if ($antrian->status == 'dipanggil')
-                                                <form action="{{ route('antrian.update', $antrian->id) }}" method="POST">
+                                                <form action="{{ route('pelayanan.update', $antrian->id) }}"
+                                                    method="POST">
                                                     @csrf @method('PUT')
                                                     <input type="hidden" name="status" value="selesai">
                                                     <button type="submit" title="Selesai"
@@ -162,7 +164,7 @@
                                             @endif
 
                                             {{-- Hapus --}}
-                                            <form action="{{ route('antrian.destroy', $antrian->id) }}" method="POST"
+                                            <form action="{{ route('pelayanan.destroy', $antrian->id) }}" method="POST"
                                                 onsubmit="return confirm('Hapus antrian ini?')">
                                                 @csrf @method('DELETE')
                                                 <button type="submit" title="Hapus"
@@ -220,7 +222,7 @@
         @endif
 
         {{-- Modal Tambah Antrian --}}
-      
+
 
     </div>
 @endsection

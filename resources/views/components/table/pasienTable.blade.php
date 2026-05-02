@@ -29,14 +29,14 @@
                 </tr>
             </thead>
             <tbody class="divide-y divide-slate-50">
-                @forelse ($antriansHariIni as $antrian)
+               @forelse ($pelayanansHariIni->whereNotIn('status', ['menunggu']) as $pelayanan)
                     <tr class="hover:bg-slate-50 transition">
 
                         {{-- Nomor Antrian --}}
                         <td class="px-5 py-3.5">
                             <div
                                 class="w-7 h-7 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center font-bold text-xs">
-                                {{ $antrian->nomor_antrian }}
+                                {{ $pelayanan->nomor_antrian }}
                             </div>
                         </td>
 
@@ -45,23 +45,23 @@
                             <div class="flex items-center gap-2.5">
                                 <div
                                     class="w-7 h-7 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center font-semibold text-xs shrink-0">
-                                    {{ strtoupper(substr($antrian->pasien->nama, 0, 1)) }}
+                                    {{ strtoupper(substr($pelayanan->pasien->nama, 0, 1)) }}
                                 </div>
-                                <span class="font-medium text-slate-800">{{ $antrian->pasien->nama }}</span>
+                                <span class="font-medium text-slate-800">{{ $pelayanan->pasien->nama }}</span>
                             </div>
                         </td>
 
                         {{-- Dokter --}}
                         <td class="px-5 py-3.5 text-slate-500">
-                            {{ $antrian->dokter->nama ?? '—' }}
+                            {{ $pelayanan->dokter->nama ?? '—' }}
                         </td>
 
                         {{-- Status --}}
                         <td class="px-5 py-3.5">
-                            @if ($antrian->status == 'menunggu')
+                            @if ($pelayanan->status == 'menunggu')
                                 <span
                                     class="text-xs px-2.5 py-1 rounded-full bg-amber-50 text-amber-600 font-medium">Menunggu</span>
-                            @elseif ($antrian->status == 'dipanggil')
+                            @elseif ($pelayanan->status == 'dipanggil')
                                 <span
                                     class="text-xs px-2.5 py-1 rounded-full bg-blue-50 text-blue-600 font-medium">Dipanggil</span>
                             @else
@@ -75,8 +75,8 @@
                             <div class="flex items-center justify-center gap-2">
 
                                 {{-- Panggil --}}
-                                @if ($antrian->status == 'menunggu')
-                                    <form action="{{ route('antrian.update', $antrian->id) }}" method="POST">
+                                @if ($pelayanan->status == 'menunggu')
+                                    <form action="{{ route('pelayanan.update', $pelayanan->id) }}" method="POST">
                                         @csrf @method('PUT')
                                         <input type="hidden" name="status" value="dipanggil">
                                         <button type="submit" title="Panggil"
@@ -91,8 +91,8 @@
                                 @endif
 
                                 {{-- Selesai --}}
-                                @if ($antrian->status == 'dipanggil')
-                                    <form action="{{ route('antrian.update', $antrian->id) }}" method="POST">
+                                @if ($pelayanan->status == 'dipanggil')
+                                    <form action="{{ route('pelayanan.update', $pelayanan->id) }}" method="POST">
                                         @csrf @method('PUT')
                                         <input type="hidden" name="status" value="selesai">
                                         <button type="submit" title="Selesai"
@@ -107,7 +107,7 @@
                                 @endif
 
                                 {{-- Hapus --}}
-                                <form action="{{ route('antrian.destroy', $antrian->id) }}" method="POST"
+                                <form action="{{ route('pelayanan.destroy', $pelayanan->id) }}" method="POST"
                                     onsubmit="return confirm('Hapus antrian ini?')">
                                     @csrf @method('DELETE')
                                     <button type="submit" title="Hapus"
