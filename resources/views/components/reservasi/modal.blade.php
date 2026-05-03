@@ -23,9 +23,8 @@
         </div>
 
         {{-- Form --}}
-        <form action="/reservasi" method="POST" class="px-6 py-5 space-y-4">
+        <form action="{{ route('reservasi.store') }}" method="POST" class="px-6 py-5 space-y-4">
             @csrf
-
             {{-- Pasien --}}
             <div>
                 <label class="block text-xs font-medium text-slate-500 uppercase tracking-wider mb-1.5">Pasien</label>

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Halaman Dokter - KAS Aesthetic Clinic')
+@section('title', 'Halaman Dokter')
 
 @section('content')
     <div class="p-6" x-data="dokterModal()">

@@ -22,27 +22,62 @@ class ProdukController extends Controller
     }
 
     // POST /produks
-   public function store(Request $request)
+//   public function store(Request $request)
+// {
+//     $request->validate([
+//         'nama'   => 'required|string|max:255',
+//         'harga'  => 'required|integer|min:0',
+//         'stok'   => 'required|integer|min:0',
+//         'status' => 'required|in:tersedia,tidak_tersedia',
+//         'foto'   => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+//     ]);
+
+//     $fotoPath = null;
+//     if ($request->hasFile('foto')) {
+//         $fotoPath = $request->file('foto')->store('produk/foto', 'public');
+//     }
+
+//     Produk::create([
+//         'nama'      => $request->nama,
+//         'kategori'  => $request->kategori,
+//         'deskripsi' => $request->deskripsi,
+//         'harga'     => $request->harga,
+//         'stok'      => $request->stok,
+//         'status'    => $request->status,
+//         'foto'      => $fotoPath,
+//     ]);
+
+//     return redirect()->back()->with('success', 'Produk berhasil ditambahkan.');
+// }
+
+public function store(Request $request)
 {
-    $validated = $request->validate([
-        'nama'        => 'required|string|max:255',
-        'kategori'    => 'nullable|string|max:255',
-        'deskripsi'   => 'nullable|string',
-        'harga'       => 'required|numeric|min:0',
-        'stok'        => 'required|integer|min:0',
-        'foto'        => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-        'status'      => 'nullable|in:tersedia,tidak_tersedia',
+    $request->validate([
+        'nama'   => 'required|string|max:255',
+        'harga'  => 'required|integer|min:0',
+        'stok'   => 'required|integer|min:0',
+        'status' => 'required|in:tersedia,tidak_tersedia',
+        'foto'   => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
     ]);
 
+    $fotoPath = null;
     if ($request->hasFile('foto')) {
-        $validated['foto'] = $request->file('foto')->store('produk', 'public');
+        $fotoPath = $request->file('foto')->store('produk/foto', 'public');
     }
 
-    $produk = Produk::create($validated);
+    Produk::create([
+        'nama'      => $request->nama,
+        'kategori'  => $request->kategori,
+        'deskripsi' => $request->deskripsi,
+        'harga'     => $request->harga,
+        'stok'      => $request->stok,
+        'status'    => $request->status,
+        'foto'      => $fotoPath,
+    ]);
 
-    return redirect()->route('produk.index')
-                     ->with('success', 'Produk berhasil ditambahkan!');
+    return redirect()->back()->with('success', 'Produk berhasil ditambahkan.');
 }
+
 
     // GET /produks/{id}
     public function show($id)

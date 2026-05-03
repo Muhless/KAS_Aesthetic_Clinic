@@ -4,7 +4,8 @@
     x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
 
     {{-- Backdrop --}}
-    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" @click="$root.open = false"></div>
+  <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" @click="open = false"></div>
+
 
     {{-- Modal Panel --}}
     <div class="relative z-10 w-full max-w-lg mx-4 bg-white rounded-2xl shadow-2xl overflow-hidden"
@@ -27,7 +28,7 @@
                 </div>
                 <h2 class="text-lg font-semibold text-white tracking-wide">Tambah Pasien</h2>
             </div>
-            <button type="button" @click="$root.open = false"
+           <button type="button" @click="open = false" ...
                 class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20 transition text-white">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor">
@@ -135,7 +136,7 @@
 
             {{-- Footer --}}
             <div class="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-100 bg-gray-50">
-                <button type="button" @click="$root.open = false"
+               <button type="button" @click="open = false" ...
                     class="px-5 py-2 text-sm font-medium text-gray-600 hover:text-gray-800 bg-white border border-gray-200 rounded-lg hover:border-gray-300 transition">
                     Batal
                 </button>

@@ -20,8 +20,6 @@ class ReservasiController extends Controller
         ]);
     }
 
-    // ReservasiController - index
-    // ReservasiController - index
     public function index()
     {
         $reservasis = Reservasi::with(['pasien', 'dokter', 'treatment'])
@@ -55,14 +53,14 @@ class ReservasiController extends Controller
     $nomorTerakhir = Pelayanan::whereDate('tanggal', $request->tanggal)
                         ->max('nomor_antrian');
 
-    Pelayanan::create([
-        'pasien_id'     => $request->pasien_id,
-        'dokter_id'     => $request->dokter_id,
-        'reservasi_id'  => $request->reservasi_id,
-        'tanggal'       => $request->tanggal,
-        'nomor_antrian' => $nomorTerakhir + 1,
-        'status'        => 'menunggu',
-        'keluhan'       => $request->keluhan,
+  Reservasi::create([
+        'pasien_id'    => $request->pasien_id,
+        'dokter_id'    => $request->dokter_id,
+        'treatment_id' => $request->treatment_id,
+        'tanggal'      => $request->tanggal,
+        'waktu'        => $request->waktu,
+        'keluhan'      => $request->keluhan,
+        'status'       => 'tertunda',
     ]);
 
     // Update status reservasi jadi diproses

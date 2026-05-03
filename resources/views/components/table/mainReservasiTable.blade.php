@@ -9,6 +9,7 @@
                 <th class="p-2 text-left">Dokter</th>
                 <th class="p-2 text-left">Treatment</th>
                 <th class="p-2 text-left">Tanggal</th>
+                <th class="p-2 text-left">Keluhan</th>
                 <th class="p-2 text-center">Status</th>
                 <th class="p-2 text-center">Aksi</th>
             </tr>
@@ -17,8 +18,8 @@
         <tbody class="divide-y">
             @forelse ($reservasis as $index => $reservasi)
                 <tr class="hover:bg-primary-50/20 transition">
-                    <td class="py-4 px-2 text-center font-bold text-primary-600">
-                        #{{ str_pad($index + 1, 3, '0', STR_PAD_LEFT) }}
+                    <td class="py-4 px-2 text-center text-gray-500">
+                        {{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}
                     </td>
                     <td class="py-4 px-2 font-semibold">{{ $reservasi->pasien->nama ?? '—' }}</td>
                     <td class="py-4 px-2">{{ $reservasi->dokter->nama ?? '—' }}</td>
@@ -26,6 +27,8 @@
                     <td class="py-4 px-2">
                         {{ \Carbon\Carbon::parse($reservasi->tanggal)->translatedFormat('d F Y') }}
                     </td>
+                  <td class="py-4 px-2">{{ $reservasi->keluhan ?? '—' }}</td>
+
                     <td class="py-4 px-2 text-center">
                         @if ($reservasi->status == 'tertunda')
                             <span
@@ -45,7 +48,7 @@
                     </td>
                     <td class="py-4 px-2">
                         <div class="flex items-center justify-center gap-2">
-                                 @if ($reservasi->status == 'tertunda')
+                            @if ($reservasi->status == 'tertunda')
                                 <form action="{{ route('reservasi.update', $reservasi->id) }}" method="POST">
                                     @csrf @method('PUT')
                                     <input type="hidden" name="status" value="dikonfirmasi">
@@ -61,43 +64,32 @@
                                 </form>
                             @endif
 
-{{-- Check-in --}}
-@if ($reservasi->status == 'dikonfirmasi')
-    <form action="{{ route('pelayanan.store') }}" method="POST">
-        @csrf
-        <input type="hidden" name="pasien_id" value="{{ $reservasi->pasien_id }}">
-        <input type="hidden" name="dokter_id" value="{{ $reservasi->dokter_id }}">
-        <input type="hidden" name="tanggal" value="{{ $reservasi->tanggal }}">
-        <input type="hidden" name="reservasi_id" value="{{ $reservasi->id }}">
-        <input type="hidden" name="keluhan" value="{{ $reservasi->keluhan }}">
-        <button type="submit" title="Check-in"
-            class="w-8 h-8 bg-primary-50 hover:bg-primary-100 text-primary-600 rounded-full flex items-center justify-center shadow">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
-                <path fill-rule="evenodd" d="M3 4.25A2.25 2.25 0 0 1 5.25 2h5.5A2.25 2.25 0 0 1 13 4.25v2a.75.75 0 0 1-1.5 0v-2a.75.75 0 0 0-.75-.75h-5.5a.75.75 0 0 0-.75.75v11.5c0 .414.336.75.75.75h5.5a.75.75 0 0 0 .75-.75v-2a.75.75 0 0 1 1.5 0v2A2.25 2.25 0 0 1 10.75 18h-5.5A2.25 2.25 0 0 1 3 15.75V4.25Z" clip-rule="evenodd" />
-                <path fill-rule="evenodd" d="M19 10a.75.75 0 0 0-.75-.75H8.704l1.048-1.08a.75.75 0 1 0-1.004-1.11l-2.5 2.25a.75.75 0 0 0 0 1.08l2.5 2.25a.75.75 0 1 0 1.004-1.11l-1.048-1.08h9.546A.75.75 0 0 0 19 10Z" clip-rule="evenodd" />
-            </svg>
-        </button>
-    </form>
-@endif
+                            {{-- Check-in --}}
+                            @if ($reservasi->status == 'dikonfirmasi')
+                                <form action="{{ route('pelayanan.store') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="pasien_id" value="{{ $reservasi->pasien_id }}">
+                                    <input type="hidden" name="dokter_id" value="{{ $reservasi->dokter_id }}">
+                                    <input type="hidden" name="tanggal" value="{{ $reservasi->tanggal }}">
+                                    <input type="hidden" name="reservasi_id" value="{{ $reservasi->id }}">
+                                    <input type="hidden" name="keluhan" value="{{ $reservasi->keluhan }}">
+                                    <button type="submit" title="Check-in"
+                                        class="w-8 h-8 bg-primary-50 hover:bg-primary-100 text-primary-600 rounded-full flex items-center justify-center shadow">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                            class="w-4 h-4">
+                                            <path fill-rule="evenodd"
+                                                d="M3 4.25A2.25 2.25 0 0 1 5.25 2h5.5A2.25 2.25 0 0 1 13 4.25v2a.75.75 0 0 1-1.5 0v-2a.75.75 0 0 0-.75-.75h-5.5a.75.75 0 0 0-.75.75v11.5c0 .414.336.75.75.75h5.5a.75.75 0 0 0 .75-.75v-2a.75.75 0 0 1 1.5 0v2A2.25 2.25 0 0 1 10.75 18h-5.5A2.25 2.25 0 0 1 3 15.75V4.25Z"
+                                                clip-rule="evenodd" />
+                                            <path fill-rule="evenodd"
+                                                d="M19 10a.75.75 0 0 0-.75-.75H8.704l1.048-1.08a.75.75 0 1 0-1.004-1.11l-2.5 2.25a.75.75 0 0 0 0 1.08l2.5 2.25a.75.75 0 1 0 1.004-1.11l-1.048-1.08h9.546A.75.75 0 0 0 19 10Z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                    </button>
+                                </form>
+                            @endif
 
-                            <a href="{{ route('reservasi.show', $reservasi->id) }}"
-                                class="w-8 h-8 bg-green-50 hover:bg-green-100 text-green-600 rounded-full flex items-center justify-center shadow">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                    class="w-4 h-4">
-                                    <path d="M10 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
-                                    <path fill-rule="evenodd"
-                                        d="M.664 10.59a1.651 1.651 0 0 1 0-1.186A10.004 10.004 0 0 1 10 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0 1 10 17c-4.257 0-7.893-2.66-9.336-6.41ZM14 10a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                            </a>
-                            <a href="{{ route('reservasi.edit', $reservasi->id) }}"
-                                class="w-8 h-8 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-full flex items-center justify-center shadow">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                    class="w-4 h-4">
-                                    <path
-                                        d="m2.695 14.762-1.262 3.155a.5.5 0 0 0 .65.65l3.155-1.262a4 4 0 0 0 1.343-.886L17.5 5.501a2.121 2.121 0 0 0-3-3L3.58 13.419a4 4 0 0 0-.885 1.343Z" />
-                                </svg>
-                            </a>
+
+                            
                             <button type="button"
                                 onclick="confirmDelete({{ $reservasi->id }}, '{{ $reservasi->pasien->nama }}')"
                                 class="cursor-pointer w-8 h-8 bg-red-50 hover:bg-red-100 text-red-600 rounded-full flex items-center justify-center shadow">

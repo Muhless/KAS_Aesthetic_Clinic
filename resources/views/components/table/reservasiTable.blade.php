@@ -17,7 +17,7 @@
                     <th class="px-5 py-3 text-left font-medium">Pasien</th>
                     <th class="px-5 py-3 text-left font-medium">Treatment</th>
                     <th class="px-5 py-3 text-left font-medium">Dokter</th>
-                    <th class="px-5 py-3 text-left font-medium">Jam</th>
+                    {{-- <th class="px-5 py-3 text-left font-medium">Jam</th> --}}
                     <th class="px-5 py-3 text-left font-medium">Status</th>
                     <th class="px-5 py-3 text-center font-medium">Aksi</th>
                 </tr>
@@ -48,9 +48,9 @@
                         </td>
 
                         {{-- Jam --}}
-                        <td class="px-5 py-3.5 text-slate-500 font-mono">
+                        {{-- <td class="px-5 py-3.5 text-slate-500 font-mono">
                             {{ $reservasi->waktu ? \Carbon\Carbon::parse($reservasi->waktu)->format('H:i') : '—' }}
-                        </td>
+                        </td> --}}
 
                         {{-- Status --}}
                         <td class="px-5 py-3.5">
@@ -93,47 +93,24 @@
                                     </form>
                                 @endif
 
-                                {{-- Check-in → jadi antrian --}}
-                                @if ($status == 'dikonfirmasi')
-                                    <form action="{{ route('pelayanan.store') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="pasien_id" value="{{ $reservasi->pasien_id }}">
-                                        <input type="hidden" name="dokter_id" value="{{ $reservasi->dokter_id }}">
-                                        <input type="hidden" name="tanggal" value="{{ $reservasi->tanggal }}">
-                                        <button type="submit" title="Check-in ke Antrian"
-                                            class="w-7 h-7 bg-primary-50 hover:bg-primary-100 text-primary-600 rounded-full flex items-center justify-center transition shadow-sm">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none"
-                                                viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
-                                            </svg>
-                                        </button>
-                                    </form>
-                                @endif
-
-                                {{-- Check-in --}}
-                                @if ($reservasi->status == 'dikonfirmasi')
-                                    <form action="{{ route('pelayanan.store') }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="pasien_id" value="{{ $reservasi->pasien_id }}">
-                                        <input type="hidden" name="dokter_id" value="{{ $reservasi->dokter_id }}">
-                                        <input type="hidden" name="tanggal" value="{{ $reservasi->tanggal }}">
-                                        <input type="hidden" name="reservasi_id" value="{{ $reservasi->id }}">
-                                        <input type="hidden" name="keluhan" value="{{ $reservasi->keluhan }}">
-                                        <button type="submit" title="Check-in"
-                                            class="w-8 h-8 bg-primary-50 hover:bg-primary-100 text-primary-600 rounded-full flex items-center justify-center shadow">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                                                fill="currentColor" class="w-4 h-4">
-                                                <path fill-rule="evenodd"
-                                                    d="M3 4.25A2.25 2.25 0 0 1 5.25 2h5.5A2.25 2.25 0 0 1 13 4.25v2a.75.75 0 0 1-1.5 0v-2a.75.75 0 0 0-.75-.75h-5.5a.75.75 0 0 0-.75.75v11.5c0 .414.336.75.75.75h5.5a.75.75 0 0 0 .75-.75v-2a.75.75 0 0 1 1.5 0v2A2.25 2.25 0 0 1 10.75 18h-5.5A2.25 2.25 0 0 1 3 15.75V4.25Z"
-                                                    clip-rule="evenodd" />
-                                                <path fill-rule="evenodd"
-                                                    d="M19 10a.75.75 0 0 0-.75-.75H8.704l1.048-1.08a.75.75 0 1 0-1.004-1.11l-2.5 2.25a.75.75 0 0 0 0 1.08l2.5 2.25a.75.75 0 1 0 1.004-1.11l-1.048-1.08h9.546A.75.75 0 0 0 19 10Z"
-                                                    clip-rule="evenodd" />
-                                            </svg>
-                                        </button>
-                                    </form>
-                                @endif
+                                    {{-- Check-in → jadi antrian --}}
+                                    @if ($status == 'dikonfirmasi')
+                                        <form action="{{ route('pelayanan.store') }}" method="POST">
+                                            @csrf
+                                            <input type="hidden" name="pasien_id" value="{{ $reservasi->pasien_id }}">
+                                            <input type="hidden" name="dokter_id" value="{{ $reservasi->dokter_id }}">
+                                            <input type="hidden" name="tanggal" value="{{ $reservasi->tanggal }}">
+                                             <input type="hidden" name="reservasi_id" value="{{ $reservasi->id }}">
+                                            <button type="submit" title="Check-in ke Antrian"
+                                                class="w-7 h-7 bg-primary-50 hover:bg-primary-100 text-primary-600 rounded-full flex items-center justify-center transition shadow-sm">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none"
+                                                    viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                                                </svg>
+                                            </button>
+                                        </form>
+                                    @endif
 
                                 {{-- Detail --}}
                                 <a href="{{ route('reservasi.show', $reservasi->id) }}" title="Detail"

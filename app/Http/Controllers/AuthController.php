@@ -12,6 +12,16 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+
+protected function authenticated(Request $request, $user)
+{
+    return match($user->role) {
+        'admin'   => redirect()->route('dashboard'),
+        'dokter'  => redirect()->route('dokter.dashboard'),
+        'perawat' => redirect()->route('perawat.dashboard'),
+        default   => redirect('/'),
+    };
+}
     public function showLogin()
     {
         return view('pages.auth.login');

@@ -38,7 +38,6 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
-
     Route::resource('reservasi', ReservasiController::class);
     Route::get('/api/reservasi', [ReservasiController::class, 'api']);
 
@@ -71,4 +70,20 @@ Route::middleware('auth')->group(function () {
     Route::post('pembayaran/{id}/item', [PembayaranController::class, 'addItem'])->name('pembayaran.addItem');
     Route::delete('pembayaran/item/{id}', [PembayaranController::class, 'removeItem'])->name('pembayaran.removeItem');
     Route::post('pembayaran/{id}/bayar', [PembayaranController::class, 'bayar'])->name('pembayaran.bayar');
+});
+
+
+Route::middleware(['auth', 'role:dokter'])->group(function () {
+    Route::get('/dokter/dashboard', [DokterDashboardController::class, 'index'])->name('dokter.dashboard');
+    Route::resource('pemeriksaan', PemeriksaanController::class);
+});
+
+// Perawat only
+Route::middleware(['auth', 'role:perawat'])->group(function () {
+    Route::get('/perawat/dashboard', [PerawatDashboardController::class, 'index'])->name('perawat.dashboard');
+});
+
+// Bisa diakses admin dan dokter
+Route::middleware(['auth', 'role:admin,dokter'])->group(function () {
+    Route::resource('pelayanan', PelayananController::class);
 });
