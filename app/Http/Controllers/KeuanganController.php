@@ -2,20 +2,72 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Keuangan;
 use App\Models\Pembayaran;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class KeuanganController extends Controller
 {
-    public function api()
+    public function index(Request $request)
     {
-        return response()->json(['status' > 'success', 'data' => Keuangan::all()]);
-    }
+        $bulan = $request->bulan ?? now()->month;
+        $tahun = $request->tahun ?? now()->year;
 
-    public function index()
-    {
-        // $pembayarans = Pembayaran::all();
-        return view('pages.keuangan.index');
+        // Pemasukan bulan ini
+        $pemasukanBulanIni = Pembayaran::where('status', 'lunas')
+            ->whereMonth('dibayar_pada', $bulan)
+            ->whereYear('dibayar_pada', $tahun)
+            ->sum('total_harga');
+
+        // Pemasukan hari ini
+        $pemasukanHariIni = Pembayaran::where('status', 'lunas')
+            ->whereDate('dibayar_pada', today())
+            ->sum('total_harga');
+
+        // Total transaksi bulan ini
+        $totalTransaksi = Pembayaran::where('status', 'lunas')
+            ->whereMonth('dibayar_pada', $bulan)
+            ->whereYear('dibayar_pada', $tahun)
+            ->count();
+
+        // Belum dibayar
+        $totalBelumBayar = Pembayaran::where('status', 'belum_bayar')->count();
+
+        // Pemasukan per metode bayar bulan ini
+        $perMetode = Pembayaran::where('status', 'lunas')
+            ->whereMonth('dibayar_pada', $bulan)
+            ->whereYear('dibayar_pada', $tahun)
+            ->selectRaw('metode_bayar, SUM(total_harga) as total, COUNT(*) as jumlah')
+            ->groupBy('metode_bayar')
+            ->get();
+
+        // Daftar transaksi bulan ini
+        $transaksis = Pembayaran::with(['pelayanan.pasien', 'pelayanan.dokter'])
+            ->where('status', 'lunas')
+            ->whereMonth('dibayar_pada', $bulan)
+            ->whereYear('dibayar_pada', $tahun)
+            ->latest('dibayar_pada')
+            ->get();
+
+        // Pemasukan per hari (untuk grafik)
+        $perHari = Pembayaran::where('status', 'lunas')
+            ->whereMonth('dibayar_pada', $bulan)
+            ->whereYear('dibayar_pada', $tahun)
+            ->selectRaw('DATE(dibayar_pada) as tanggal, SUM(total_harga) as total')
+            ->groupBy('tanggal')
+            ->orderBy('tanggal')
+            ->get();
+
+        return view('pages.keuangan.index', compact(
+            'pemasukanBulanIni',
+            'pemasukanHariIni',
+            'totalTransaksi',
+            'totalBelumBayar',
+            'perMetode',
+            'transaksis',
+            'perHari',
+            'bulan',
+            'tahun',
+        ));
     }
 }

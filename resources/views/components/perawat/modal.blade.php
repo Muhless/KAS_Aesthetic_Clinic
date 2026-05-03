@@ -148,7 +148,7 @@
                     </div>
 
                     {{-- SIP --}}
-                    <div>
+                    {{-- <div>
                         <label for="sip" class="block text-sm font-medium text-gray-700 mb-1.5">
                             No. SIP <span class="text-red-500">*</span>
                         </label>
@@ -167,7 +167,7 @@
                         @error('sip')
                             <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
                         @enderror
-                    </div>
+                    </div> --}}
 
                     {{-- Nomor Telepon --}}
                     <div>

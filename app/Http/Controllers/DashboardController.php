@@ -28,12 +28,24 @@ class DashboardController extends Controller
             ->orderBy('nomor_antrian')
             ->first();
 
+        $hariIni = now()->locale('id')->dayName; // "Senin", "Selasa", dst
+
+    $hariIni = now()->locale('id')->dayName;
+
+$dokterHariIni = Dokter::all()->filter(function ($dokter) use ($hariIni) {
+    $jadwal = is_array($dokter->jadwal_praktik)
+                ? $dokter->jadwal_praktik
+                : json_decode($dokter->jadwal_praktik ?? '[]', true);
+    return in_array(ucfirst($hariIni), $jadwal ?? []);
+})->values();
+
         $totalPasien = Pasien::count();
         $totalDokter = Dokter::count();
         $totalPerawat = Perawat::count();
         $totalPelayanan = $pelayanansHariIni->count();
+
         // $totalPelayanan = $pelayanansHariIni->where('status', 'menunggu')->count();
 
-        return view('pages.dashboard', compact('pelayanansHariIni', 'reservasisHariIni', 'pasienSelanjutnya', 'totalPasien', 'totalDokter', 'totalPerawat','totalPelayanan'));
+        return view('pages.dashboard.admin.index', compact('pelayanansHariIni', 'reservasisHariIni', 'pasienSelanjutnya', 'totalPasien', 'totalDokter', 'totalPerawat', 'totalPelayanan', 'dokterHariIni'));
     }
 }

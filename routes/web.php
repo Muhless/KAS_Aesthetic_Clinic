@@ -57,7 +57,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('treatment', TreatmentController::class);
     Route::get('/api/treatment', [TreatmentController::class, 'api']);
 
-    Route::resource('keuangan', KeuanganController::class);
+    Route::get('/keuangan', [KeuanganController::class, 'index'])->name('keuangan.index');
     Route::get('/api/keuangan', [KeuanganController::class, 'api']);
 
     Route::resource('pelayanan', PelayananController::class);
@@ -71,7 +71,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('pembayaran/item/{id}', [PembayaranController::class, 'removeItem'])->name('pembayaran.removeItem');
     Route::post('pembayaran/{id}/bayar', [PembayaranController::class, 'bayar'])->name('pembayaran.bayar');
 });
-
 
 Route::middleware(['auth', 'role:dokter'])->group(function () {
     Route::get('/dokter/dashboard', [DokterDashboardController::class, 'index'])->name('dokter.dashboard');

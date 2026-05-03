@@ -15,8 +15,8 @@
             <thead>
                 <tr class="bg-slate-50 text-xs text-slate-400 uppercase tracking-wider">
                     <th class="px-5 py-3 text-left font-medium">Pasien</th>
-                    <th class="px-5 py-3 text-left font-medium">Treatment</th>
-                    <th class="px-5 py-3 text-left font-medium">Dokter</th>
+                    {{-- <th class="px-5 py-3 text-left font-medium">Treatment</th> --}}
+                    {{-- <th class="px-5 py-3 text-left font-medium">Dokter</th> --}}
                     {{-- <th class="px-5 py-3 text-left font-medium">Jam</th> --}}
                     <th class="px-5 py-3 text-left font-medium">Status</th>
                     <th class="px-5 py-3 text-center font-medium">Aksi</th>
@@ -38,18 +38,13 @@
                         </td>
 
                         {{-- Treatment --}}
-                        <td class="px-5 py-3.5 text-slate-500">
+                        {{-- <td class="px-5 py-3.5 text-slate-500">
                             {{ $reservasi->treatment->nama ?? '—' }}
-                        </td>
+                        </td> --}}
 
                         {{-- Dokter --}}
-                        <td class="px-5 py-3.5 text-slate-500">
+                        {{-- <td class="px-5 py-3.5 text-slate-500">
                             {{ $reservasi->dokter->nama ?? '—' }}
-                        </td>
-
-                        {{-- Jam --}}
-                        {{-- <td class="px-5 py-3.5 text-slate-500 font-mono">
-                            {{ $reservasi->waktu ? \Carbon\Carbon::parse($reservasi->waktu)->format('H:i') : '—' }}
                         </td> --}}
 
                         {{-- Status --}}

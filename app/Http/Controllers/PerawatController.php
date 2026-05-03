@@ -54,16 +54,14 @@ class PerawatController extends Controller
         'username'      => ['required', 'unique:users,username'],
         'nama'          => ['required', 'string', 'max:255'],
         'no_telepon'    => ['nullable', 'string', 'max:20'],
-        'email'         => ['nullable', 'email', 'unique:perawat,email'],
+        'email'         => ['nullable', 'email', 'unique:perawats,email'],
         'tanggal_lahir' => ['required', 'date'],
-        'sip'           => ['required', 'string', 'max:255'],
-        'str'           => ['nullable', 'string', 'max:255'],
         'jadwal'        => ['nullable', 'string', 'max:255'],
         'password'      => ['required', 'min:8'],
         'foto'          => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:2048'],
     ]);
 
-    $fotoPath = null;
+    $fotoPath = 'dokter/foto/perawat.png'; // default
     if ($request->hasFile('foto')) {
         $fotoPath = $request->file('foto')->store('perawat/foto', 'public');
     }

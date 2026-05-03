@@ -26,11 +26,14 @@ class DokterController extends Controller
         return view('pages.dokter.index', compact('dokters'));
     }
 
-    public function detail($id)
+    public function detail(Dokter $dokter)
     {
-        $dokter = Dokter::with('jadwalPraktek')->findOrFail($id);
+        $totalPelayanan = $dokter->pelayanan()->count();
+        $pelayananBulanIni = $dokter->pelayanan()->whereMonth('tanggal', now()->month)->count();
+        $pelayananHariIni = $dokter->pelayanan()->whereDate('tanggal', today())->count();
+        $pelayananTerakhir = $dokter->pelayanan()->with('pasien')->latest('tanggal')->limit(10)->get();
 
-        return view('pages.dokter.detail', compact('dokter'));
+        return view('pages.dokter.detail', compact('dokter', 'totalPelayanan', 'pelayananBulanIni', 'pelayananHariIni', 'pelayananTerakhir'));
     }
 
     // api
@@ -43,54 +46,55 @@ class DokterController extends Controller
         ]);
     }
 
-  // Menampilkan form (GET)
-public function create()
-{
-    return view('pages.dokter.create');
-}
+    // Menampilkan form (GET)
+    public function create()
+    {
+        return view('pages.dokter.create');
+    }
 
-// Menyimpan data (POST)
-public function store(Request $request)
-{
-    $request->validate([
-        'username'     => 'required|unique:users,username',
-        'nama'         => 'required|string|max:255',
-        'email'        => 'required|email|unique:dokter,email',
-        'password'     => 'required|min:8',
-        'tanggal_lahir'=> 'required|date',
-        'spesialisasi' => 'required|string|max:255',
-        'no_telepon'   => 'nullable|string|max:20',
-        'foto'         => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
-    ]);
+    // Menyimpan data (POST)
+    public function store(Request $request)
+    {
+        $request->validate([
+            'username' => 'required|unique:users,username',
+            'nama' => 'required|string|max:255',
+            'email' => 'required|email|unique:dokters,email',
+            'password' => 'required|min:8',
+            'tanggal_lahir' => 'required|date',
+            'spesialisasi' => 'required|string|max:255',
+            'no_telepon' => 'nullable|string|max:20',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'jadwal_praktik' => 'nullable|string',
+        ]);
 
- $fotoPath = 'dokter/foto/default.png'; // default
-if ($request->hasFile('foto')) {
-    $fotoPath = $request->file('foto')->store('dokter/foto', 'public');
-}
+        $fotoPath = 'dokter/foto/dokter.png'; // default
+        if ($request->hasFile('foto')) {
+            $fotoPath = $request->file('foto')->store('dokter/foto', 'public');
+        }
 
-    // Insert ke tabel users (data login saja)
-    $user = User::create([
-        'username' => $request->username,
-        'password' => bcrypt($request->password),
-        'role'     => 'dokter',
-    ]);
+        // Insert ke tabel users (data login saja)
+        $user = User::create([
+            'username' => $request->username,
+            'password' => bcrypt($request->password),
+            'role' => 'dokter',
+        ]);
 
-    // Insert ke tabel dokter (data profil)
-    Dokter::create([
-        'user_id'       => $user->id,
-        'nama'          => $request->nama,
-        'email'         => $request->email,
-        'no_telepon'    => $request->no_telepon,
-        'tanggal_lahir' => $request->tanggal_lahir,
-        'spesialis'     => $request->spesialisasi,
-        'foto'          => $fotoPath,
-    ]);
+        // Insert ke tabel dokter (data profil)
+        Dokter::create([
+            'user_id' => $user->id,
+            'nama' => $request->nama,
+            'email' => $request->email,
+            'no_telepon' => $request->no_telepon,
+            'tanggal_lahir' => $request->tanggal_lahir,
+            'spesialis' => $request->spesialisasi,
+            'foto' => $fotoPath,
+            'jadwal_praktik' => $request->jadwal_praktik,
+        ]);
 
-    return redirect()->route('dokter.index')
-        ->with('success', 'Dokter berhasil ditambahkan.');
-}
+        return redirect()->route('dokter.index')->with('success', 'Dokter berhasil ditambahkan.');
+    }
 
-public function update(Request $request, $id)
+    public function update(Request $request, $id)
     {
         try {
             $dokter = Dokter::findOrFail($id);

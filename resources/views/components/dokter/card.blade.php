@@ -41,16 +41,22 @@
             </form>
         </div>
 
-        <!-- Status Badge -->
-        @if ($dokter->jadwalHariIni())
+        {{-- Status Praktek (nonaktif) --}}
+        {{-- @php
+            $hariIni = now()->locale('id')->dayName;
+            $jadwal = is_array($dokter->jadwal_praktik)
+                ? $dokter->jadwal_praktik
+                : json_decode($dokter->jadwal_praktik ?? '[]', true);
+            $praktek = in_array(ucfirst($hariIni), $jadwal ?? []);
+        @endphp
+        @if ($praktek)
             <div class="absolute bottom-3 left-3 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                <span
-                    class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/95 backdrop-blur-md rounded-full text-xs font-semibold text-green-700 shadow-lg">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/95 backdrop-blur-md rounded-full text-xs font-semibold text-green-700 shadow-lg">
                     <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
                     Praktek Hari Ini
                 </span>
             </div>
-        @endif
+        @endif --}}
     </div>
 
     <!-- Content -->
@@ -62,77 +68,48 @@
             <h3 class="text-xl font-bold text-gray-900 mb-1 group-hover:text-primary-600 transition-colors">
                 {{ $dokter['nama'] }}
             </h3>
-            @if (isset($dokter['spesialisasi']))
-                <p class="text-sm font-medium text-primary-600">{{ $dokter['spesialisasi'] }}</p>
-            @endif
+            <p class="text-sm font-medium text-primary-600">{{ $dokter['spesialis'] ?? '—' }}</p>
         </div>
 
         <!-- Info -->
-        <div class="space-y-2.5 mb-4">
+        <div class="space-y-2.5">
+
             <!-- Email -->
             <div class="flex items-center gap-3 group/item">
-                <div
-                    class="shrink-0 w-9 h-9 bg-primary-50 rounded-lg flex items-center justify-center group-hover/item:bg-primary-100 transition-colors">
-                    <svg class="w-4 h-4 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="shrink-0 w-8 h-8 bg-primary-50 rounded-lg flex items-center justify-center group-hover/item:bg-primary-100 transition-colors">
+                    <svg class="w-3.5 h-3.5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
-                        </path>
+                            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                     </svg>
                 </div>
-                <p class="text-sm text-gray-600 truncate flex-1">{{ $dokter['email'] ?? 'Email tidak tersedia' }}</p>
+                <p class="text-xs text-gray-600 truncate flex-1">{{ $dokter['email'] ?? '—' }}</p>
             </div>
 
-            <!-- Phone -->
+            <!-- Telepon -->
             <div class="flex items-center gap-3 group/item">
-                <div
-                    class="shrink-0 w-9 h-9 bg-indigo-50 rounded-lg flex items-center justify-center group-hover/item:bg-indigo-100 transition-colors">
-                    <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="shrink-0 w-8 h-8 bg-indigo-50 rounded-lg flex items-center justify-center group-hover/item:bg-indigo-100 transition-colors">
+                    <svg class="w-3.5 h-3.5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z">
-                        </path>
+                            d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                     </svg>
                 </div>
-                <p class="text-sm text-gray-600">{{ $dokter['no_telepon'] ?? 'Nomor tidak tersedia' }}</p>
+                <p class="text-xs text-gray-600">{{ $dokter['no_telepon'] ?? '—' }}</p>
             </div>
+
+            <!-- Tanggal Lahir -->
+            <div class="flex items-center gap-3 group/item">
+                <div class="shrink-0 w-8 h-8 bg-orange-50 rounded-lg flex items-center justify-center group-hover/item:bg-orange-100 transition-colors">
+                    <svg class="w-3.5 h-3.5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                </div>
+                <p class="text-xs text-gray-600">
+                    {{ $dokter->tanggal_lahir ? $dokter->tanggal_lahir->translatedFormat('d F Y') : '—' }}
+                </p>
+            </div>
+
         </div>
 
-        <!-- Schedule Badge -->
-        @if ($dokter->jadwalHariIni())
-            <div class="mb-4 p-3 bg-linear-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl">
-                <div class="flex items-center gap-2 text-green-700">
-                    <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                    <div class="flex-1">
-                        <p class="text-xs font-semibold mb-0.5">Praktek Hari Ini</p>
-                        <p class="text-sm font-bold">
-                            {{ $dokter->jadwalHariIni()->jam_mulai }} - {{ $dokter->jadwalHariIni()->jam_selesai }}
-                        </p>
-                    </div>
-                </div>
-            </div>
-        @else
-            <div class="mb-4 p-3 bg-gray-50 border border-gray-200 rounded-xl">
-                <div class="flex items-center gap-2 text-gray-600">
-                    <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
-                        </path>
-                    </svg>
-                    <p class="text-sm font-medium">Tidak Praktek Hari Ini</p>
-                </div>
-            </div>
-        @endif
-
-        <!-- Action Link -->
-        <div class="flex items-center justify-between pt-3 border-t border-gray-100">
-            <span class="text-sm font-semibold text-primary-600 group-hover:text-primary-700 transition-colors">
-                Lihat Detail Lengkap
-            </span>
-            <svg class="w-5 h-5 text-primary-600 transform group-hover:translate-x-1 transition-transform"
-                fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-            </svg>
-        </div>
     </div>
 </div>

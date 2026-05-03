@@ -147,7 +147,7 @@
                         @enderror
                     </div>
 
-                    {{-- Spesialisasi --}}
+                    {{-- Spesialis --}}
                     <div>
                         <label for="spesialisasi" class="block text-sm font-medium text-gray-700 mb-1.5">
                             Spesialisasi <span class="text-red-500">*</span>
@@ -183,7 +183,7 @@
                     </div>
 
                     {{-- Email --}}
-                    <div class="">
+                    <div>
                         <label for="email" class="block text-sm font-medium text-gray-700 mb-1.5">
                             Email
                         </label>
@@ -204,8 +204,98 @@
                         @enderror
                     </div>
 
+                    {{-- STR --}}
+                    {{-- <div>
+                        <label for="str" class="block text-sm font-medium text-gray-700 mb-1.5">
+                            No. STR
+                        </label>
+                        <input type="text" id="str" name="str" value="{{ old('str') }}"
+                            placeholder="Nomor STR dokter"
+                            class="w-full px-4 py-2.5 text-sm border border-gray-200 rounded-lg bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent transition placeholder-gray-400 @error('str') border-red-400 @enderror">
+                        @error('str')
+                            <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
+                        @enderror
+                    </div> --}}
 
-                    <hr class="sm:col-span-2">
+                    {{-- SIP --}}
+                    {{-- <div>
+                        <label for="sip" class="block text-sm font-medium text-gray-700 mb-1.5">
+                            No. SIP
+                        </label>
+                        <input type="text" id="sip" name="sip" value="{{ old('sip') }}"
+                            placeholder="Nomor SIP dokter"
+                            class="w-full px-4 py-2.5 text-sm border border-gray-200 rounded-lg bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent transition placeholder-gray-400 @error('sip') border-red-400 @enderror">
+                        @error('sip')
+                            <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
+                        @enderror
+                    </div> --}}
+
+                </div>
+
+                {{-- <div class="border-t border-gray-100"></div> --}}
+
+                {{-- Jadwal Praktik --}}
+                {{-- <div x-data="{
+                  hariDipilih: [],
+                    hariList: ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
+                    toggle(hari) {
+                        const idx = this.hariDipilih.indexOf(hari);
+                        if (idx >= 0) this.hariDipilih.splice(idx, 1);
+                        else this.hariDipilih.push(hari);
+                    },
+                    isActive(hari) {
+                        return this.hariDipilih.includes(hari);
+                    }
+                }">
+                    <label class="block text-sm font-medium text-gray-700 mb-3">
+                        Jadwal Praktik
+                    </label>
+
+                    <div class="flex flex-wrap gap-2">
+                        <template x-for="hari in hariList" :key="hari">
+                            <button type="button" @click="toggle(hari)"
+                                :class="isActive(hari) ?
+                                    'bg-primary-600 text-white border-primary-600 shadow-sm' :
+                                    'bg-white text-gray-600 border-gray-200 hover:border-primary-300 hover:text-primary-600'"
+                                class="px-3.5 py-1.5 text-sm font-medium rounded-lg border transition select-none"
+                                x-text="hari">
+                            </button>
+                        </template>
+                    </div>
+
+                    <div class="mt-3 min-h-[24px]">
+                        <template x-if="hariDipilih.length > 0">
+                            <div class="flex items-center gap-1.5 flex-wrap">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-primary-500 shrink-0"
+                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                                <span class="text-xs text-gray-500">Praktik:</span>
+                                <template x-for="hari in hariDipilih" :key="hari">
+                                    <span
+                                        class="text-xs bg-primary-50 text-primary-700 px-2 py-0.5 rounded-full font-medium"
+                                        x-text="hari">
+                                    </span>
+                                </template>
+                            </div>
+                        </template>
+                        <template x-if="hariDipilih.length === 0">
+                            <p class="text-xs text-gray-400">Belum ada hari dipilih</p>
+                        </template>
+                    </div>
+
+                    <input type="hidden" name="jadwal_praktik" :value="JSON.stringify(hariDipilih)">
+
+                    @error('jadwal_praktik')
+                        <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
+                    @enderror
+                </div> --}}
+
+                <div class="border-t border-gray-100"></div>
+
+                {{-- Akun --}}
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
                     {{-- Username --}}
                     <div class="sm:col-span-2">
@@ -271,60 +361,6 @@
                     </div>
 
                 </div>
-
-                {{-- Jadwal Jam Praktik --}}
-                {{-- <div>
-                    <div class="flex items-center justify-between mb-2">
-                        <label class="block text-sm font-medium text-gray-700">
-                            Jadwal Praktik <span class="text-red-500">*</span>
-                        </label>
-                        <button type="button" @click="tambahJadwal()"
-                            class="text-xs text-primary-600 hover:text-primary-700 font-medium flex items-center gap-1 transition">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                                    d="M12 4v16m8-8H4" />
-                            </svg>
-                            Tambah Jadwal
-                        </button>
-                    </div>
-
-                    <div class="space-y-2" x-data>
-                        <template x-for="(jadwal, index) in jadwals" :key="index">
-                            <div class="flex items-center gap-2 p-3 bg-gray-50 rounded-lg border border-gray-200">
-                                <select :name="`jadwal[${index}][hari]`" x-model="jadwal.hari"
-                                    class="text-sm border border-gray-200 rounded-md px-2 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent w-32">
-                                    <option value="">Hari</option>
-                                    <option value="Senin">Senin</option>
-                                    <option value="Selasa">Selasa</option>
-                                    <option value="Rabu">Rabu</option>
-                                    <option value="Kamis">Kamis</option>
-                                    <option value="Jumat">Jumat</option>
-                                    <option value="Sabtu">Sabtu</option>
-                                    <option value="Minggu">Minggu</option>
-                                </select>
-
-                                <input type="time" :name="`jadwal[${index}][jam_mulai]`" x-model="jadwal.jam_mulai"
-                                    class="text-sm border border-gray-200 rounded-md px-2 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent">
-
-                                <span class="text-gray-400 text-sm">–</span>
-
-                                <input type="time" :name="`jadwal[${index}][jam_selesai]`"
-                                    x-model="jadwal.jam_selesai"
-                                    class="text-sm border border-gray-200 rounded-md px-2 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent">
-
-                                <button type="button" @click="hapusJadwal(index)" x-show="jadwals.length > 1"
-                                    class="ml-auto p-1 text-gray-400 hover:text-red-500 transition rounded">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                    </svg>
-                                </button>
-                            </div>
-                        </template>
-                    </div>
-                </div> --}}
 
             </div>
 

@@ -28,10 +28,7 @@ protected $table = 'pasiens';
         return $this->hasMany(Pelayanan::class)->latest('tanggal');
     }
 
-    public function kunjungans()
-    {
-        return $this->hasMany(Kunjungan::class)->latest('tanggal');
-    }
+  
 
     public function getJenisKelaminLabelAttribute()
     {

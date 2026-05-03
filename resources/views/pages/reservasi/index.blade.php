@@ -8,19 +8,20 @@
         <x-notification />
 
         {{-- Header --}}
-        <div class="flex items-center justify-between mb-6">
-            <div>
-                <h1 class="text-xl font-semibold text-slate-800">Reservasi</h1>
-                <p class="text-sm text-slate-400 mt-0.5">Kelola data reservasi pasien</p>
+        <div class="flex items-center justify-between mb-8">
+             <div>
+                <h1 class="text-3xl font-bold text-primary-400">Reservasi</h1>
+                <p class="text-sm text-gray-400 mt-1">Kelola data reservasi</p>
             </div>
             <div x-data="{ open: false }">
-                <button @click="open = true"
-                    class="cursor-pointer flex items-center gap-2 text-sm px-4 py-2.5 bg-primary-500 hover:bg-primary-600 text-white rounded-xl transition shadow-sm">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                    </svg>
-                    Tambah Reservasi
-                </button>
+               <button @click="open = true"
+                class="inline-flex items-center gap-2 cursor-pointer text-sm w-48 justify-center py-2.5 bg-primary-300 hover:bg-primary-700 active:bg-primary-800 text-white rounded-lg shadow transition-all duration-150">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
+                </svg>
+                Tambah Reservasi
+            </button>
                 <x-reservasi.modal :pasiens="$pasiens" :dokters="$dokters" :treatments="$treatments" />
             </div>
         </div>

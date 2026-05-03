@@ -9,8 +9,8 @@ class Dokter extends Model
 {
     use HasFactory;
 
-protected $table = 'dokters';
-    protected $fillable = ['user_id', 'nama', 'no_telepon', 'email', 'tanggal_lahir', 'str', 'sip', 'spesialis', 'jadwal_praktik', 'foto'];
+    protected $table = 'dokters';
+    protected $fillable = ['user_id', 'nama', 'no_telepon', 'email', 'tanggal_lahir', 'spesialis', 'jadwal_praktik', 'foto'];
 
     public function user()
     {
@@ -18,6 +18,7 @@ protected $table = 'dokters';
     }
 
     protected $casts = [
+        'jadwal_praktik' => 'array',
         'tanggal_lahir' => 'date',
     ];
 
@@ -26,21 +27,21 @@ protected $table = 'dokters';
         $this->attributes['email'] = strtolower($value);
     }
 
+    public function jadwalPraktek()
+    {
+        return $this->hasMany(JadwalPraktek::class);
+    }
 
-public function jadwalPraktek()
+    // Mendapatkan jadwal hari ini
+    public function jadwalHariIni()
+    {
+        $hari = now()->locale('id')->dayName; // Senin, Selasa, dll
+
+        return $this->jadwalPraktek()->where('hari', $hari)->where('aktif', true)->first();
+    }
+
+    public function pelayanan()
 {
-    return $this->hasMany(JadwalPraktek::class);
+    return $this->hasMany(Pelayanan::class);
 }
-
-// Mendapatkan jadwal hari ini
-public function jadwalHariIni()
-{
-    $hari = now()->locale('id')->dayName; // Senin, Selasa, dll
-
-    return $this->jadwalPraktek()
-        ->where('hari', $hari)
-        ->where('aktif', true)
-        ->first();
-}
-
 }

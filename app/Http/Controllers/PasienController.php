@@ -26,8 +26,13 @@ public function index()
 
 public function show($id)
 {
-    $pasien = Pasien::with(['kunjungans.dokter', 'kunjungans.pemeriksaan'])->findOrFail($id);
-    return view('pages.pasien.detail', compact('pasien'));
+    $pasien = Pasien::with([
+        'pelayanans.dokter',
+        'pelayanans.pemeriksaan.treatment',
+        'pelayanans.pembayaran',
+    ])->findOrFail($id);
+
+    return view('pages.pasien.show', compact('pasien'));
 }
     /**
      * Show the form for creating a new resource.
