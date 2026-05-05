@@ -10,8 +10,7 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-
-    protected $fillable = ['username', 'password','role'];
+    protected $fillable = ['username', 'password', 'role'];
 
     public function username()
     {
@@ -24,7 +23,7 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-  public function dokter()
+    public function dokter()
     {
         return $this->hasOne(Dokter::class);
     }
@@ -33,6 +32,4 @@ class User extends Authenticatable
     {
         return $this->hasOne(Perawat::class);
     }
-
-
 }

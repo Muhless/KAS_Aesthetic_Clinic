@@ -46,6 +46,6 @@ $dokterHariIni = Dokter::all()->filter(function ($dokter) use ($hariIni) {
 
         // $totalPelayanan = $pelayanansHariIni->where('status', 'menunggu')->count();
 
-        return view('pages.dashboard.admin.index', compact('pelayanansHariIni', 'reservasisHariIni', 'pasienSelanjutnya', 'totalPasien', 'totalDokter', 'totalPerawat', 'totalPelayanan', 'dokterHariIni'));
+        return view('pages.dashboard.index', compact('pelayanansHariIni', 'reservasisHariIni', 'pasienSelanjutnya', 'totalPasien', 'totalDokter', 'totalPerawat', 'totalPelayanan', 'dokterHariIni'));
     }
 }

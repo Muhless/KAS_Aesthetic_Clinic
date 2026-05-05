@@ -17,6 +17,11 @@ class Dokter extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function pelayanans()
+    {
+        return $this->hasMany(Pelayanan::class);
+    }
+
     protected $casts = [
         'jadwal_praktik' => 'array',
         'tanggal_lahir' => 'date',
@@ -41,7 +46,7 @@ class Dokter extends Model
     }
 
     public function pelayanan()
-{
-    return $this->hasMany(Pelayanan::class);
-}
+    {
+        return $this->hasMany(Pelayanan::class);
+    }
 }

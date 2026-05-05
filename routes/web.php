@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DokterController;
+use App\Http\Controllers\DokterDashboardController;
 use App\Http\Controllers\KeuanganController;
 use App\Http\Controllers\KunjunganController;
 use App\Http\Controllers\PasienController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PemeriksaanController;
 use App\Http\Controllers\PendaftaranController;
 use App\Http\Controllers\PerawatController;
+use App\Http\Controllers\PerawatDashboardController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\ReservasiController;
 use App\Http\Controllers\TreatmentController;
@@ -47,6 +49,11 @@ Route::middleware('auth')->group(function () {
     Route::resource('perawat', PerawatController::class);
     Route::get('/api/perawat', [PerawatController::class, 'api']);
 
+    Route::middleware(['auth', 'role:dokter'])->group(function () {
+        Route::get('/dokter/dashboard', [DokterDashboardController::class, 'index'])->name('dokter.dashboard');
+        Route::resource('pemeriksaan', PemeriksaanController::class);
+    });
+
     Route::resource('dokter', DokterController::class);
     Route::get('/api/dokter', [DokterController::class, 'api']);
     Route::get('/dokter/detail/{id}', [DokterController::class, 'detail'])->name('dokter.detail');
@@ -72,10 +79,7 @@ Route::middleware('auth')->group(function () {
     Route::post('pembayaran/{id}/bayar', [PembayaranController::class, 'bayar'])->name('pembayaran.bayar');
 });
 
-Route::middleware(['auth', 'role:dokter'])->group(function () {
-    Route::get('/dokter/dashboard', [DokterDashboardController::class, 'index'])->name('dokter.dashboard');
-    Route::resource('pemeriksaan', PemeriksaanController::class);
-});
+Route::get('/test-dokter', [DokterDashboardController::class, 'index']);
 
 // Perawat only
 Route::middleware(['auth', 'role:perawat'])->group(function () {
