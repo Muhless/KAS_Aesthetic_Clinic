@@ -10,7 +10,7 @@ class Dokter extends Model
     use HasFactory;
 
     protected $table = 'dokters';
-    protected $fillable = ['user_id', 'nama', 'no_telepon', 'email', 'tanggal_lahir', 'spesialis', 'jadwal_praktik', 'foto'];
+    protected $fillable = ['user_id', 'nama', 'no_telepon', 'email', 'tanggal_lahir', 'spesialis', 'biaya_konsultasi', 'foto'];
 
     public function user()
     {
@@ -48,5 +48,11 @@ class Dokter extends Model
     public function pelayanan()
     {
         return $this->hasMany(Pelayanan::class);
+    }
+
+    public function panggil(Pelayanan $pelayanan)
+    {
+        $pelayanan->update(['status' => 'dipanggil']);
+        return back()->with('success', 'Pasien berhasil dipanggil.');
     }
 }

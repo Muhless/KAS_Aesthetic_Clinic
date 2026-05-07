@@ -13,7 +13,7 @@
                 </svg>
                 Tambah Antrian
             </button>
-            <x-modal.antrianModal />
+            <x-dashboard.modalantrian />
         </div>
     </div>
 

@@ -48,17 +48,42 @@
                                @endif
                            </td>
                            <td class="px-5 py-3.5 text-center">
-                               <a href="{{ route('pemeriksaan.edit', $pelayanan->pemeriksaan->id) }}"
-                                   class="inline-flex
-                                   items-center gap-1 text-xs px-3 py-1.5 bg-primary-50 hover:bg-primary-100
-                                   text-primary-600 rounded-lg transition font-medium">
-                                   <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none"
-                                       viewBox="0 0 24 24" stroke="currentColor">
-                                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                           d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                   </svg>
-                                   Periksa
-                               </a>
+                               @if ($pelayanan->status == 'menunggu')
+                                   <form action="{{ route('pelayanan.update', $pelayanan->id) }}" method="POST">
+                                       @csrf @method('PUT')
+                                       <input type="hidden" name="status" value="dipanggil">
+                                       <button type="submit" title="Panggil"
+                                           class="w-7 h-7 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-full flex items-center justify-center transition shadow-sm">
+                                           <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none"
+                                               viewBox="0 0 24 24" stroke="currentColor">
+                                               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                   d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                                           </svg>
+                                       </button>
+                                   </form>
+                               @elseif ($pelayanan->status == 'dipanggil' && $pelayanan->pemeriksaan)
+                                   <a href="{{ route('pemeriksaan.edit', $pelayanan->pemeriksaan->id) }}"
+                                       class="inline-flex items-center gap-1 text-xs px-3 py-1.5 bg-primary-50 hover:bg-primary-100 text-primary-600 rounded-lg transition font-medium">
+                                       <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none"
+                                           viewBox="0 0 24 24" stroke="currentColor">
+                                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                               d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                       </svg>
+                                       Periksa
+                                   </a>
+                               @elseif ($pelayanan->status == 'selesai' && $pelayanan->pemeriksaan)
+                                   <a href="{{ route('pemeriksaan.edit', $pelayanan->pemeriksaan->id) }}"
+                                       class="inline-flex items-center gap-1 text-xs px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-600 rounded-lg transition font-medium">
+                                       <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none"
+                                           viewBox="0 0 24 24" stroke="currentColor">
+                                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                               d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                       </svg>
+                                       Hasil
+                                   </a>
+                               @else
+                                   <span class="text-xs text-slate-300">—</span>
+                               @endif
                            </td>
                        </tr>
                    @empty

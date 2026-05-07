@@ -71,7 +71,7 @@
                       </select>
                   </div>
 
-                  {{-- Tanggal --}}
+                    {{-- Tanggal --}}
                   <div x-data x-init="flatpickr($refs.tanggalAntrian, {
                       dateFormat: 'Y-m-d',
                       altInput: true,

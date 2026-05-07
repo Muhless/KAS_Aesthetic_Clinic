@@ -7,6 +7,7 @@ use App\Http\Controllers\DokterController;
 use App\Http\Controllers\DokterDashboardController;
 use App\Http\Controllers\KeuanganController;
 use App\Http\Controllers\KunjunganController;
+use App\Http\Controllers\NakesController;
 use App\Http\Controllers\PasienController;
 use App\Http\Controllers\PelayananController;
 use App\Http\Controllers\PembayaranController;
@@ -42,10 +43,11 @@ Route::middleware('auth')->group(function () {
     Route::resource('reservasi', ReservasiController::class);
     Route::resource('pasien', PasienController::class);
     Route::resource('perawat', PerawatController::class);
-Route::middleware(['auth', 'role:dokter'])->group(function () {
-    Route::get('/dokter/dashboard', [DokterDashboardController::class, 'index'])->name('dokter.dashboard');
-    Route::resource('pemeriksaan', PemeriksaanController::class)->only(['edit', 'update']);
-});
+    Route::middleware(['auth', 'role:dokter,perawat'])->group(function () {
+        Route::get('/nakes', [NakesController::class, 'index'])->name('nakes');
+        Route::resource('pemeriksaan', PemeriksaanController::class)->only(['edit', 'update']);
+    });
+
     Route::resource('dokter', DokterController::class);
     Route::get('/dokter/detail/{id}', [DokterController::class, 'detail'])->name('dokter.detail');
     Route::resource('produk', ProdukController::class);
@@ -63,16 +65,4 @@ Route::middleware(['auth', 'role:dokter'])->group(function () {
     Route::post('pembayaran/{id}/item', [PembayaranController::class, 'addItem'])->name('pembayaran.addItem');
     Route::delete('pembayaran/item/{id}', [PembayaranController::class, 'removeItem'])->name('pembayaran.removeItem');
     Route::post('pembayaran/{id}/bayar', [PembayaranController::class, 'bayar'])->name('pembayaran.bayar');
-});
-
-Route::get('/test-dokter', [DokterDashboardController::class, 'index']);
-
-// Perawat only
-Route::middleware(['auth', 'role:perawat'])->group(function () {
-    Route::get('/perawat/dashboard', [PerawatDashboardController::class, 'index'])->name('perawat.dashboard');
-});
-
-// Bisa diakses admin dan dokter
-Route::middleware(['auth', 'role:admin,dokter'])->group(function () {
-    Route::resource('pelayanan', PelayananController::class);
 });

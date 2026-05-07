@@ -10,7 +10,7 @@ use App\Models\Pemeriksaan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class DokterDashboardController extends Controller
+class NakesController extends Controller
 {
     public function index()
     {
@@ -29,7 +29,7 @@ class DokterDashboardController extends Controller
         $treatments = Treatment::where('status', 'tersedia')->orderBy('nama')->get();
         $produks    = Produk::where('status', 'tersedia')->orderBy('nama')->get();
 
-        return view('pages.dokter.dashboard', compact(
+        return view('pages.nakes.index', compact(
             'dokter',
             'pelayanans',
             'totalMenunggu',

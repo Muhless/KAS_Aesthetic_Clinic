@@ -4,17 +4,6 @@
             <h2 class="font-semibold text-slate-800 text-sm">Pasien Hari Ini</h2>
             <p class="text-xs text-slate-400 mt-0.5">{{ now()->translatedFormat('l, d F Y') }}</p>
         </div>
-        <div x-data="{ open: false }">
-            <button @click="open = true"
-                class="inline-flex items-center gap-2 cursor-pointer text-sm px-4 py-2 bg-primary-600 hover:bg-primary-700 active:bg-primary-800 text-white rounded-lg shadow transition-all duration-150">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
-                </svg>
-                Tambah Antrian
-            </button>
-            <x-modal.antrianModal />
-        </div>
     </div>
 
     <div class="overflow-x-auto">

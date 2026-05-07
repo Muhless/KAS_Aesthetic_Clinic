@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('perawat', function (Blueprint $table) {
+        Schema::create('perawats', function (Blueprint $table) {
             $table->id();
 
             $table->foreignId('user_id')
@@ -19,9 +19,6 @@ return new class extends Migration
             $table->string('no_telepon')->nullable();
             $table->string('email')->nullable();
             $table->date('tanggal_lahir')->nullable();
-
-            $table->string('sip')->nullable();
-            $table->string('jadwal')->nullable();
             $table->string('foto')->nullable();
 
             $table->timestamps();

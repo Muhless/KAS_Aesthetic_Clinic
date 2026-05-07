@@ -9,36 +9,35 @@ return new class extends Migration {
     {
         if (!Schema::hasTable('reservasis')) {
             # code...
-        Schema::create('reservasis', function (Blueprint $table) {
-            $table->id();
+            Schema::create('reservasis', function (Blueprint $table) {
+                $table->id();
 
+                // Relasi
+                $table->unsignedBigInteger('user_id')->nullable();
+                $table->unsignedBigInteger('pasien_id')->nullable();
+                $table->unsignedBigInteger('dokter_id')->nullable();
+                $table->unsignedBigInteger('treatment_id')->nullable();
 
-            // Relasi
-              $table->unsignedBigInteger('user_id')->nullable();
-$table->unsignedBigInteger('pasien_id')->nullable();
-$table->unsignedBigInteger('dokter_id')->nullable();
-$table->unsignedBigInteger('treatment_id')->nullable();
+                $table->foreign('user_id')->references('id')->on('users')->nullOnDelete();
+                $table->foreign('pasien_id')->references('id')->on('pasiens')->nullOnDelete();
+                $table->foreign('dokter_id')->references('id')->on('dokters')->nullOnDelete();
+                $table->foreign('treatment_id')->references('id')->on('treatments')->nullOnDelete();
 
-$table->foreign('user_id')->references('id')->on('users')->nullOnDelete();
-$table->foreign('pasien_id')->references('id')->on('pasiens')->nullOnDelete();
-$table->foreign('dokter_id')->references('id')->on('dokters')->nullOnDelete();
-$table->foreign('treatment_id')->references('id')->on('treatments')->nullOnDelete();
+                // Data reservasi
+                $table->date('tanggal');
+                $table->time('waktu')->nullable();
+                $table->string('status')->default('tertunda'); // tertunda, diproses, selesai, dibatalkan
 
-            // Data reservasi
-            $table->date('tanggal');
-            $table->time('waktu')->nullable();
-            $table->string('status')->default('tertunda'); // tertunda, diproses, selesai, dibatalkan
+                // Tambahan keluhan pasien
+                $table->text('keluhan')->nullable();
 
-            // Tambahan keluhan pasien
-            $table->text('keluhan')->nullable();
+                // Data pembatalan
+                $table->text('cancel_reason')->nullable();
+                $table->string('cancelled_by')->nullable(); // admin/pasien/dokter
 
-            // Data pembatalan
-            $table->text('cancel_reason')->nullable();
-            $table->string('cancelled_by')->nullable(); // admin/pasien/dokter
-
-            $table->timestamps();
-        });
-        }   
+                $table->timestamps();
+            });
+        }
     }
 
     public function down(): void

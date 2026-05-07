@@ -8,6 +8,7 @@ use App\Models\Dokter;
 use App\Models\Pembayaran;
 use App\Models\Pemeriksaan;
 use App\Models\Produk;
+use App\Models\Reservasi;
 use App\Models\Treatment;
 use Illuminate\Http\Request;
 
@@ -59,7 +60,7 @@ class PelayananController extends Controller
         ]);
 
         if ($request->reservasi_id) {
-            \App\Models\Reservasi::findOrFail($request->reservasi_id)->update(['status' => 'selesai']);
+            Reservasi::findOrFail($request->reservasi_id)->update(['status' => 'selesai']);
         }
 
         return redirect()->back()->with('success', 'Pelayanan berhasil ditambahkan.');

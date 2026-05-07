@@ -89,6 +89,6 @@ class PemeriksaanController extends Controller
         // Update status pelayanan jadi selesai
         $pemeriksaan->pelayanan->update(['status' => 'selesai']);
 
-        return redirect()->route('pelayanan.index')->with('success', 'Pemeriksaan berhasil disimpan.');
+        return redirect()->route('nakes')->with('success', 'Pemeriksaan berhasil disimpan.');
     }
 }

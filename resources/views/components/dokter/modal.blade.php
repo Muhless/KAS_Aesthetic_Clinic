@@ -204,93 +204,26 @@
                         @enderror
                     </div>
 
-                    {{-- STR --}}
-                    {{-- <div>
-                        <label for="str" class="block text-sm font-medium text-gray-700 mb-1.5">
-                            No. STR
+                    {{-- Biaya Konsultasi --}}
+                    <div class="sm:col-span-2">
+                        <label for="biaya_konsultasi" class="block text-sm font-medium text-gray-700 mb-1.5">
+                            Biaya Konsultasi
                         </label>
-                        <input type="text" id="str" name="str" value="{{ old('str') }}"
-                            placeholder="Nomor STR dokter"
-                            class="w-full px-4 py-2.5 text-sm border border-gray-200 rounded-lg bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent transition placeholder-gray-400 @error('str') border-red-400 @enderror">
-                        @error('str')
+                        <div class="relative">
+                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm font-medium">
+                                Rp
+                            </span>
+                            <input type="number" id="biaya_konsultasi" name="biaya_konsultasi"
+                                value="{{ old('biaya_konsultasi', 0) }}" placeholder="0" min="0"
+                                class="w-full pl-10 pr-4 py-2.5 text-sm border border-gray-200 rounded-lg bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent transition placeholder-gray-400 @error('biaya_konsultasi') border-red-400 @enderror">
+                        </div>
+                        @error('biaya_konsultasi')
                             <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
                         @enderror
-                    </div> --}}
-
-                    {{-- SIP --}}
-                    {{-- <div>
-                        <label for="sip" class="block text-sm font-medium text-gray-700 mb-1.5">
-                            No. SIP
-                        </label>
-                        <input type="text" id="sip" name="sip" value="{{ old('sip') }}"
-                            placeholder="Nomor SIP dokter"
-                            class="w-full px-4 py-2.5 text-sm border border-gray-200 rounded-lg bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent transition placeholder-gray-400 @error('sip') border-red-400 @enderror">
-                        @error('sip')
-                            <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
-                        @enderror
-                    </div> --}}
+                    </div>
 
                 </div>
 
-                {{-- <div class="border-t border-gray-100"></div> --}}
-
-                {{-- Jadwal Praktik --}}
-                {{-- <div x-data="{
-                  hariDipilih: [],
-                    hariList: ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
-                    toggle(hari) {
-                        const idx = this.hariDipilih.indexOf(hari);
-                        if (idx >= 0) this.hariDipilih.splice(idx, 1);
-                        else this.hariDipilih.push(hari);
-                    },
-                    isActive(hari) {
-                        return this.hariDipilih.includes(hari);
-                    }
-                }">
-                    <label class="block text-sm font-medium text-gray-700 mb-3">
-                        Jadwal Praktik
-                    </label>
-
-                    <div class="flex flex-wrap gap-2">
-                        <template x-for="hari in hariList" :key="hari">
-                            <button type="button" @click="toggle(hari)"
-                                :class="isActive(hari) ?
-                                    'bg-primary-600 text-white border-primary-600 shadow-sm' :
-                                    'bg-white text-gray-600 border-gray-200 hover:border-primary-300 hover:text-primary-600'"
-                                class="px-3.5 py-1.5 text-sm font-medium rounded-lg border transition select-none"
-                                x-text="hari">
-                            </button>
-                        </template>
-                    </div>
-
-                    <div class="mt-3 min-h-[24px]">
-                        <template x-if="hariDipilih.length > 0">
-                            <div class="flex items-center gap-1.5 flex-wrap">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-primary-500 shrink-0"
-                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                </svg>
-                                <span class="text-xs text-gray-500">Praktik:</span>
-                                <template x-for="hari in hariDipilih" :key="hari">
-                                    <span
-                                        class="text-xs bg-primary-50 text-primary-700 px-2 py-0.5 rounded-full font-medium"
-                                        x-text="hari">
-                                    </span>
-                                </template>
-                            </div>
-                        </template>
-                        <template x-if="hariDipilih.length === 0">
-                            <p class="text-xs text-gray-400">Belum ada hari dipilih</p>
-                        </template>
-                    </div>
-
-                    <input type="hidden" name="jadwal_praktik" :value="JSON.stringify(hariDipilih)">
-
-                    @error('jadwal_praktik')
-                        <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
-                    @enderror
-                </div> --}}
 
                 <div class="border-t border-gray-100"></div>
 

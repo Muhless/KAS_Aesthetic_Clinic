@@ -32,8 +32,8 @@ class AuthController extends Controller
             // Redirect berdasarkan role
             return match (Auth::user()->role) {
                 'admin' => redirect()->route('dashboard'),
-                'dokter' => redirect()->route('dokter.dashboard'),
-                'perawat' => redirect()->route('perawat.dashboard'),
+                'dokter' => redirect()->route('nakes'),
+                'perawat' => redirect()->route('dashboard'),
                 default => redirect('/'),
             };
         }

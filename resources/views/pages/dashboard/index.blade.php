@@ -36,8 +36,8 @@
             {{-- Kiri --}}
             <div class="lg:col-span-2 space-y-5">
                 {{-- <x-card.pasienSelanjutnyaCard :pasienSelanjutnya="$pasienSelanjutnya"/> --}}
-                <x-table.antrianTable :pelayanansHariIni="$pelayanansHariIni" />
-                <x-table.pasienTable :pelayanansHariIni="$pelayanansHariIni" />
+                <x-dashboard.antriantable :pelayanansHariIni="$pelayanansHariIni" />
+                <x-dashboard.pasientable :pelayanansHariIni="$pelayanansHariIni" />
             </div>
 
             {{-- Kanan --}}
