@@ -39,41 +39,27 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
-
     Route::resource('reservasi', ReservasiController::class);
-    Route::get('/api/reservasi', [ReservasiController::class, 'api']);
-
     Route::resource('pasien', PasienController::class);
-    Route::get('/api/pasien', [PasienController::class, 'api']);
-
     Route::resource('perawat', PerawatController::class);
-    Route::get('/api/perawat', [PerawatController::class, 'api']);
-
-    Route::middleware(['auth', 'role:dokter'])->group(function () {
-        Route::get('/dokter/dashboard', [DokterDashboardController::class, 'index'])->name('dokter.dashboard');
-        Route::resource('pemeriksaan', PemeriksaanController::class);
-    });
-
+Route::middleware(['auth', 'role:dokter'])->group(function () {
+    Route::get('/dokter/dashboard', [DokterDashboardController::class, 'index'])->name('dokter.dashboard');
+    Route::resource('pemeriksaan', PemeriksaanController::class)->only(['edit', 'update']);
+});
     Route::resource('dokter', DokterController::class);
-    Route::get('/api/dokter', [DokterController::class, 'api']);
     Route::get('/dokter/detail/{id}', [DokterController::class, 'detail'])->name('dokter.detail');
-
     Route::resource('produk', ProdukController::class);
-    Route::get('/api/produk', [ProdukController::class, 'api']);
-
     Route::resource('treatment', TreatmentController::class);
-    Route::get('/api/treatment', [TreatmentController::class, 'api']);
 
-    Route::get('/keuangan', [KeuanganController::class, 'index'])->name('keuangan.index');
-    Route::get('/api/keuangan', [KeuanganController::class, 'api']);
-
-    Route::resource('pelayanan', PelayananController::class);
-    Route::resource('pembayaran', PembayaranController::class);
-    Route::post('pemeriksaan', [PemeriksaanController::class, 'store'])->name('pemeriksaan.store');
+    Route::resource('keuangan', KeuanganController::class);
+    Route::patch('/keuangan/{pembayaran}/lunas', [KeuanganController::class, 'lunas'])->name('keuangan.lunas');
 
     Route::resource('pelayanan', PelayananController::class);
     Route::resource('pembayaran', PembayaranController::class);
-    Route::post('pemeriksaan', [PemeriksaanController::class, 'store'])->name('pemeriksaan.store');
+
+    Route::resource('pelayanan', PelayananController::class);
+    Route::resource('pembayaran', PembayaranController::class);
+
     Route::post('pembayaran/{id}/item', [PembayaranController::class, 'addItem'])->name('pembayaran.addItem');
     Route::delete('pembayaran/item/{id}', [PembayaranController::class, 'removeItem'])->name('pembayaran.removeItem');
     Route::post('pembayaran/{id}/bayar', [PembayaranController::class, 'bayar'])->name('pembayaran.bayar');

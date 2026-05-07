@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Halaman Pelayanan - KAS Aesthetic Clinic')
+@section('title', 'Halaman Pelayanan')
 
 @section('content')
     <div class="p-6" x-data="{ open: false }">
@@ -14,7 +14,8 @@
             </div>
             <button @click="open = true"
                 class="inline-flex items-center gap-2 cursor-pointer text-sm px-5 py-2.5 bg-primary-600 hover:bg-primary-700 text-white rounded-lg shadow transition-all duration-150">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
                 </svg>
                 Tambah Walk-in
@@ -38,19 +39,33 @@
         </div>
 
         {{-- Tabel --}}
-        @if ($pelayanans->isNotEmpty())
+        @if ($pelayanans)
             <div class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm">
                         <thead>
                             <tr class="bg-primary-50/50 border-b border-primary-100">
-                                <th class="px-4 py-3.5 text-left text-xs font-semibold text-primary-500 uppercase tracking-wider w-16">No</th>
-                                <th class="px-4 py-3.5 text-left text-xs font-semibold text-primary-500 uppercase tracking-wider">Pasien</th>
-                                <th class="px-4 py-3.5 text-left text-xs font-semibold text-primary-500 uppercase tracking-wider">Dokter</th>
-                                <th class="px-4 py-3.5 text-left text-xs font-semibold text-primary-500 uppercase tracking-wider">Keluhan</th>
-                                <th class="px-4 py-3.5 text-left text-xs font-semibold text-primary-500 uppercase tracking-wider">Sumber</th>
-                                <th class="px-4 py-3.5 text-left text-xs font-semibold text-primary-500 uppercase tracking-wider">Status</th>
-                                <th class="px-4 py-3.5 text-center text-xs font-semibold text-primary-500 uppercase tracking-wider">Aksi</th>
+                                <th
+                                    class="px-4 py-3.5 text-left text-xs font-semibold text-primary-500 uppercase tracking-wider w-16">
+                                    No</th>
+                                <th
+                                    class="px-4 py-3.5 text-left text-xs font-semibold text-primary-500 uppercase tracking-wider">
+                                    Pasien</th>
+                                <th
+                                    class="px-4 py-3.5 text-left text-xs font-semibold text-primary-500 uppercase tracking-wider">
+                                    Dokter</th>
+                                <th
+                                    class="px-4 py-3.5 text-left text-xs font-semibold text-primary-500 uppercase tracking-wider">
+                                    Keluhan</th>
+                                <th
+                                    class="px-4 py-3.5 text-left text-xs font-semibold text-primary-500 uppercase tracking-wider">
+                                    Sumber</th>
+                                <th
+                                    class="px-4 py-3.5 text-left text-xs font-semibold text-primary-500 uppercase tracking-wider">
+                                    Status</th>
+                                <th
+                                    class="px-4 py-3.5 text-center text-xs font-semibold text-primary-500 uppercase tracking-wider">
+                                    Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-50">
@@ -59,7 +74,8 @@
 
                                     {{-- Nomor --}}
                                     <td class="px-4 py-3.5">
-                                        <div class="w-9 h-9 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center font-bold text-sm">
+                                        <div
+                                            class="w-9 h-9 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center font-bold text-sm">
                                             {{ $pelayanan->nomor_antrian }}
                                         </div>
                                     </td>
@@ -67,7 +83,8 @@
                                     {{-- Pasien --}}
                                     <td class="px-4 py-3.5">
                                         <div class="flex items-center gap-2.5">
-                                            <div class="w-8 h-8 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center font-semibold text-xs shrink-0">
+                                            <div
+                                                class="w-8 h-8 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center font-semibold text-xs shrink-0">
                                                 {{ strtoupper(substr($pelayanan->pasien->nama, 0, 1)) }}
                                             </div>
                                             <span class="font-medium text-gray-800">{{ $pelayanan->pasien->nama }}</span>
@@ -87,11 +104,13 @@
                                     {{-- Sumber --}}
                                     <td class="px-4 py-3.5">
                                         @if ($pelayanan->reservasi_id)
-                                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-violet-50 text-violet-700">
+                                            <span
+                                                class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-violet-50 text-violet-700">
                                                 Reservasi
                                             </span>
                                         @else
-                                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-600">
+                                            <span
+                                                class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-600">
                                                 Walk-in
                                             </span>
                                         @endif
@@ -100,17 +119,20 @@
                                     {{-- Status --}}
                                     <td class="px-4 py-3.5">
                                         @if ($pelayanan->status == 'menunggu')
-                                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-yellow-50 text-yellow-700">
+                                            <span
+                                                class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-yellow-50 text-yellow-700">
                                                 <span class="w-1.5 h-1.5 rounded-full bg-yellow-400"></span>
                                                 Menunggu
                                             </span>
                                         @elseif ($pelayanan->status == 'dipanggil')
-                                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700">
+                                            <span
+                                                class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700">
                                                 <span class="w-1.5 h-1.5 rounded-full bg-blue-400"></span>
                                                 Dipanggil
                                             </span>
                                         @else
-                                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-green-50 text-green-700">
+                                            <span
+                                                class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-green-50 text-green-700">
                                                 <span class="w-1.5 h-1.5 rounded-full bg-green-400"></span>
                                                 Selesai
                                             </span>
@@ -122,24 +144,30 @@
                                         <div class="flex items-center justify-center gap-2">
 
                                             {{-- Detail --}}
-                                            <a href="{{ route('pelayanan.show', $pelayanan->id) }}"
-                                                title="Detail"
+                                            <a href="{{ route('pelayanan.show', $pelayanan->id) }}" title="Detail"
                                                 class="w-8 h-8 bg-primary-50 hover:bg-primary-100 text-primary-600 rounded-full flex items-center justify-center transition shadow-sm">
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                                    fill="currentColor" class="w-4 h-4">
                                                     <path d="M10 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
-                                                    <path fill-rule="evenodd" d="M.664 10.59a1.651 1.651 0 0 1 0-1.186A10.004 10.004 0 0 1 10 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0 1 10 17c-4.257 0-7.893-2.66-9.336-6.41Z" clip-rule="evenodd" />
+                                                    <path fill-rule="evenodd"
+                                                        d="M.664 10.59a1.651 1.651 0 0 1 0-1.186A10.004 10.004 0 0 1 10 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0 1 10 17c-4.257 0-7.893-2.66-9.336-6.41Z"
+                                                        clip-rule="evenodd" />
                                                 </svg>
                                             </a>
 
                                             {{-- Panggil --}}
                                             @if ($pelayanan->status == 'menunggu')
-                                                <form action="{{ route('pelayanan.update', $pelayanan->id) }}" method="POST">
+                                                <form action="{{ route('pelayanan.update', $pelayanan->id) }}"
+                                                    method="POST">
                                                     @csrf @method('PUT')
                                                     <input type="hidden" name="status" value="dipanggil">
                                                     <button type="submit" title="Panggil"
                                                         class="w-8 h-8 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-full flex items-center justify-center transition shadow-sm">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4"
+                                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2"
+                                                                d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
                                                         </svg>
                                                     </button>
                                                 </form>
@@ -151,8 +179,11 @@
                                                 @csrf @method('DELETE')
                                                 <button type="submit" title="Hapus"
                                                     class="w-8 h-8 bg-red-50 hover:bg-red-100 text-red-600 rounded-full flex items-center justify-center transition shadow-sm">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
-                                                        <path fill-rule="evenodd" d="M8.75 1A2.75 2.75 0 0 0 6 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 1 0 .23 1.482l.149-.022.841 10.518A2.75 2.75 0 0 0 7.596 19h4.807a2.75 2.75 0 0 0 2.742-2.53l.841-10.52.149.023a.75.75 0 0 0 .23-1.482A41.03 41.03 0 0 0 14 4.193V3.75A2.75 2.75 0 0 0 11.25 1h-2.5ZM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4ZM8.58 7.72a.75.75 0 0 0-1.5.06l.3 7.5a.75.75 0 1 0 1.5-.06l-.3-7.5Zm4.34.06a.75.75 0 1 0-1.5-.06l-.3 7.5a.75.75 0 1 0 1.5.06l.3-7.5Z" clip-rule="evenodd" />
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                                        fill="currentColor" class="w-4 h-4">
+                                                        <path fill-rule="evenodd"
+                                                            d="M8.75 1A2.75 2.75 0 0 0 6 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 1 0 .23 1.482l.149-.022.841 10.518A2.75 2.75 0 0 0 7.596 19h4.807a2.75 2.75 0 0 0 2.742-2.53l.841-10.52.149.023a.75.75 0 0 0 .23-1.482A41.03 41.03 0 0 0 14 4.193V3.75A2.75 2.75 0 0 0 11.25 1h-2.5ZM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4ZM8.58 7.72a.75.75 0 0 0-1.5.06l.3 7.5a.75.75 0 1 0 1.5-.06l-.3-7.5Zm4.34.06a.75.75 0 1 0-1.5-.06l-.3 7.5a.75.75 0 1 0 1.5.06l.3-7.5Z"
+                                                            clip-rule="evenodd" />
                                                     </svg>
                                                 </button>
                                             </form>
@@ -166,18 +197,22 @@
                 </div>
             </div>
 
-        {{-- Empty State --}}
+            {{-- Empty State --}}
         @else
-            <div class="bg-white rounded-xl border border-gray-100 shadow-sm flex flex-col items-center justify-center py-24 px-6">
+            <div
+                class="bg-white rounded-xl border border-gray-100 shadow-sm flex flex-col items-center justify-center py-24 px-6">
                 <div class="relative mb-6">
                     <div class="w-28 h-28 rounded-full bg-primary-50 flex items-center justify-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-14 h-14 text-primary-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-14 h-14 text-primary-300" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2"
                                 d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
                         </svg>
                     </div>
-                    <div class="absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-primary-600 flex items-center justify-center shadow-md">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div
+                        class="absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-primary-600 flex items-center justify-center shadow-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-white" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
                         </svg>
                     </div>
@@ -188,7 +223,8 @@
                 </p>
                 <button @click="open = true"
                     class="inline-flex items-center gap-2 text-sm px-6 py-2.5 bg-primary-600 hover:bg-primary-700 text-white rounded-lg shadow transition">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
                     </svg>
                     Tambah Walk-in
@@ -197,14 +233,10 @@
         @endif
 
         {{-- Modal Walk-in --}}
-        <div x-show="open" x-cloak
-            class="fixed inset-0 z-50 flex items-center justify-center"
-            x-transition:enter="transition ease-out duration-200"
-            x-transition:enter-start="opacity-0"
-            x-transition:enter-end="opacity-100"
-            x-transition:leave="transition ease-in duration-150"
-            x-transition:leave-start="opacity-100"
-            x-transition:leave-end="opacity-0">
+        <div x-show="open" x-cloak class="fixed inset-0 z-50 flex items-center justify-center"
+            x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-150"
+            x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
 
             <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" @click="open = false"></div>
 
@@ -214,14 +246,14 @@
                 x-transition:enter-end="opacity-100 scale-100 translate-y-0"
                 x-transition:leave="transition ease-in duration-150"
                 x-transition:leave-start="opacity-100 scale-100 translate-y-0"
-                x-transition:leave-end="opacity-0 scale-95 translate-y-4"
-                @click.stop>
+                x-transition:leave-end="opacity-0 scale-95 translate-y-4" @click.stop>
 
                 {{-- Header --}}
                 <div class="flex items-center justify-between px-6 py-5 bg-gradient-to-r from-primary-600 to-primary-500">
                     <div class="flex items-center gap-3">
                         <div class="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
@@ -230,8 +262,10 @@
                     </div>
                     <button type="button" @click="open = false"
                         class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20 transition text-white">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </button>
                 </div>
@@ -271,23 +305,23 @@
                         </div>
 
                         {{-- Tanggal --}}
-                        <div x-data x-init="
-                            flatpickr($refs.tanggalPelayanan, {
-                                dateFormat: 'Y-m-d',
-                                altInput: true,
-                                altFormat: 'd F Y',
-                                locale: 'id',
-                                defaultDate: 'today',
-                                allowInput: false,
-                                disableMobile: true,
-                            })
-                        ">
+                        <div x-data x-init="flatpickr($refs.tanggalPelayanan, {
+                            dateFormat: 'Y-m-d',
+                            altInput: true,
+                            altFormat: 'd F Y',
+                            locale: 'id',
+                            defaultDate: 'today',
+                            allowInput: false,
+                            disableMobile: true,
+                        })">
                             <label class="block text-sm font-medium text-gray-700 mb-1.5">
                                 Tanggal <span class="text-red-500">*</span>
                             </label>
                             <div class="relative">
-                                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none z-10">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <span
+                                    class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none z-10">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                     </svg>
@@ -304,8 +338,7 @@
                         {{-- Keluhan --}}
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1.5">Keluhan</label>
-                            <textarea name="keluhan" rows="3"
-                                placeholder="Deskripsikan keluhan pasien..."
+                            <textarea name="keluhan" rows="3" placeholder="Deskripsikan keluhan pasien..."
                                 class="w-full px-4 py-2.5 text-sm border border-gray-200 rounded-lg bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent transition placeholder-gray-400 resize-none"></textarea>
                         </div>
 
@@ -319,8 +352,10 @@
                         </button>
                         <button type="submit"
                             class="px-6 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 rounded-lg shadow-sm transition flex items-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M5 13l4 4L19 7" />
                             </svg>
                             Simpan
                         </button>

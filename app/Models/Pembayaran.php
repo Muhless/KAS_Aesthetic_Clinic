@@ -15,4 +15,5 @@ class Pembayaran extends Model
 
     public function pelayanan() { return $this->belongsTo(Pelayanan::class); }
     public function items() { return $this->hasMany(PembayaranItem::class); }
+
 }

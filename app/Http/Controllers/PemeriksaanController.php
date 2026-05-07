@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 
 class PemeriksaanController extends Controller
 {
+    public function index()
+    {
+        return redirect()->route('pemeriksaan.index');
+    }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -59,5 +64,31 @@ class PemeriksaanController extends Controller
         }
 
         return redirect()->back()->with('success', 'Pemeriksaan berhasil disimpan.');
+    }
+
+    public function edit(Pemeriksaan $pemeriksaan)
+    {
+        $pemeriksaan->load(['pelayanan.pasien']);
+        $treatments = \App\Models\Treatment::orderBy('nama')->get();
+
+        return view('pages.pemeriksaan.edit', compact('pemeriksaan', 'treatments'));
+    }
+
+    public function update(Request $request, Pemeriksaan $pemeriksaan)
+    {
+        $request->validate([
+            'treatment_id' => 'nullable|exists:treatments,id',
+            'diagnosa' => 'nullable|string',
+            'tindakan' => 'nullable|string',
+            'resep' => 'nullable|string',
+            'catatan' => 'nullable|string',
+        ]);
+
+        $pemeriksaan->update($request->only(['treatment_id', 'diagnosa', 'tindakan', 'resep', 'catatan']));
+
+        // Update status pelayanan jadi selesai
+        $pemeriksaan->pelayanan->update(['status' => 'selesai']);
+
+        return redirect()->route('pelayanan.index')->with('success', 'Pemeriksaan berhasil disimpan.');
     }
 }

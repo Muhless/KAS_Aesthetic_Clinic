@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 
 class PelayananController extends Controller
 {
+    // ini di halaman pembayaran
     public function show($id)
     {
         $pelayanan = Pelayanan::with(['pasien', 'dokter', 'pemeriksaan.treatment', 'pembayaran.items.treatment', 'pembayaran.items.produk'])->findOrFail($id);
@@ -20,7 +21,7 @@ class PelayananController extends Controller
         $treatments = Treatment::orderBy('nama')->get();
         $produks = Produk::orderBy('nama')->get();
 
-        return view('pages.pelayanan.show', compact('pelayanan', 'treatment', 'produk'));
+        return view('pages.pelayanan.detail', compact('pelayanan', 'treatments', 'produks'));
     }
 
     public function index()
@@ -33,7 +34,7 @@ class PelayananController extends Controller
         $pasiens = Pasien::orderBy('nama')->get();
         $dokters = Dokter::orderBy('nama')->get();
 
-        return view('pages.pelayanan.index', compact('pelayanan', 'pasien', 'dokter'));
+        return view('pages.pelayanan.index', compact('pelayanans', 'pasiens', 'dokters'));
     }
 
     public function store(Request $request)
@@ -64,31 +65,31 @@ class PelayananController extends Controller
         return redirect()->back()->with('success', 'Pelayanan berhasil ditambahkan.');
     }
 
-   public function update(Request $request, $id)
-{
-    $pelayanan = Pelayanan::findOrFail($id);
-    $pelayanan->update(['status' => $request->status]);
+    public function update(Request $request, $id)
+    {
+        $pelayanan = Pelayanan::findOrFail($id);
+        $pelayanan->update(['status' => $request->status]);
 
-    if ($request->status == 'dipanggil') {
-        // Auto buat pembayaran
-        if (!$pelayanan->pembayaran) {
-            Pembayaran::create([
-                'pelayanan_id' => $pelayanan->id,
-                'total_harga'  => 0,
-                'status'       => 'belum_bayar',
-            ]);
+        if ($request->status == 'dipanggil') {
+            // Auto buat pembayaran
+            if (!$pelayanan->pembayaran) {
+                Pembayaran::create([
+                    'pelayanan_id' => $pelayanan->id,
+                    'total_harga' => 0,
+                    'status' => 'belum_bayar',
+                ]);
+            }
+
+            // Auto buat pemeriksaan (kosong dulu, diisi dokter)
+            if (!$pelayanan->pemeriksaan) {
+                Pemeriksaan::create([
+                    'pelayanan_id' => $pelayanan->id,
+                ]);
+            }
         }
 
-        // Auto buat pemeriksaan (kosong dulu, diisi dokter)
-        if (!$pelayanan->pemeriksaan) {
-            Pemeriksaan::create([
-                'pelayanan_id' => $pelayanan->id,
-            ]);
-        }
+        return redirect()->back()->with('success', 'Status pelayanan diperbarui.');
     }
-
-    return redirect()->back()->with('success', 'Status pelayanan diperbarui.');
-}
 
     public function destroy($id)
     {

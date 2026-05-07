@@ -14,32 +14,19 @@ class KeuanganController extends Controller
         $tahun = $request->tahun ?? now()->year;
 
         // Pemasukan bulan ini
-        $pemasukanBulanIni = Pembayaran::where('status', 'lunas')
-            ->whereMonth('dibayar_pada', $bulan)
-            ->whereYear('dibayar_pada', $tahun)
-            ->sum('total_harga');
+        $pemasukanBulanIni = Pembayaran::where('status', 'lunas')->whereMonth('dibayar_pada', $bulan)->whereYear('dibayar_pada', $tahun)->sum('total_harga');
 
         // Pemasukan hari ini
-        $pemasukanHariIni = Pembayaran::where('status', 'lunas')
-            ->whereDate('dibayar_pada', today())
-            ->sum('total_harga');
+        $pemasukanHariIni = Pembayaran::where('status', 'lunas')->whereDate('dibayar_pada', today())->sum('total_harga');
 
         // Total transaksi bulan ini
-        $totalTransaksi = Pembayaran::where('status', 'lunas')
-            ->whereMonth('dibayar_pada', $bulan)
-            ->whereYear('dibayar_pada', $tahun)
-            ->count();
+        $totalTransaksi = Pembayaran::where('status', 'lunas')->whereMonth('dibayar_pada', $bulan)->whereYear('dibayar_pada', $tahun)->count();
 
         // Belum dibayar
         $totalBelumBayar = Pembayaran::where('status', 'belum_bayar')->count();
 
         // Pemasukan per metode bayar bulan ini
-        $perMetode = Pembayaran::where('status', 'lunas')
-            ->whereMonth('dibayar_pada', $bulan)
-            ->whereYear('dibayar_pada', $tahun)
-            ->selectRaw('metode_bayar, SUM(total_harga) as total, COUNT(*) as jumlah')
-            ->groupBy('metode_bayar')
-            ->get();
+        $perMetode = Pembayaran::where('status', 'lunas')->whereMonth('dibayar_pada', $bulan)->whereYear('dibayar_pada', $tahun)->selectRaw('metode_bayar, SUM(total_harga) as total, COUNT(*) as jumlah')->groupBy('metode_bayar')->get();
 
         // Daftar transaksi bulan ini
         $transaksis = Pembayaran::with(['pelayanan.pasien', 'pelayanan.dokter'])
@@ -50,24 +37,29 @@ class KeuanganController extends Controller
             ->get();
 
         // Pemasukan per hari (untuk grafik)
-        $perHari = Pembayaran::where('status', 'lunas')
-            ->whereMonth('dibayar_pada', $bulan)
-            ->whereYear('dibayar_pada', $tahun)
-            ->selectRaw('DATE(dibayar_pada) as tanggal, SUM(total_harga) as total')
-            ->groupBy('tanggal')
-            ->orderBy('tanggal')
-            ->get();
+        $perHari = Pembayaran::where('status', 'lunas')->whereMonth('dibayar_pada', $bulan)->whereYear('dibayar_pada', $tahun)->selectRaw('DATE(dibayar_pada) as tanggal, SUM(total_harga) as total')->groupBy('tanggal')->orderBy('tanggal')->get();
 
-        return view('pages.keuangan.index', compact(
-            'pemasukanBulanIni',
-            'pemasukanHariIni',
-            'totalTransaksi',
-            'totalBelumBayar',
-            'perMetode',
-            'transaksis',
-            'perHari',
-            'bulan',
-            'tahun',
-        ));
+        $pembayarans = Pembayaran::latest()->paginate(15);
+
+        return view('pages.keuangan.index', compact('pemasukanBulanIni', 'pemasukanHariIni', 'totalTransaksi', 'totalBelumBayar', 'pembayarans', 'perMetode', 'transaksis', 'perHari', 'bulan', 'tahun'));
+    }
+
+    public function show(Pembayaran $pembayaran)
+    {
+        $pembayaran->load(['pelayanan.pasien', 'pelayanan.dokter', 'pelayanan.pemeriksaan.treatment']);
+
+        return view('pages.keuangan.detail', compact('pembayaran'));
+    }
+
+    public function lunas(Request $request, Pembayaran $pembayaran)
+    {
+        $pembayaran->update([
+            'status' => 'lunas',
+            'metode_bayar' => 'cash',
+            'dibayar_pada' => now(),
+            'catatan' => $request->catatan,
+        ]);
+
+        return redirect()->route('keuangan.index')->with('success', 'Pembayaran berhasil ditandai lunas.');
     }
 }

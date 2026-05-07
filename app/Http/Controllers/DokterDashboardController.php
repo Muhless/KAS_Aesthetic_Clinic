@@ -14,10 +14,8 @@ class DokterDashboardController extends Controller
 {
     public function index()
     {
-        // Ambil dokter yang sedang login via relasi user
         $dokter = Auth::user()->dokter;
 
-        // Pelayanan hari ini untuk dokter ini
         $pelayanans = Pelayanan::with(['pasien', 'pemeriksaan', 'pembayaran'])
             ->where('dokter_id', $dokter?->id)
             ->whereDate('tanggal', today())
