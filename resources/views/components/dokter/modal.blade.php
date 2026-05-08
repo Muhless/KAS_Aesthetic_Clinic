@@ -27,7 +27,8 @@
                             d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                     </svg>
                 </div>
-                <h2 class="text-lg font-semibold text-white tracking-wide">Tambah Dokter</h2>
+                <h2 class="text-lg font-semibold text-white tracking-wide"
+                    x-text="dokter.id ? 'Edit Dokter' : 'Tambah Dokter'"></h2>
             </div>
             <button @click="open = false"
                 class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20 transition text-white">
@@ -39,13 +40,17 @@
         </div>
 
         {{-- Form --}}
-        <form action="{{ route('dokter.store') }}" method="POST" enctype="multipart/form-data">
+        <form method="POST" :action="dokter.id ? `/dokter/${dokter.id}` : '{{ route('dokter.store') }}'"
+            enctype="multipart/form-data">
             @csrf
-
+            <input type="hidden" name="_method" :value="dokter.id ? 'PATCH' : 'POST'">
             <div class="px-6 py-5 space-y-5 max-h-[70vh] overflow-y-auto">
 
                 {{-- Foto Avatar --}}
-                <div x-data="{ preview: null, fotoError: '{{ $errors->first('foto') }}' }" class="flex flex-col items-center gap-3">
+                <div x-data="{
+                    preview: dokter.foto ? `/storage/${dokter.foto}` : null,
+                    fotoError: '{{ $errors->first('foto') }}'
+                }" class="flex flex-col items-center gap-3">
                     <div class="relative group">
                         <div class="w-24 h-24 rounded-full bg-gray-100 border-2 border-dashed overflow-hidden flex items-center justify-center transition"
                             :class="fotoError ? 'border-red-400' : 'border-gray-300 group-hover:border-primary-400'">
@@ -62,7 +67,7 @@
                                 <img :src="preview" class="w-full h-full object-cover" alt="Preview Foto">
                             </template>
                         </div>
-                        <label for="foto"
+                        <label for="foto_edit"
                             class="absolute -bottom-1 -right-1 w-7 h-7 bg-primary-600 rounded-full flex items-center justify-center cursor-pointer shadow hover:bg-primary-700 transition">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-white" fill="none"
                                 viewBox="0 0 24 24" stroke="currentColor">
@@ -73,23 +78,23 @@
                             </svg>
                         </label>
                     </div>
-                    <input id="foto" name="foto" type="file"
+                    <input id="foto_edit" name="foto" type="file"
                         accept="image/jpeg,image/png,image/jpg,image/webp" class="hidden"
                         @change="
-                            fotoError = '';
-                            const file = $event.target.files[0];
-                            if (file) {
-                                if (file.size > 2048 * 1024) {
-                                    fotoError = 'Ukuran foto maksimal 2MB.';
-                                    $event.target.value = '';
-                                    preview = null;
-                                    return;
-                                }
-                                const reader = new FileReader();
-                                reader.onload = e => preview = e.target.result;
-                                reader.readAsDataURL(file);
-                            }
-                        ">
+            fotoError = '';
+            const file = $event.target.files[0];
+            if (file) {
+                if (file.size > 2048 * 1024) {
+                    fotoError = 'Ukuran foto maksimal 2MB.';
+                    $event.target.value = '';
+                    preview = null;
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = e => preview = e.target.result;
+                reader.readAsDataURL(file);
+            }
+        ">
                     <p class="text-xs text-gray-400">JPG, PNG, WEBP — maks. 2MB</p>
                     @error('foto')
                         <p class="text-xs text-red-500">{{ $message }}</p>
@@ -107,7 +112,7 @@
                         <label for="nama" class="block text-sm font-medium text-gray-700 mb-1.5">
                             Nama Lengkap <span class="text-red-500">*</span>
                         </label>
-                        <input type="text" id="nama" name="nama" value="{{ old('nama') }}"
+                        <input type="text" name="nama" :value="dokter.nama" placeholder="Nama Lengkap Dokter"
                             placeholder="dr. Nama Lengkap, Sp.XX"
                             class="w-full px-4 py-2.5 text-sm border border-gray-200 rounded-lg bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent transition placeholder-gray-400 @error('nama') border-red-400 @enderror">
                         @error('nama')
@@ -152,8 +157,8 @@
                         <label for="spesialisasi" class="block text-sm font-medium text-gray-700 mb-1.5">
                             Spesialisasi <span class="text-red-500">*</span>
                         </label>
-                        <input type="text" id="spesialisasi" name="spesialisasi"
-                            value="{{ old('spesialisasi') }}" placeholder="Contoh: Kulit & Kelamin"
+                        <input type="text" name="spesialis" :value="dokter.spesialis"
+                            placeholder="Contoh: Kulit & Kelamin"
                             class="w-full px-4 py-2.5 text-sm border border-gray-200 rounded-lg bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent transition placeholder-gray-400 @error('spesialisasi') border-red-400 @enderror">
                         @error('spesialisasi')
                             <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
@@ -173,7 +178,7 @@
                                         d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                                 </svg>
                             </span>
-                            <input type="text" id="no_telepon" name="no_telepon" value="{{ old('no_telepon') }}"
+                            <input type="text" name="no_telepon" :value="dokter.no_telepon"
                                 placeholder="08xxxxxxxxxx"
                                 class="w-full pl-9 pr-4 py-2.5 text-sm border border-gray-200 rounded-lg bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent transition placeholder-gray-400 @error('no_telepon') border-red-400 @enderror">
                         </div>
@@ -195,7 +200,7 @@
                                         d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                                 </svg>
                             </span>
-                            <input type="email" id="email" name="email" value="{{ old('email') }}"
+                            <input type="email" name="email" :value="dokter.email"
                                 placeholder="dokter@kasclinic.com"
                                 class="w-full pl-9 pr-4 py-2.5 text-sm border border-gray-200 rounded-lg bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent transition placeholder-gray-400 @error('email') border-red-400 @enderror">
                         </div>
@@ -214,7 +219,7 @@
                                 Rp
                             </span>
                             <input type="number" id="biaya_konsultasi" name="biaya_konsultasi"
-                                value="{{ old('biaya_konsultasi', 0) }}" placeholder="0" min="0"
+                                :value="dokter.biaya_konsultasi" placeholder="0" min="0"
                                 class="w-full pl-10 pr-4 py-2.5 text-sm border border-gray-200 rounded-lg bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent transition placeholder-gray-400 @error('biaya_konsultasi') border-red-400 @enderror">
                         </div>
                         @error('biaya_konsultasi')
@@ -231,7 +236,7 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
                     {{-- Username --}}
-                    <div class="sm:col-span-2">
+                    <div x-show="!dokter.id" class="sm:col-span-2">
                         <label for="username" class="block text-sm font-medium text-gray-700 mb-1.5">
                             Username <span class="text-red-500">*</span>
                         </label>
@@ -253,7 +258,7 @@
                     </div>
 
                     {{-- Password --}}
-                    <div x-data="{ showPass: false }" class="sm:col-span-2">
+                    <div x-show="!dokter.id" class="sm:col-span-2" x-data="{ showPass: false }">
                         <label for="password" class="block text-sm font-medium text-gray-700 mb-1.5">
                             Password <span class="text-red-500">*</span>
                         </label>
@@ -309,7 +314,8 @@
                         stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
                     </svg>
-                    Simpan Dokter
+                    <span x-text="dokter.id ? 'Simpan Perubahan' : 'Simpan Dokter'"></span>
+
                 </button>
             </div>
         </form>

@@ -27,7 +27,8 @@
                             d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                     </svg>
                 </div>
-                <h2 class="text-lg font-semibold text-white tracking-wide">Tambah Perawat</h2>
+                <h2 class="text-lg font-semibold text-white tracking-wide"
+                    x-text="perawat.id ? 'Edit Perawat' : 'Tambah Perawat'"></h2>
             </div>
             <button @click="open = false"
                 class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20 transition text-white">
@@ -39,9 +40,10 @@
         </div>
 
         {{-- Form --}}
-        <form action="{{ route('perawat.store') }}" method="POST" enctype="multipart/form-data">
+        <form method="POST" :action="perawat.id ? `/perawat/${perawat.id}` : '{{ route('perawat.store') }}'"
+            enctype="multipart/form-data">
             @csrf
-
+            <input type="hidden" name="_method" :value="perawat.id ? 'PATCH' : 'POST'">
             <div class="px-6 py-5 space-y-5 max-h-[70vh] overflow-y-auto">
 
                 {{-- Foto Avatar --}}
@@ -107,8 +109,7 @@
                         <label for="nama_perawat" class="block text-sm font-medium text-gray-700 mb-1.5">
                             Nama Lengkap <span class="text-red-500">*</span>
                         </label>
-                        <input type="text" id="nama_perawat" name="nama" value="{{ old('nama') }}"
-                            placeholder="Nama Lengkap Perawat"
+                        <input type="text" name="nama" :value="perawat.nama" placeholder="Nama Lengkap Perawat"
                             class="w-full px-4 py-2.5 text-sm border border-gray-200 rounded-lg bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent transition placeholder-gray-400 @error('nama') border-red-400 @enderror">
                         @error('nama')
                             <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
@@ -147,29 +148,7 @@
                         @enderror
                     </div>
 
-                    {{-- SIP --}}
-                    {{-- <div>
-                        <label for="sip" class="block text-sm font-medium text-gray-700 mb-1.5">
-                            No. SIP <span class="text-red-500">*</span>
-                        </label>
-                        <div class="relative">
-                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                </svg>
-                            </span>
-                            <input type="text" id="sip" name="sip" value="{{ old('sip') }}"
-                                placeholder="Nomor Surat Izin Praktik"
-                                class="w-full pl-9 pr-4 py-2.5 text-sm border border-gray-200 rounded-lg bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent transition placeholder-gray-400 @error('sip') border-red-400 @enderror">
-                        </div>
-                        @error('sip')
-                            <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
-                        @enderror
-                    </div> --}}
 
-                    {{-- Nomor Telepon --}}
                     <div>
                         <label for="no_telepon_perawat" class="block text-sm font-medium text-gray-700 mb-1.5">
                             Nomor Telepon
@@ -182,8 +161,8 @@
                                         d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                                 </svg>
                             </span>
-                            <input type="text" id="no_telepon_perawat" name="no_telepon"
-                                value="{{ old('no_telepon') }}" placeholder="08xxxxxxxxxx"
+                            <input type="text" name="no_telepon" :value="perawat.no_telepon"
+                                placeholder="08xxxxxxxxxx"
                                 class="w-full pl-9 pr-4 py-2.5 text-sm border border-gray-200 rounded-lg bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent transition placeholder-gray-400 @error('no_telepon') border-red-400 @enderror">
                         </div>
                         @error('no_telepon')
@@ -204,7 +183,7 @@
                                         d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                                 </svg>
                             </span>
-                            <input type="email" id="email_perawat" name="email" value="{{ old('email') }}"
+                            <input type="email" name="email" :value="perawat.email"
                                 placeholder="perawat@kasclinic.com"
                                 class="w-full pl-9 pr-4 py-2.5 text-sm border border-gray-200 rounded-lg bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent transition placeholder-gray-400 @error('email') border-red-400 @enderror">
                         </div>
@@ -213,31 +192,10 @@
                         @enderror
                     </div>
                     <hr class="sm:col-span-2">
-                    {{-- Jadwal --}}
-                    {{-- <div class="sm:col-span-2">
-                        <label for="jadwal" class="block text-sm font-medium text-gray-700 mb-1.5">
-                            Jadwal Kerja
-                        </label>
-                        <div class="relative">
-                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                            </span>
-                            <input type="text" id="jadwal" name="jadwal" value="{{ old('jadwal') }}"
-                                placeholder="Contoh: Senin - Jumat, 08:00 - 16:00"
-                                class="w-full pl-9 pr-4 py-2.5 text-sm border border-gray-200 rounded-lg bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent transition placeholder-gray-400 @error('jadwal') border-red-400 @enderror">
-                        </div>
-                        @error('jadwal')
-                            <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
-                        @enderror
-                    </div> --}}
 
 
                     {{-- Username --}}
-                    <div class="sm:col-span-2">
+                    <div x-show="!perawat.id" class="sm:col-span-2">
                         <label for="username_perawat" class="block text-sm font-medium text-gray-700 mb-1.5">
                             Username <span class="text-red-500">*</span>
                         </label>
@@ -259,7 +217,7 @@
                     </div>
 
                     {{-- Password --}}
-                    <div x-data="{ showPass: false }" class="sm:col-span-2">
+                    <div x-show="!perawat.id" class="sm:col-span-2" x-data="{ showPass: false }">
                         <label for="password_perawat" class="block text-sm font-medium text-gray-700 mb-1.5">
                             Password <span class="text-red-500">*</span>
                         </label>
@@ -314,7 +272,7 @@
                         stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
                     </svg>
-                    Simpan Perawat
+                    <span x-text="perawat.id ? 'Simpan Perubahan' : 'Simpan Perawat'"></span>
                 </button>
             </div>
         </form>

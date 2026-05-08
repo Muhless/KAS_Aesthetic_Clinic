@@ -168,7 +168,10 @@
 
             {{-- Kolom Kanan: Info Pasien + Dokter + Aksi --}}
             <div class="space-y-4">
-
+                <a href="{{ route('keuangan.cetak', $pembayaran->id) }}" target="_blank"
+                    class="w-full py-2.5 bg-slate-700 hover:bg-slate-800 text-white text-sm font-medium rounded-xl transition-all text-center block">
+                    🖨️ Cetak Struk
+                </a>
                 {{-- Info Pasien --}}
                 <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-5">
                     <h3 class="font-semibold text-slate-700 text-sm mb-4">Pasien</h3>

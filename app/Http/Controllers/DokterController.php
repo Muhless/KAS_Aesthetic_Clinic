@@ -4,20 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Dokter;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Validation\ValidationException;
 
 class DokterController extends Controller
 {
-    public function api()
-    {
-        return response()->json([
-            'status' => 'success',
-            'data' => Dokter::all(),
-        ]);
-    }
+     public function api($id)
+{
+    $dokter = Dokter::findOrFail($id);
+    return response()->json(['data' => $dokter]);
+}
 
     // get
     public function index()
@@ -92,19 +92,19 @@ class DokterController extends Controller
     return redirect()->route('dokter.index')->with('success', 'Dokter berhasil ditambahkan.');
 }
 
-   public function update(Request $request, $id)
+  public function update(Request $request, $id)
 {
     try {
         $dokter = Dokter::findOrFail($id);
 
         $request->validate([
-            'nama' => 'sometimes|string|max:255',
-            'no_telepon' => 'sometimes|string|max:20',
-            'email' => 'sometimes|email|unique:dokters,email,' . $id,
-            'tanggal_lahir' => 'sometimes|nullable|date|before:today',
-            'spesialis' => 'nullable|string|max:255',
+            'nama'             => 'sometimes|string|max:255',
+            'no_telepon'       => 'sometimes|string|max:20',
+            'email'            => 'sometimes|email|unique:dokters,email,' . $id,
+            'tanggal_lahir'    => 'sometimes|nullable|date|before:today',
+            'spesialis'        => 'nullable|string|max:255',
             'biaya_konsultasi' => 'nullable|numeric|min:0',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'foto'             => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
         if ($request->hasFile('foto')) {
@@ -122,24 +122,13 @@ class DokterController extends Controller
         $dokter->fill($dataToUpdate);
         $dokter->save();
 
-        $dokterResponse = $dokter->toArray();
-        if ($dokter->foto) {
-            $dokterResponse['foto_url'] = Storage::url($dokter->foto);
-        }
+        return redirect()->route('dokter.index')->with('success', 'Data dokter berhasil diperbarui.');
 
-       return redirect()->route('dokter.index')->with('success', 'Data dokter berhasil diperbarui.');
+    } catch (ValidationException $e) {
+        return redirect()->back()->withErrors($e->errors())->withInput();
 
-    } catch (\Illuminate\Validation\ValidationException $e) {
-        return response()->json([
-            'message' => 'Validasi gagal.',
-            'errors' => $e->errors(),
-        ], 422);
-
-    } catch (\Exception $e) {
-        return response()->json([
-            'message' => 'Terjadi kesalahan saat memperbarui data.',
-            'error' => $e->getMessage(),
-        ], 500);
+    } catch (Exception $e) {
+        return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
     }
 }
 

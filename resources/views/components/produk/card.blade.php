@@ -1,6 +1,7 @@
 @props(['produk'])
 
-<div class="h-full bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 overflow-hidden flex flex-col group">
+<div
+    class="h-full bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 overflow-hidden flex flex-col group">
 
     {{-- Gambar --}}
     <div class="relative w-full h-44 bg-gray-50 shrink-0 overflow-hidden">
@@ -62,11 +63,11 @@
 
             <div class="flex items-center gap-1.5">
                 {{-- Edit --}}
-                <button @click="openEditModal({{ $produk->id }})"
-                    title="Edit"
+                <button type="button" @click.stop="editProduk({{ $produk['id'] }})" title="Edit"
                     class="w-8 h-8 flex items-center justify-center bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-lg transition cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
-                        <path d="m2.695 14.762-1.262 3.155a.5.5 0 0 0 .65.65l3.155-1.262a4 4 0 0 0 1.343-.886L17.5 5.501a2.121 2.121 0 0 0-3-3L3.58 13.419a4 4 0 0 0-.885 1.343Z" />
+                        <path
+                            d="m2.695 14.762-1.262 3.155a.5.5 0 0 0 .65.65l3.155-1.262a4 4 0 0 0 1.343-.886L17.5 5.501a2.121 2.121 0 0 0-3-3L3.58 13.419a4 4 0 0 0-.885 1.343Z" />
                     </svg>
                 </button>
 
@@ -75,8 +76,7 @@
                     onsubmit="return confirm('Hapus {{ $produk->nama }}?')">
                     @csrf
                     @method('DELETE')
-                    <button type="submit"
-                        title="Hapus"
+                    <button type="submit" title="Hapus"
                         class="w-8 h-8 flex items-center justify-center bg-red-50 hover:bg-red-100 text-red-600 rounded-lg transition cursor-pointer">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
                             <path fill-rule="evenodd"

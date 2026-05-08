@@ -3,7 +3,22 @@
 @section('title', 'Halaman Dokter')
 
 @section('content')
-    <div class="p-6" x-data="dokterModal()">
+    <div class="p-6 space-y-6" x-data="{
+        open: false,
+        dokter: {},
+        tambahDokter() {
+            this.dokter = {};
+            this.open = true;
+        },
+        editDokter(id) {
+            fetch(`/dokter/${id}/api`)
+                .then(r => r.json())
+                .then(res => {
+                    this.dokter = res.data;
+                    this.open = true;
+                });
+        }
+    }">
         <x-notification />
 
         <div class="flex items-center justify-between mb-8">
@@ -14,17 +29,14 @@
                 </p>
             </div>
             {{-- Dokter --}}
-            <div x-data="{ open: false }">
-                <button @click="open = true"
-                    class="inline-flex items-center gap-2 cursor-pointer text-sm w-48 justify-center py-2.5 bg-primary-600 hover:bg-primary-700 text-white rounded-lg shadow transition-all duration-150">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
-                    </svg>
-                    Tambah Dokter
-                </button>
-                <x-dokter.modal />
-            </div>
+             <button @click="tambahDokter()"
+                class="inline-flex items-center gap-2 cursor-pointer text-sm w-48 justify-center py-2.5 bg-primary-600 hover:bg-primary-700 active:bg-primary-800 text-white rounded-lg shadow transition-all duration-150">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
+                </svg>
+                Tambah Dokter
+            </button>
         </div>
 
         {{-- Di halaman dokter --}}
@@ -67,22 +79,6 @@
 
             </div>
         @endif
-        <div x-data="{
-            openEdit: false,
-            dokter: {},
-            editDokter(id) {
-                fetch(`/dokter/${id}`)
-                    .then(r => r.json())
-                    .then(res => {
-                        this.dokter = res.data;
-                        this.openEdit = true;
-                    });
-            }
-        }">
-            {{-- tombol tambah dokter + grid card dokter --}}
-
-            {{-- Modal Edit --}}
-            <x-dokter.modal-edit />
-        </div>
+        <x-dokter.modal />
     </div>
 @endsection

@@ -70,7 +70,7 @@
                                     class="text-xs px-2.5 py-1 rounded-full bg-amber-50 text-amber-600 font-medium">Menunggu</span>
                             @elseif ($antrian->status == 'dipanggil')
                                 <span
-                                    class="text-xs px-2.5 py-1 rounded-full bg-blue-50 text-blue-600 font-medium">Dipanggil</span>
+                                    class="text-xs px-2.5 py-1 rounded-full bg-primary-50 text-primary-600 font-medium">Dipanggil</span>
                             @else
                                 <span
                                     class="text-xs px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-600 font-medium">Selesai</span>
@@ -85,7 +85,7 @@
                                 @if ($antrian->status == 'menunggu')
                                     <button type="button" title="Panggil"
                                         @click="panggilAntrian({{ $antrian->id }}, '{{ $antrian->pasien->nama }}', '{{ addslashes($antrian->keluhan) }}')"
-                                        class="w-7 h-7 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-full flex items-center justify-center transition shadow-sm">
+                                        class="w-7 h-7 bg-primary-50 hover:bg-primary-100 text-primary-600 rounded-full flex items-center justify-center transition shadow-sm">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none"
                                             viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -167,7 +167,7 @@
 
             {{-- Header --}}
             <div
-                class="flex items-center justify-between px-6 py-5 border-b border-gray-100 bg-gradient-to-r from-blue-600 to-blue-500">
+                class="flex items-center justify-between px-6 py-5 border-b border-gray-100 bg-gradient-to-r from-primary-600 to-primary-500">
                 <div class="flex items-center gap-3">
                     <div class="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" fill="none"
@@ -178,7 +178,7 @@
                     </div>
                     <div>
                         <h2 class="text-sm font-semibold text-white">Panggil Pasien</h2>
-                        <p class="text-xs text-blue-100" x-text="antrian.nama"></p>
+                        <p class="text-xs text-primary-100" x-text="antrian.nama"></p>
                     </div>
                 </div>
                 <button @click="openPanggil = false"
@@ -201,7 +201,7 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1.5">Keluhan Pasien</label>
                         <textarea name="keluhan" rows="3" x-model="antrian.keluhan" placeholder="Tuliskan keluhan pasien..."
-                            class="w-full px-4 py-2.5 text-sm border border-gray-200 rounded-lg bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition resize-none"></textarea>
+                            class="w-full px-4 py-2.5 text-sm border border-gray-200 rounded-lg bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent transition resize-none"></textarea>
                     </div>
                 </div>
 
@@ -212,7 +212,7 @@
                         Batal
                     </button>
                     <button type="submit"
-                        class="px-6 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-sm transition flex items-center gap-2">
+                        class="px-6 py-2 text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 rounded-lg shadow-sm transition flex items-center gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

@@ -62,4 +62,16 @@ class KeuanganController extends Controller
 
         return redirect()->route('keuangan.index')->with('success', 'Pembayaran berhasil ditandai lunas.');
     }
+
+    public function cetak(Pembayaran $pembayaran)
+{
+    $pembayaran->load([
+        'pelayanan.pasien',
+        'pelayanan.dokter',
+        'pelayanan.pemeriksaan.treatment',
+        'pelayanan.pemeriksaan.produks',
+    ]);
+
+    return view('pages.keuangan.cetak', compact('pembayaran'));
+}
 }

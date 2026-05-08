@@ -9,12 +9,10 @@ use Illuminate\Support\Facades\Storage;
 class TreatmentController extends Controller
 {
 
-      public function api()
+     public function api($id)
     {
-        return response()->json([
-            'status' => 'success',
-            'data' => Treatment::all(),
-        ]);
+        $treatment = Treatment::findOrFail($id);
+        return response()->json(['data' => $treatment]);
     }
 
  public function index()
@@ -31,7 +29,7 @@ public function store(Request $request)
         'harga'       => 'required|integer|min:0',
         'durasi'      => 'nullable|integer',
         'foto'        => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-        // 'status'      => 'required|in:tersedia,tidak_tersedia',
+        'status'      => 'required|in:tersedia,tidak_tersedia',
     ]);
 
     // Upload foto jika ada

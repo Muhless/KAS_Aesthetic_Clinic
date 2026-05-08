@@ -3,7 +3,22 @@
 @section('title', 'Daftar Treatment - KAS Aesthetic Clinic')
 
 @section('content')
-    <div class="p-6" x-data="{ open: false }">
+    <div class="p-6 space-y-6" x-data="{
+        open: false,
+        treatment: {},
+        tambahTreatment() {
+            this.treatment = {};
+            this.open = true;
+        },
+        editTreatment(id) {
+            fetch(`/treatment/${id}/api`)
+                .then(r => r.json())
+                .then(res => {
+                    this.treatment = res.data;
+                    this.open = true;
+                });
+        }
+    }">
         <x-notification />
 
         {{-- Header --}}
@@ -12,9 +27,10 @@
                 <h1 class="text-3xl font-bold text-primary-400">Treatment</h1>
                 <p class="text-sm text-gray-400 mt-1">{{ $treatments->count() }} treatment terdaftar</p>
             </div>
-            <button @click="open = true"
-                class="inline-flex items-center gap-2 cursor-pointer text-sm px-5 py-2.5 bg-primary-600 hover:bg-primary-700 active:bg-primary-800 text-white rounded-lg shadow transition-all duration-150">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <button @click="tambahTreatment()"
+                class="inline-flex items-center gap-2 cursor-pointer text-sm w-48 justify-center py-2.5 bg-primary-600 hover:bg-primary-700 active:bg-primary-800 text-white rounded-lg shadow transition-all duration-150">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
                 </svg>
                 Tambah Treatment
@@ -29,18 +45,21 @@
                 @endforeach
             </div>
 
-        {{-- Empty State --}}
+            {{-- Empty State --}}
         @else
             <div class="flex flex-col items-center justify-center py-24 px-6">
                 <div class="relative mb-6">
                     <div class="w-28 h-28 rounded-full bg-primary-50 flex items-center justify-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-14 h-14 text-primary-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-14 h-14 text-primary-300" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2"
                                 d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                         </svg>
                     </div>
-                    <div class="absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-primary-600 flex items-center justify-center shadow-md">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div
+                        class="absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-primary-600 flex items-center justify-center shadow-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-white" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
                         </svg>
                     </div>
@@ -51,7 +70,8 @@
                 </p>
                 <button @click="open = true"
                     class="inline-flex items-center gap-2 text-sm px-6 py-2.5 bg-primary-600 hover:bg-primary-700 text-white rounded-lg shadow transition">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
                     </svg>
                     Tambah Treatment Pertama

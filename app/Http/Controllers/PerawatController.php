@@ -11,13 +11,11 @@ use Illuminate\Support\Facades\Http;
 
 class PerawatController extends Controller
 {
-    public function api()
-    {
-        return response()->json([
-            'status' => 'success',
-            'data' => Perawat::all(),
-        ]);
-    }
+  public function api($id)
+{
+    $perawat = Perawat::findOrFail($id);
+    return response()->json(['data' => $perawat]);
+}
 
     // get
     public function index()
@@ -88,65 +86,40 @@ class PerawatController extends Controller
         ->with('success', 'Perawat berhasil ditambahkan.');
 }
 
-    public function update(Request $request, $id)
-    {
-        try {
-            $perawat = Perawat::findOrFail($id);
+  public function update(Request $request, $id)
+{
+    try {
+        $perawat = Perawat::findOrFail($id);
 
-            $request->validate([
-                'nama' => 'sometimes|string|max:255',
-                'no_telepon' => 'sometimes|string|max:20',
-                'email' => 'sometimes|email|unique:perawats,email,' . $id,
-                'tanggal_lahir' => 'sometimes|nullable|date|before:today',
-                'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            ]);
+        $request->validate([
+            'nama'         => 'sometimes|string|max:255',
+            'no_telepon'   => 'sometimes|string|max:20',
+            'email'        => 'sometimes|email|unique:perawats,email,' . $id,
+            'tanggal_lahir'=> 'sometimes|nullable|date|before:today',
+            'foto'         => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
 
-            if ($request->hasFile('foto')) {
-                if ($perawat->foto && Storage::disk('public')->exists($perawat->foto)) {
-                    Storage::disk('public')->delete($perawat->foto);
-                }
-
-                $path = $request->file('foto')->store('perawat', 'public');
-                $perawat->foto = $path;
+        if ($request->hasFile('foto')) {
+            if ($perawat->foto && Storage::disk('public')->exists($perawat->foto)) {
+                Storage::disk('public')->delete($perawat->foto);
             }
-
-            $dataToUpdate = array_filter($request->only(['nama', 'no_telepon', 'email', 'tanggal_lahir']), function ($value) {
-                return $value !== null && $value !== '';
-            });
-
-            $perawat->fill($dataToUpdate);
-            $perawat->save();
-
-            $perawatResponse = $perawat->toArray();
-            if ($perawat->foto) {
-                $perawatResponse['foto_url'] = Storage::url($perawat->foto);
-            }
-
-            return response()->json(
-                [
-                    'message' => 'Data perawat berhasil diperbarui.',
-                    'data' => $perawatResponse,
-                ],
-                200,
-            );
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            return response()->json(
-                [
-                    'message' => 'Validasi gagal.',
-                    'errors' => $e->errors(),
-                ],
-                422,
-            );
-        } catch (\Exception $e) {
-            return response()->json(
-                [
-                    'message' => 'Terjadi kesalahan saat memperbarui data.',
-                    'error' => $e->getMessage(),
-                ],
-                500,
-            );
+            $perawat->foto = $request->file('foto')->store('perawat', 'public');
         }
+
+        $dataToUpdate = array_filter(
+            $request->only(['nama', 'no_telepon', 'email', 'tanggal_lahir']),
+            fn($value) => $value !== null && $value !== ''
+        );
+
+        $perawat->fill($dataToUpdate);
+        $perawat->save();
+
+        return redirect()->route('perawat.index')->with('success', 'Data perawat berhasil diperbarui.');
+
+    } catch (\Exception $e) {
+        return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
     }
+}
 
     // delete
     public function destroy($id)
