@@ -1,5 +1,3 @@
-{{-- resources/views/pages/keuangan/show.blade.php --}}
-
 @extends('layouts.app')
 
 @section('title', 'Detail Pembayaran - KAS Aesthetic Clinic')
@@ -220,10 +218,11 @@
                 @if ($pembayaran->status !== 'lunas')
                     <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-5">
                         <h3 class="font-semibold text-slate-700 text-sm mb-3">Aksi</h3>
-                        <form method="POST" action="{{ route('keuangan.lunas', $pembayaran->id) }}">
+                        <form method="POST" action="{{ route('keuangan.bayar', $pembayaran->id) }}">
                             @csrf
                             @method('PATCH')
                             <div class="space-y-3">
+                                <input type="hidden" name="metode_bayar" value="cash">
                                 <div>
                                     <label class="text-xs text-slate-500 mb-1 block">Catatan (opsional)</label>
                                     <textarea name="catatan" rows="2"

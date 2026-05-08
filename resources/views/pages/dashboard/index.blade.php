@@ -35,14 +35,13 @@
 
             {{-- Kiri --}}
             <div class="lg:col-span-2 space-y-5">
-                {{-- <x-card.pasienSelanjutnyaCard :pasienSelanjutnya="$pasienSelanjutnya"/> --}}
                 <x-dashboard.antriantable :pelayanansHariIni="$pelayanansHariIni" />
-                <x-dashboard.pasientable :pelayanansHariIni="$pelayanansHariIni" />
+                <x-dashboard.pasienhariinitable :pelayanansHariIni="$pelayanansHariIni" />
             </div>
 
             {{-- Kanan --}}
             <div class="space-y-5">
-               {{-- <x-dokter.cardd :dokterHariIni="$dokterHariIni" /> --}}
+                {{-- <x-dokter.cardd :dokterHariIni="$dokterHariIni" /> --}}
                 {{-- <x-perawat.cardd /> --}}
                 <x-reservasi.table :reservasisHariIni="$reservasisHariIni" />
             </div>

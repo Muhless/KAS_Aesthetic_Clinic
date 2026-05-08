@@ -28,7 +28,7 @@
 
         {{-- Tabel --}}
         <div class="bg-white rounded-2xl border border-slate-100 overflow-hidden">
-      <x-table.mainReservasiTable :reservasis="$reservasis" />
+      <x-reservasi.reservasitabel :reservasis="$reservasis" />
         </div>
 
     </div>

@@ -13,35 +13,26 @@ class PembayaranController extends Controller
     public function index()
     {
         $pembayarans = Pembayaran::with(['pelayanan.pasien', 'pelayanan.dokter', 'items'])
-                        ->latest()
-                        ->get();
+            ->latest()
+            ->get();
 
         return view('pages.pembayaran.index', compact('pembayarans'));
     }
 
-    public function show($id)
+    public function show($keuangan)
     {
-        $pembayaran = Pembayaran::with([
-            'pelayanan.pasien',
-            'pelayanan.dokter',
-            'pelayanan.pemeriksaan',
-            'items.treatment',
-            'items.produk',
-        ])->findOrFail($id);
+        $pembayaran = Pembayaran::with(['pelayanan.pasien', 'pelayanan.dokter', 'pelayanan.pemeriksaan.treatment'])->findOrFail($keuangan);
 
-        $treatments = Treatment::all();
-        $produks    = Produk::all();
-
-        return view('pages.pembayaran.show', compact('pembayaran', 'treatments', 'produks'));
+        return view('pages.keuangan.detail', compact('pembayaran'));
     }
 
     public function addItem(Request $request, $id)
     {
         $request->validate([
-            'jenis'        => 'required|in:treatment,produk',
+            'jenis' => 'required|in:treatment,produk',
             'treatment_id' => 'nullable|exists:treatments,id',
-            'produk_id'    => 'nullable|exists:produks,id',
-            'qty'          => 'required|integer|min:1',
+            'produk_id' => 'nullable|exists:produks,id',
+            'qty' => 'required|integer|min:1',
         ]);
 
         $pembayaran = Pembayaran::findOrFail($id);
@@ -54,16 +45,16 @@ class PembayaranController extends Controller
         }
 
         $hargaSatuan = $item->harga;
-        $subtotal    = $hargaSatuan * $request->qty;
+        $subtotal = $hargaSatuan * $request->qty;
 
         PembayaranItem::create([
             'pembayaran_id' => $pembayaran->id,
-            'jenis'         => $request->jenis,
-            'treatment_id'  => $request->treatment_id,
-            'produk_id'     => $request->produk_id,
-            'qty'           => $request->qty,
-            'harga_satuan'  => $hargaSatuan,
-            'subtotal'      => $subtotal,
+            'jenis' => $request->jenis,
+            'treatment_id' => $request->treatment_id,
+            'produk_id' => $request->produk_id,
+            'qty' => $request->qty,
+            'harga_satuan' => $hargaSatuan,
+            'subtotal' => $subtotal,
         ]);
 
         // Update total
@@ -76,7 +67,7 @@ class PembayaranController extends Controller
 
     public function removeItem($id)
     {
-        $item       = PembayaranItem::findOrFail($id);
+        $item = PembayaranItem::findOrFail($id);
         $pembayaran = $item->pembayaran;
         $item->delete();
 
@@ -88,22 +79,22 @@ class PembayaranController extends Controller
         return redirect()->back()->with('success', 'Item berhasil dihapus.');
     }
 
-    public function bayar(Request $request, $id)
-    {
-        $request->validate([
-            'metode_bayar' => 'required|in:cash,transfer,kartu',
-            'catatan'      => 'nullable|string',
-        ]);
+   public function bayar(Request $request, Pembayaran $pembayaran)
+{
+    $request->validate([
+        'metode_bayar' => 'required|in:cash,transfer,kartu',
+        'catatan'      => 'nullable|string',
+    ]);
 
-        Pembayaran::findOrFail($id)->update([
-            'metode_bayar' => $request->metode_bayar,
-            'status'       => 'lunas',
-            'dibayar_pada' => now(),
-            'catatan'      => $request->catatan,
-        ]);
+    $pembayaran->update([
+        'metode_bayar' => $request->metode_bayar,
+        'status'       => 'lunas',
+        'dibayar_pada' => now(),
+        'catatan'      => $request->catatan,
+    ]);
 
-        return redirect()->back()->with('success', 'Pembayaran berhasil diproses.');
-    }
+    return redirect()->back()->with('success', 'Pembayaran berhasil diproses.');
+}
 
     public function destroy($id)
     {

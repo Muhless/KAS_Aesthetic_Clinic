@@ -53,8 +53,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('produk', ProdukController::class);
     Route::resource('treatment', TreatmentController::class);
 
-    Route::resource('keuangan', KeuanganController::class);
-    Route::patch('/keuangan/{pembayaran}/lunas', [KeuanganController::class, 'lunas'])->name('keuangan.lunas');
+    Route::resource('keuangan', KeuanganController::class)->parameters([
+        'keuangan' => 'pembayaran',
+    ]);
+  Route::patch('/keuangan/{pembayaran}/bayar', [PembayaranController::class, 'bayar'])->name('keuangan.bayar');
 
     Route::resource('pelayanan', PelayananController::class);
     Route::resource('pembayaran', PembayaranController::class);

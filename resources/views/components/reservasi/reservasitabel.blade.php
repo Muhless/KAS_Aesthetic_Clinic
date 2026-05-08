@@ -7,9 +7,7 @@
                 <th class="p-2 text-left">No</th>
                 <th class="p-2 text-left">Nama</th>
                 <th class="p-2 text-left">Dokter</th>
-                <th class="p-2 text-left">Treatment</th>
                 <th class="p-2 text-left">Tanggal</th>
-                <th class="p-2 text-left">Keluhan</th>
                 <th class="p-2 text-center">Status</th>
                 <th class="p-2 text-center">Aksi</th>
             </tr>
@@ -23,11 +21,9 @@
                     </td>
                     <td class="py-4 px-2 font-semibold">{{ $reservasi->pasien->nama ?? '—' }}</td>
                     <td class="py-4 px-2">{{ $reservasi->dokter->nama ?? '—' }}</td>
-                    <td class="py-4 px-2">{{ $reservasi->treatment->nama ?? '—' }}</td>
                     <td class="py-4 px-2">
                         {{ \Carbon\Carbon::parse($reservasi->tanggal)->translatedFormat('d F Y') }}
                     </td>
-                  <td class="py-4 px-2">{{ $reservasi->keluhan ?? '—' }}</td>
 
                     <td class="py-4 px-2 text-center">
                         @if ($reservasi->status == 'tertunda')
@@ -88,8 +84,6 @@
                                 </form>
                             @endif
 
-
-                            
                             <button type="button"
                                 onclick="confirmDelete({{ $reservasi->id }}, '{{ $reservasi->pasien->nama }}')"
                                 class="cursor-pointer w-8 h-8 bg-red-50 hover:bg-red-100 text-red-600 rounded-full flex items-center justify-center shadow">

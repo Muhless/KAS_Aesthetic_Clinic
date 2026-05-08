@@ -56,10 +56,7 @@ class ReservasiController extends Controller
   Reservasi::create([
         'pasien_id'    => $request->pasien_id,
         'dokter_id'    => $request->dokter_id,
-        'treatment_id' => $request->treatment_id,
         'tanggal'      => $request->tanggal,
-        'waktu'        => $request->waktu,
-        'keluhan'      => $request->keluhan,
         'status'       => 'tertunda',
     ]);
 

@@ -66,31 +66,35 @@ class PelayananController extends Controller
         return redirect()->back()->with('success', 'Pelayanan berhasil ditambahkan.');
     }
 
-    public function update(Request $request, $id)
-    {
-        $pelayanan = Pelayanan::findOrFail($id);
-        $pelayanan->update(['status' => $request->status]);
+  public function update(Request $request, $id)
+{
+    $pelayanan = Pelayanan::findOrFail($id);
 
-        if ($request->status == 'dipanggil') {
-            // Auto buat pembayaran
-            if (!$pelayanan->pembayaran) {
-                Pembayaran::create([
-                    'pelayanan_id' => $pelayanan->id,
-                    'total_harga' => 0,
-                    'status' => 'belum_bayar',
-                ]);
-            }
+    $pelayanan->update([
+        'status' => $request->status,
+        'keluhan' => $request->keluhan ?? $pelayanan->keluhan,
+    ]);
 
-            // Auto buat pemeriksaan (kosong dulu, diisi dokter)
-            if (!$pelayanan->pemeriksaan) {
-                Pemeriksaan::create([
-                    'pelayanan_id' => $pelayanan->id,
-                ]);
-            }
+    if ($request->status == 'dipanggil') {
+        // Auto buat pembayaran
+        if (!$pelayanan->pembayaran) {
+            Pembayaran::create([
+                'pelayanan_id' => $pelayanan->id,
+                'total_harga' => 0,
+                'status' => 'belum_bayar',
+            ]);
         }
 
-        return redirect()->back()->with('success', 'Status pelayanan diperbarui.');
+        // Auto buat pemeriksaan (kosong dulu, diisi dokter)
+        if (!$pelayanan->pemeriksaan) {
+            Pemeriksaan::create([
+                'pelayanan_id' => $pelayanan->id,
+            ]);
+        }
     }
+
+    return redirect()->back()->with('success', 'Status pelayanan diperbarui.');
+}
 
     public function destroy($id)
     {

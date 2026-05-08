@@ -19,7 +19,6 @@ class DashboardController extends Controller
 
         $reservasisHariIni = Reservasi::with(['pasien', 'dokter', 'treatment'])
             ->whereDate('tanggal', today())
-            ->orderBy('waktu')
             ->get();
 
         $pasienSelanjutnya = Pelayanan::with(['pasien', 'dokter'])

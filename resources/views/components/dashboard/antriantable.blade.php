@@ -1,4 +1,11 @@
-<div class="bg-white rounded-2xl border border-slate-100 overflow-hidden">
+<div class="bg-white rounded-2xl border border-slate-100 overflow-hidden" x-data="{
+    openPanggil: false,
+    antrian: {},
+    panggilAntrian(id, nama, keluhan) {
+        this.antrian = { id, nama, keluhan: keluhan ?? '' };
+        this.openPanggil = true;
+    }
+}">
     <div class="flex items-center justify-between px-5 py-4 border-b border-slate-50">
         <div>
             <h2 class="font-semibold text-slate-800 text-sm">Antrian</h2>
@@ -29,7 +36,7 @@
                 </tr>
             </thead>
             <tbody class="divide-y divide-slate-50">
-              @forelse ($pelayanansHariIni->where('status', 'menunggu') as $antrian)
+                @forelse ($pelayanansHariIni->where('status', 'menunggu') as $antrian)
                     <tr class="hover:bg-slate-50 transition">
 
                         {{-- Nomor Antrian --}}
@@ -76,18 +83,15 @@
 
                                 {{-- Panggil --}}
                                 @if ($antrian->status == 'menunggu')
-                                    <form action="{{ route('pelayanan.update', $antrian->id) }}" method="POST">
-                                        @csrf @method('PUT')
-                                        <input type="hidden" name="status" value="dipanggil">
-                                        <button type="submit" title="Panggil"
-                                            class="w-7 h-7 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-full flex items-center justify-center transition shadow-sm">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none"
-                                                viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
-                                            </svg>
-                                        </button>
-                                    </form>
+                                    <button type="button" title="Panggil"
+                                        @click="panggilAntrian({{ $antrian->id }}, '{{ $antrian->pasien->nama }}', '{{ addslashes($antrian->keluhan) }}')"
+                                        class="w-7 h-7 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-full flex items-center justify-center transition shadow-sm">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                                        </svg>
+                                    </button>
                                 @endif
 
                                 {{-- Selesai --}}
@@ -144,4 +148,81 @@
             </tbody>
         </table>
     </div>
+
+    {{-- Modal Panggil --}}
+    <div x-show="openPanggil" x-cloak class="fixed inset-0 z-50 flex items-center justify-center"
+        x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-150"
+        x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
+
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" @click="openPanggil = false"></div>
+
+        <div class="relative z-10 w-full max-w-md mx-4 bg-white rounded-2xl shadow-2xl overflow-hidden"
+            x-transition:enter="transition ease-out duration-200"
+            x-transition:enter-start="opacity-0 scale-95 translate-y-4"
+            x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+            x-transition:leave="transition ease-in duration-150"
+            x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+            x-transition:leave-end="opacity-0 scale-95 translate-y-4" @click.stop>
+
+            {{-- Header --}}
+            <div
+                class="flex items-center justify-between px-6 py-5 border-b border-gray-100 bg-gradient-to-r from-blue-600 to-blue-500">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="text-sm font-semibold text-white">Panggil Pasien</h2>
+                        <p class="text-xs text-blue-100" x-text="antrian.nama"></p>
+                    </div>
+                </div>
+                <button @click="openPanggil = false"
+                    class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/20 transition text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            {{-- Form --}}
+            <form method="POST" :action="`/pelayanan/${antrian.id}`">
+                @csrf
+                @method('PUT')
+                <input type="hidden" name="status" value="dipanggil">
+
+                <div class="px-6 py-5 space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Keluhan Pasien</label>
+                        <textarea name="keluhan" rows="3" x-model="antrian.keluhan" placeholder="Tuliskan keluhan pasien..."
+                            class="w-full px-4 py-2.5 text-sm border border-gray-200 rounded-lg bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition resize-none"></textarea>
+                    </div>
+                </div>
+
+                {{-- Footer --}}
+                <div class="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-100 bg-gray-50">
+                    <button type="button" @click="openPanggil = false"
+                        class="px-5 py-2 text-sm font-medium text-gray-600 hover:text-gray-800 bg-white border border-gray-200 rounded-lg hover:border-gray-300 transition">
+                        Batal
+                    </button>
+                    <button type="submit"
+                        class="px-6 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-sm transition flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                        </svg>
+                        Panggil
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
 </div>
