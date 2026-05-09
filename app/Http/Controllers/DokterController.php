@@ -62,7 +62,7 @@ class DokterController extends Controller
         'no_telepon' => 'nullable|string|max:20',
         'email' => 'required|email|unique:dokters,email',
         'tanggal_lahir' => 'required|date',
-        'spesialisasi' => 'required|string|max:255',
+        'spesialis' => 'required|string|max:255',
         'biaya_konsultasi' => 'nullable|numeric|min:0',
         'foto' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
     ]);
@@ -84,7 +84,7 @@ class DokterController extends Controller
         'email' => $request->email,
         'no_telepon' => $request->no_telepon,
         'tanggal_lahir' => $request->tanggal_lahir,
-        'spesialis' => $request->spesialisasi,
+        'spesialis' => $request->spesialis,
         'biaya_konsultasi' => $request->biaya_konsultasi ?? 0,
         'foto' => $fotoPath,
     ]);
