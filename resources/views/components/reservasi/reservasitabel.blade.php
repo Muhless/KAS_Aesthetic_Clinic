@@ -85,7 +85,7 @@
                             @endif
 
                             <button type="button"
-                                onclick="confirmDelete({{ $reservasi->id }}, '{{ $reservasi->pasien->nama }}')"
+                            onclick="confirmDelete({{ $reservasi->id }}, '{{ $reservasi->pasien?->nama ?? 'Pasien Tidak Ditemukan' }}')"
                                 class="cursor-pointer w-8 h-8 bg-red-50 hover:bg-red-100 text-red-600 rounded-full flex items-center justify-center shadow">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
                                     class="w-4 h-4">
@@ -122,6 +122,25 @@
                     </td>
                 </tr>
             @endforelse
+
+    <script>
+    function confirmDelete(id, nama) {
+        Swal.fire({
+            title: 'Hapus Reservasi?',
+            text: `Data reservasi pasien "${nama}" akan dihapus permanen.`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#ef4444',
+            cancelButtonColor: '#6b7280',
+            confirmButtonText: 'Ya, Hapus',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('delete-form-' + id).submit();
+            }
+        });
+    }
+</script>
         </tbody>
     </table>
 </div>

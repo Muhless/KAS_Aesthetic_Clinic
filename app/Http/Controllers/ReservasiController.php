@@ -77,10 +77,10 @@ class ReservasiController extends Controller
         return redirect()->back()->with('success', 'Status reservasi diperbarui.');
     }
 
-    public function destroy($id)
-    {
-        Pendaftaran::destroy($id);
+  public function destroy($id)
+{
+    Reservasi::destroy($id);
 
-        return redirect()->route('pendaftaran.index')->with('success', 'Pendaftaran berhasil dihapus.');
-    }
+    return redirect()->route('reservasi.index')->with('success', 'Reservasi berhasil dihapus.');
+}
 }
