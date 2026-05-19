@@ -9,13 +9,12 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-   public function up()
-{
+public function up(): void
 {
     Schema::table('reservasis', function (Blueprint $table) {
+        $table->dropForeign(['treatment_id']); // ✅ drop FK dulu
         $table->dropColumn(['treatment_id', 'waktu', 'keluhan', 'cancel_reason', 'cancelled_by']);
     });
-}
 }
 
 public function down()
