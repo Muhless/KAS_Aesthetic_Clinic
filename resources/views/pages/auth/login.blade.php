@@ -7,6 +7,7 @@
     <link rel="icon" type="image/png" href="{{ asset('images/logo_kas.png') }}">
     <title>Login - KAS Aesthetic Clinic</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="min-h-screen flex items-center justify-center bg-primary-50">
@@ -30,7 +31,7 @@
                     class="w-full px-4 py-2.5 rounded-lg border border-primary-200 bg-primary-50 text-primary-900 text-sm focus:outline-none focus:ring-2 focus:ring-primary-300 focus:border-transparent transition"
                     required>
                 @error('username')
-                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
@@ -41,7 +42,7 @@
                     class="w-full px-4 py-2.5 rounded-lg border border-primary-200 bg-primary-50 text-primary-900 text-sm focus:outline-none focus:ring-2 focus:ring-primary-300 focus:border-transparent transition"
                     required>
                 @error('password')
-                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                 @enderror
             </div>
 
@@ -50,19 +51,20 @@
                 class="w-full mt-2 py-2.5 bg-primary-500 hover:bg-primary-600 text-white text-sm font-medium rounded-lg transition cursor-pointer">
                 Masuk
             </button>
-
         </form>
-
-        {{-- <div class="text-center mt-2">
-
-            <p>Belum punya akun ?
-                <span>
-                    <a href="/register" class="hover:underline hover:text-primary-500">Buat disini!</a>
-                </span>
-            </p>
-        </div> --}}
-
     </div>
+
+    @if (session('success'))
+    <script>
+    Swal.fire({
+        title: 'Berhasil!',
+        text: "{{ session('success') }}",
+        icon: 'success',
+        confirmButtonColor: '#3b82f6',
+        confirmButtonText: 'OK'
+    });
+    </script>
+    @endif
 
 </body>
 

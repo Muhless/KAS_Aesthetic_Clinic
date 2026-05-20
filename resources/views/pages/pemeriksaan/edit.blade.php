@@ -9,7 +9,7 @@
 
         {{-- Header --}}
         <div class="flex items-center gap-4">
-            <a href="{{ route('pelayanan.index') }}"
+           <a href="javascript:history.back()"
                 class="p-2 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-all">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
                     <path fill-rule="evenodd"
@@ -106,7 +106,7 @@
 
                         {{-- Submit --}}
                         <div class="flex items-center justify-end gap-3">
-                            <a href="{{ route('pelayanan.index') }}"
+                           <a href="javascript:history.back()"
                                 class="px-5 py-2.5 text-sm text-slate-600 hover:text-slate-800 border border-slate-200 hover:bg-slate-50 rounded-xl transition-all">
                                 Batal
                             </a>

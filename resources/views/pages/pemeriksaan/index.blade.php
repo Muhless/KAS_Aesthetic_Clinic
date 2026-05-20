@@ -9,10 +9,12 @@
 
     {{-- Header --}}
     <div class="flex items-center gap-4">
-        <a href="{{ route('pelayanan.index') }}"
+        <a href="javascript:history.back()"
             class="p-2 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-all">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
-                <path fill-rule="evenodd" d="M17 10a.75.75 0 0 1-.75.75H5.612l4.158 3.96a.75.75 0 1 1-1.04 1.08l-5.5-5.25a.75.75 0 0 1 0-1.08l5.5-5.25a.75.75 0 1 1 1.04 1.08L5.612 9.25H16.25A.75.75 0 0 1 17 10Z" clip-rule="evenodd" />
+                <path fill-rule="evenodd"
+                    d="M17 10a.75.75 0 0 1-.75.75H5.612l4.158 3.96a.75.75 0 1 1-1.04 1.08l-5.5-5.25a.75.75 0 0 1 0-1.08l5.5-5.25a.75.75 0 1 1 1.04 1.08L5.612 9.25H16.25A.75.75 0 0 1 17 10Z"
+                    clip-rule="evenodd" />
             </svg>
         </a>
         <div>
@@ -41,10 +43,10 @@
                             class="w-full text-sm border border-slate-200 rounded-xl px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-primary-500 text-slate-700">
                             <option value="">— Pilih Treatment —</option>
                             @foreach($treatments as $treatment)
-                                <option value="{{ $treatment->id }}"
-                                    {{ $pemeriksaan->treatment_id == $treatment->id ? 'selected' : '' }}>
-                                    {{ $treatment->nama }}
-                                </option>
+                            <option value="{{ $treatment->id }}"
+                                {{ $pemeriksaan->treatment_id == $treatment->id ? 'selected' : '' }}>
+                                {{ $treatment->nama }}
+                            </option>
                             @endforeach
                         </select>
                     </div>
@@ -89,7 +91,7 @@
 
                     {{-- Submit --}}
                     <div class="flex items-center justify-end gap-3">
-                        <a href="{{ route('pelayanan.index') }}"
+                        <a href="javascript:history.back()"
                             class="px-5 py-2.5 text-sm text-slate-600 hover:text-slate-800 border border-slate-200 hover:bg-slate-50 rounded-xl transition-all">
                             Batal
                         </a>
@@ -110,11 +112,13 @@
             <div class="bg-white rounded-2xl border border-slate-100 shadow-sm p-5">
                 <h3 class="font-semibold text-slate-700 text-sm mb-4">Pasien</h3>
                 <div class="flex items-center gap-3 mb-4">
-                    <div class="w-10 h-10 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center font-bold text-sm shrink-0">
+                    <div
+                        class="w-10 h-10 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center font-bold text-sm shrink-0">
                         {{ strtoupper(substr($pemeriksaan->pelayanan->pasien->nama ?? '?', 0, 1)) }}
                     </div>
                     <div>
-                        <p class="font-semibold text-slate-800 text-sm">{{ $pemeriksaan->pelayanan->pasien->nama ?? '—' }}</p>
+                        <p class="font-semibold text-slate-800 text-sm">
+                            {{ $pemeriksaan->pelayanan->pasien->nama ?? '—' }}</p>
                         <p class="text-xs text-slate-400">{{ $pemeriksaan->pelayanan->pasien->no_rm ?? '' }}</p>
                     </div>
                 </div>
@@ -125,7 +129,8 @@
                     </div>
                     <div class="flex justify-between">
                         <span class="text-xs text-slate-400">Jenis Kelamin</span>
-                        <span class="text-xs text-slate-700">{{ $pemeriksaan->pelayanan->pasien->jenis_kelamin ?? '—' }}</span>
+                        <span
+                            class="text-xs text-slate-700">{{ $pemeriksaan->pelayanan->pasien->jenis_kelamin ?? '—' }}</span>
                     </div>
                 </div>
             </div>
@@ -142,7 +147,8 @@
                     </div>
                     <div class="flex justify-between">
                         <span class="text-xs text-slate-400">Antrian</span>
-                        <span class="text-xs font-medium text-slate-700">#{{ $pemeriksaan->pelayanan->nomor_antrian }}</span>
+                        <span
+                            class="text-xs font-medium text-slate-700">#{{ $pemeriksaan->pelayanan->nomor_antrian }}</span>
                     </div>
                     <div class="flex justify-between">
                         <span class="text-xs text-slate-400">Keluhan</span>
