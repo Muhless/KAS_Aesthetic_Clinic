@@ -20,7 +20,7 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/id.js"></script>
 </head>
 
-<body class="bg-slate-50 text-gray-900 min-h-screen">
+<body class="bg-slate-100 text-slate-800 min-h-screen">
     <div class="flex min-h-screen">
         @include('layouts.sidebar')
         <main class="flex-1 ml-64 min-h-screen overflow-y-auto">
@@ -49,9 +49,6 @@
         });
     }
     </script>
-</body>
-
-</html>
 </body>
 
 </html>

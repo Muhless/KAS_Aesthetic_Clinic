@@ -3,7 +3,7 @@
 @section('title', 'Halaman Perawat')
 
 @section('content')
-    <div class="p-6" x-data="{
+    <div class="p-4 space-y-4" x-data="{
         open: false,
         perawat: {},
         tambahPerawat() {
@@ -22,16 +22,16 @@
         <x-notification />
 
         {{-- Header --}}
-        <div class="flex items-center justify-between mb-8">
+        <div class="flex items-center justify-between border-b border-black/10 pb-3">
             <div>
-                <h1 class="text-3xl font-bold text-primary-400">Perawat</h1>
-                <p class="text-sm text-gray-400 mt-1">
+                <h1 class="text-xl font-semibold text-slate-700">Perawat</h1>
+                <p class="text-xs text-slate-400">
                     {{ $perawats->count() }} Perawat terdaftar
                 </p>
             </div>
             <button @click="tambahPerawat()"
-                class="inline-flex items-center gap-2 cursor-pointer text-sm w-48 justify-center py-2.5 bg-primary-600 hover:bg-primary-700 active:bg-primary-800 text-white rounded-lg shadow transition-all duration-150">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                class="inline-flex items-center gap-1.5 cursor-pointer text-xs px-3 py-1.5 bg-blue-500 hover:bg-blue-600 text-white rounded-sm transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
                 </svg>
@@ -52,31 +52,28 @@
 
             {{-- Empty state --}}
         @else
-            <div class="flex flex-col items-center justify-center py-24 px-6">
-                {{-- Ilustrasi --}}
-                <div class="relative mb-6">
-                    <div class="w-28 h-28 rounded-full bg-primary-50 flex items-center justify-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-14 h-14 text-primary-300" fill="none"
-                            viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2"
-                                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
-                    </div>
-                    {{-- Badge plus kecil --}}
-                    <div
-                        class="absolute -bottom-1 -right-1 w-8 h-8 rounded-full bg-primary-600 flex items-center justify-center shadow-md">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-white" fill="none"
-                            viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
-                        </svg>
-                    </div>
+            <div class="bg-white rounded-sm shadow-[0_0.5rem_1rem_rgba(0,0,0,0.1)] border border-black/10 flex flex-col items-center justify-center py-16 px-6">
+                <div class="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-slate-400" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
                 </div>
 
-                <h3 class="text-lg font-semibold text-gray-700 mb-1">Belum ada perawat</h3>
-                <p class="text-sm text-gray-400 text-center max-w-sm mb-6">
+                <h3 class="text-sm font-semibold text-slate-600 mb-1">Belum ada perawat</h3>
+                <p class="text-xs text-slate-400 text-center max-w-sm mb-4">
                     Data perawat masih kosong. Tambahkan perawat pertama untuk mulai mengelola tim klinik.
                 </p>
 
+                <button @click="tambahPerawat()"
+                    class="inline-flex items-center gap-1.5 cursor-pointer text-xs px-3 py-1.5 bg-blue-500 hover:bg-blue-600 text-white rounded-sm transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
+                    </svg>
+                    Tambah Perawat
+                </button>
             </div>
         @endif
 

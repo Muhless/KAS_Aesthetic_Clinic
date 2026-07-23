@@ -1,11 +1,11 @@
-<div class="bg-white rounded-2xl border border-slate-100 overflow-hidden">
-    <div class="flex items-center justify-between px-5 py-4 border-b border-slate-50">
+<div class="bg-white rounded-sm shadow-[0_0.5rem_1rem_rgba(0,0,0,0.1)] border border-black/10 overflow-hidden">
+    <div class="flex items-center justify-between px-4 py-3 bg-slate-100 border-b border-black/10">
         <div>
-            <h2 class="font-semibold text-slate-800 text-sm">Reservasi Hari Ini</h2>
-            <p class="text-xs text-slate-400 mt-0.5">{{ now()->translatedFormat('l, d F Y') }}</p>
+            <h5 class="text-sm font-semibold text-slate-700 m-0">Reservasi Hari Ini</h5>
+            <p class="text-xs text-slate-400 m-0">{{ now()->translatedFormat('l, d F Y') }}</p>
         </div>
         <a href="{{ route('reservasi.index') }}"
-            class="text-xs text-primary-500 hover:text-primary-700 font-medium transition">
+            class="text-xs text-blue-500 hover:text-blue-600 font-medium transition">
             Lihat Semua →
         </a>
     </div>
@@ -13,64 +13,47 @@
     <div class="overflow-x-auto">
         <table class="w-full text-sm">
             <thead>
-                <tr class="bg-slate-50 text-xs text-slate-400 uppercase tracking-wider">
-                    <th class="px-5 py-3 text-left font-medium">Pasien</th>
-                    {{-- <th class="px-5 py-3 text-left font-medium">Treatment</th> --}}
-                    {{-- <th class="px-5 py-3 text-left font-medium">Dokter</th> --}}
-                    {{-- <th class="px-5 py-3 text-left font-medium">Jam</th> --}}
-                    <th class="px-5 py-3 text-left font-medium">Status</th>
-                    <th class="px-5 py-3 text-center font-medium">Aksi</th>
+                <tr class="bg-slate-100 text-xs text-slate-600 uppercase">
+                    <th class="px-3 py-2 text-left font-semibold border-b border-black/10">Pasien</th>
+                    <th class="px-3 py-2 text-left font-semibold border-b border-black/10">Status</th>
+                    <th class="px-3 py-2 text-center font-semibold border-b border-black/10">Aksi</th>
                 </tr>
             </thead>
-            <tbody class="divide-y divide-slate-50">
+            <tbody>
                 @forelse ($reservasisHariIni as $reservasi)
-                <tr class="hover:bg-slate-50 transition">
+                <tr class="border-b border-black/10 even:bg-slate-50 hover:bg-slate-100 transition">
 
                     {{-- Pasien --}}
-                    <td class="px-5 py-3.5">
-                        <div class="flex items-center gap-2.5">
+                    <td class="px-3 py-2.5">
+                        <div class="flex items-center gap-2">
                             <div
-                                class="w-7 h-7 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center font-semibold text-xs shrink-0">
+                                class="w-7 h-7 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-semibold text-xs shrink-0">
                                 {{ strtoupper(substr($reservasi->pasien->nama ?? '?', 0, 1)) }}
                             </div>
-                            <span class="font-medium text-slate-800">{{ $reservasi->pasien->nama ?? '—' }}</span>
+                            <span class="font-medium text-slate-700">{{ $reservasi->pasien->nama ?? '—' }}</span>
                         </div>
                     </td>
 
-                    {{-- Treatment --}}
-                    {{-- <td class="px-5 py-3.5 text-slate-500">
-                            {{ $reservasi->treatment->nama ?? '—' }}
-                    </td> --}}
-
-                    {{-- Dokter --}}
-                    {{-- <td class="px-5 py-3.5 text-slate-500">
-                            {{ $reservasi->dokter->nama ?? '—' }}
-                    </td> --}}
-
                     {{-- Status --}}
-                    <td class="px-5 py-3.5">
+                    <td class="px-3 py-2.5">
                         @php $status = strtolower($reservasi->status); @endphp
                         @if ($status == 'tertunda')
-                        <span
-                            class="text-xs px-2.5 py-1 rounded-full bg-amber-50 text-amber-600 font-medium">Tertunda</span>
+                        <span class="text-xs px-2 py-1 rounded bg-yellow-500 text-white font-medium">Tertunda</span>
                         @elseif ($status == 'dikonfirmasi')
-                        <span
-                            class="text-xs px-2.5 py-1 rounded-full bg-blue-50 text-blue-600 font-medium">Dikonfirmasi</span>
+                        <span class="text-xs px-2 py-1 rounded bg-blue-500 text-white font-medium">Dikonfirmasi</span>
                         @elseif ($status == 'selesai')
-                        <span
-                            class="text-xs px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-600 font-medium">Selesai</span>
+                        <span class="text-xs px-2 py-1 rounded bg-green-500 text-white font-medium">Selesai</span>
                         @elseif ($status == 'dibatalkan')
-                        <span
-                            class="text-xs px-2.5 py-1 rounded-full bg-red-50 text-red-500 font-medium">Dibatalkan</span>
+                        <span class="text-xs px-2 py-1 rounded bg-red-500 text-white font-medium">Dibatalkan</span>
                         @else
                         <span
-                            class="text-xs px-2.5 py-1 rounded-full bg-slate-100 text-slate-500 font-medium">{{ ucfirst($status) }}</span>
+                            class="text-xs px-2 py-1 rounded bg-slate-400 text-white font-medium">{{ ucfirst($status) }}</span>
                         @endif
                     </td>
 
                     {{-- Aksi --}}
-                    <td class="px-5 py-3.5">
-                        <div class="flex items-center justify-center gap-2">
+                    <td class="px-3 py-2.5">
+                        <div class="flex items-center justify-center gap-1.5">
 
                             {{-- Konfirmasi --}}
                             @if ($status == 'tertunda')
@@ -78,7 +61,7 @@
                                 @csrf @method('PUT')
                                 <input type="hidden" name="status" value="dikonfirmasi">
                                 <button type="submit" title="Konfirmasi"
-                                    class="w-7 h-7 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-full flex items-center justify-center transition shadow-sm">
+                                    class="w-7 h-7 bg-blue-500 hover:bg-blue-600 text-white rounded-sm flex items-center justify-center transition">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none"
                                         viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
@@ -97,7 +80,7 @@
                                 <input type="hidden" name="tanggal" value="{{ $reservasi->tanggal }}">
                                 <input type="hidden" name="reservasi_id" value="{{ $reservasi->id }}">
                                 <button type="submit" title="Check-in ke Antrian"
-                                    class="w-7 h-7 bg-primary-50 hover:bg-primary-100 text-primary-600 rounded-full flex items-center justify-center transition shadow-sm">
+                                    class="w-7 h-7 bg-green-500 hover:bg-green-600 text-white rounded-sm flex items-center justify-center transition">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none"
                                         viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -109,7 +92,7 @@
 
                             {{-- Detail --}}
                             <a href="{{ route('reservasi.show', $reservasi->id) }}" title="Detail"
-                                class="w-7 h-7 bg-slate-50 hover:bg-slate-100 text-slate-500 rounded-full flex items-center justify-center transition shadow-sm">
+                                class="w-7 h-7 bg-slate-400 hover:bg-slate-500 text-white rounded-sm flex items-center justify-center transition">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none"
                                     viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -125,17 +108,8 @@
 
                 @empty
                 <tr>
-                    <td colspan="6" class="py-12 text-center">
-                        <div class="flex flex-col items-center gap-2 text-slate-400">
-                            <div class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-slate-300" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                </svg>
-                            </div>
-                            <p class="text-sm font-medium text-slate-500">Belum ada reservasi hari ini</p>
-                        </div>
+                    <td colspan="3" class="py-10 text-center text-slate-400 text-sm">
+                        Belum ada reservasi hari ini
                     </td>
                 </tr>
                 @endforelse
