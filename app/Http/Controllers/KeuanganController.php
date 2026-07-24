@@ -5,13 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Pembayaran;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Barryvdh\DomPDF\Facade\Pdf;
+
 
 class KeuanganController extends Controller
 {
     public function index(Request $request)
     {
-        $bulan = $request->bulan ?? now()->month;
-        $tahun = $request->tahun ?? now()->year;
+      $bulan = (int) ($request->bulan ?? now()->month);
+$tahun = (int) ($request->tahun ?? now()->year);
 
         // Pemasukan bulan ini
         $pemasukanBulanIni = Pembayaran::where('status', 'lunas')->whereMonth('dibayar_pada', $bulan)->whereYear('dibayar_pada', $tahun)->sum('total_harga');
@@ -73,5 +75,37 @@ class KeuanganController extends Controller
     ]);
 
     return view('pages.keuangan.cetak', compact('pembayaran'));
+}
+
+
+public function laporanCetak(Request $request)
+{
+    $periode = $request->periode ?? 'bulanan';
+
+    $query = Pembayaran::with(['pelayanan.pasien'])->where('status', 'lunas');
+
+    if ($periode === 'harian') {
+        $tanggal = $request->tanggal ?? now()->format('Y-m-d');
+        $query->whereDate('dibayar_pada', $tanggal);
+        $labelPeriode = \Carbon\Carbon::parse($tanggal)->translatedFormat('d F Y');
+
+    } elseif ($periode === 'tahunan') {
+        $tahun = (int) ($request->tahun ?? now()->year);
+        $query->whereYear('dibayar_pada', $tahun);
+        $labelPeriode = "Tahun {$tahun}";
+
+    } else { // bulanan
+        $bulan = (int) ($request->bulan ?? now()->month);
+        $tahun = (int) ($request->tahun ?? now()->year);
+        $query->whereMonth('dibayar_pada', $bulan)->whereYear('dibayar_pada', $tahun);
+        $labelPeriode = \Carbon\Carbon::create()->month($bulan)->translatedFormat('F') . " {$tahun}";
+    }
+
+    $transaksis = $query->latest('dibayar_pada')->get();
+
+    $pdf = Pdf::loadView('pages.keuangan.laporan-pdf', compact('transaksis', 'labelPeriode'))
+        ->setPaper('a4', 'portrait');
+
+    return $pdf->stream('laporan-transaksi-' . now()->format('Ymd-His') . '.pdf');
 }
 }

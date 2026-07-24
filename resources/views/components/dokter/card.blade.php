@@ -1,26 +1,18 @@
 @props(['dokter'])
 
-<div
-    class="group bg-white rounded-2xl border border-gray-200 overflow-hidden hover:border-primary-300 hover:shadow-xl transition-all duration-300">
+<div class="bg-white rounded-sm shadow-[0_0.5rem_1rem_rgba(0,0,0,0.1)] border border-black/10 overflow-hidden">
 
-    <!-- Foto Dokter -->
-    <div class="relative aspect-3/4 bg-linear-to-br from-primary-50 to-indigo-50 overflow-hidden cursor-pointer"
+    {{-- Foto Dokter --}}
+    <div class="relative bg-slate-100 cursor-pointer"
         onclick="window.location.href='{{ route('dokter.detail', $dokter['id']) }}'">
         <img src="{{ $dokter['foto'] ? asset('storage/' . $dokter['foto']) : asset('images/default.png') }}"
-            alt="{{ $dokter['nama'] }}"
-            class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500">
+            alt="{{ $dokter['nama'] }}" class="w-full h-48 object-cover object-top">
 
-        <!-- Overlay Gradient -->
-        <div
-            class="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-        </div>
-
-        <!-- Actions -->
-        <div
-            class="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform -translate-y-2.5 group-hover:translate-y-0">
+        {{-- Actions --}}
+        <div class="absolute top-2 right-2 flex gap-1.5">
             <button type="button" @click.stop="editDokter({{ $dokter['id'] }})"
-                class="p-2.5 bg-white/95 backdrop-blur-md text-gray-700 rounded-xl shadow-lg hover:bg-primary-50 hover:text-primary-600 hover:scale-110 transition-all">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                class="w-7 h-7 bg-blue-500 hover:bg-blue-600 text-white rounded-sm flex items-center justify-center transition">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-3.5 h-3.5">
                     <path
                         d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32L19.513 8.2Z" />
                 </svg>
@@ -31,8 +23,8 @@
                 @csrf
                 @method('DELETE')
                 <button type="submit"
-                    class="p-2.5 bg-white/95 backdrop-blur-md text-gray-700 rounded-xl shadow-lg hover:bg-red-50 hover:text-red-600 hover:scale-110 transition-all">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                    class="w-7 h-7 bg-red-500 hover:bg-red-600 text-white rounded-sm flex items-center justify-center transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-3.5 h-3.5">
                         <path fill-rule="evenodd"
                             d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z"
                             clip-rule="evenodd" />
@@ -40,90 +32,56 @@
                 </button>
             </form>
         </div>
-
-        {{-- Status Praktek (nonaktif) --}}
-        {{-- @php
-            $hariIni = now()->locale('id')->dayName;
-            $jadwal = is_array($dokter->jadwal_praktik)
-                ? $dokter->jadwal_praktik
-                : json_decode($dokter->jadwal_praktik ?? '[]', true);
-            $praktek = in_array(ucfirst($hariIni), $jadwal ?? []);
-        @endphp
-        @if ($praktek)
-            <div class="absolute bottom-3 left-3 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/95 backdrop-blur-md rounded-full text-xs font-semibold text-green-700 shadow-lg">
-                    <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                    Praktek Hari Ini
-                </span>
-            </div>
-        @endif --}}
     </div>
 
-    <!-- Content -->
-    <div class="p-5 cursor-pointer hover:bg-gray-50 transition-colors"
-        onclick="window.location.href='{{ route('dokter.detail', $dokter['id']) }}'">
+    {{-- Content --}}
+    <div class="p-3 cursor-pointer" onclick="window.location.href='{{ route('dokter.detail', $dokter['id']) }}'">
 
-        <!-- Name & Specialty -->
-        <div class="mb-4">
-            <h3 class="text-xl font-bold text-gray-900 mb-1 group-hover:text-primary-600 transition-colors">
+        {{-- Name & Specialty --}}
+        <div class="mb-2">
+            <h3 class="text-sm font-semibold text-slate-700 truncate">
                 {{ $dokter['nama'] }}
             </h3>
-            <p class="text-sm font-medium text-primary-600">{{ $dokter['spesialis'] ?? '—' }}</p>
+            <p class="text-xs font-medium text-blue-500 truncate">{{ $dokter['spesialis'] ?? '—' }}</p>
         </div>
 
-        <!-- Info -->
-        <div class="space-y-2.5">
+        {{-- Info --}}
+        <div class="space-y-1.5 text-xs text-slate-500">
 
-            <!-- Email -->
-            <div class="flex items-center gap-3 group/item">
-                <div
-                    class="shrink-0 w-8 h-8 bg-primary-50 rounded-lg flex items-center justify-center group-hover/item:bg-primary-100 transition-colors">
-                    <svg class="w-3.5 h-3.5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                    </svg>
-                </div>
-                <p class="text-xs text-gray-600 truncate flex-1">{{ $dokter['email'] ?? '—' }}</p>
+            <div class="flex items-center gap-2">
+                <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+                <span class="truncate">{{ $dokter['email'] ?? '—' }}</span>
             </div>
 
-            <!-- Telepon -->
-            <div class="flex items-center gap-3 group/item">
-                <div
-                    class="shrink-0 w-8 h-8 bg-indigo-50 rounded-lg flex items-center justify-center group-hover/item:bg-indigo-100 transition-colors">
-                    <svg class="w-3.5 h-3.5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                    </svg>
-                </div>
-                <p class="text-xs text-gray-600">{{ $dokter['no_telepon'] ?? '—' }}</p>
+            <div class="flex items-center gap-2">
+                <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                </svg>
+                <span class="truncate">{{ $dokter['no_telepon'] ?? '—' }}</span>
             </div>
 
-            <!-- Tanggal Lahir -->
-            <div class="flex items-center gap-3 group/item">
-                <div
-                    class="shrink-0 w-8 h-8 bg-orange-50 rounded-lg flex items-center justify-center group-hover/item:bg-orange-100 transition-colors">
-                    <svg class="w-3.5 h-3.5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                </div>
-                <p class="text-xs text-gray-600">
+            <div class="flex items-center gap-2">
+                <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <span class="truncate">
                     {{ $dokter->tanggal_lahir ? $dokter->tanggal_lahir->translatedFormat('d F Y') : '—' }}
-                </p>
+                </span>
             </div>
 
-            <!-- Biaya Konsultasi -->
-            <div class="flex items-center gap-3 group/item">
-                <div
-                    class="shrink-0 w-8 h-8 bg-emerald-50 rounded-lg flex items-center justify-center group-hover/item:bg-emerald-100 transition-colors">
-                    <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                </div>
-                <p class="text-xs text-gray-600">
+            <div class="flex items-center gap-2">
+                <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span class="truncate">
                     Rp {{ number_format($dokter['biaya_konsultasi'] ?? 0, 0, ',', '.') }}
-                </p>
+                </span>
             </div>
 
         </div>

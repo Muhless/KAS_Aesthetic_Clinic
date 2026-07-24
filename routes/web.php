@@ -54,7 +54,7 @@ Route::middleware('auth')->group(function () {
 
 
 
-    Route::middleware(['auth', 'role:dokter,perawat'])->group(function () {
+      Route::middleware(['auth', 'role:dokter,perawat'])->group(function () {
         Route::get('/nakes', [NakesController::class, 'index'])->name('nakes');
         Route::resource('pemeriksaan', PemeriksaanController::class)->only(['edit', 'update']);
     });
@@ -63,7 +63,7 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('dokter', DokterController::class);
     Route::get('/dokter/{id}/api', [DokterController::class, 'api'])->name('dokter.api');
-    Route::get('/dokter/detail/{id}', [DokterController::class, 'detail'])->name('dokter.detail');
+   Route::get('/dokter/detail/{dokter}', [DokterController::class, 'detail'])->name('dokter.detail');
 
 
     Route::resource('produk', ProdukController::class);
@@ -75,11 +75,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/treatment/{id}/api', [TreatmentController::class, 'api'])->name('treatment.api');
 
 
-    Route::resource('keuangan', KeuanganController::class)->parameters([
-        'keuangan' => 'pembayaran',
-    ]);
-    Route::patch('/keuangan/{pembayaran}/bayar', [PembayaranController::class, 'bayar'])->name('keuangan.bayar');
-    Route::get('/keuangan/{pembayaran}/cetak', [KeuanganController::class, 'cetak'])->name('keuangan.cetak');
+// Route spesifik/statis WAJIB di atas
+Route::get('/keuangan/laporan', [KeuanganController::class, 'laporan'])->name('keuangan.laporan');
+Route::get('/keuangan/laporan/cetak', [KeuanganController::class, 'laporanCetak'])->name('keuangan.laporan.cetak');
+
+// Baru resource & route dengan wildcard {pembayaran}
+Route::resource('keuangan', KeuanganController::class)->parameters([
+    'keuangan' => 'pembayaran',
+]);
+Route::patch('/keuangan/{pembayaran}/bayar', [PembayaranController::class, 'bayar'])->name('keuangan.bayar');
+Route::get('/keuangan/{pembayaran}/cetak', [KeuanganController::class, 'cetak'])->name('keuangan.cetak');
 
     Route::resource('pelayanan', PelayananController::class);
     Route::resource('pembayaran', PembayaranController::class);
