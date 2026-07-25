@@ -5,49 +5,72 @@ namespace App\Http\Controllers;
 use App\Models\Treatment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class TreatmentController extends Controller
 {
-
-     public function api($id)
+    public function api($id)
     {
         $treatment = Treatment::findOrFail($id);
         return response()->json(['data' => $treatment]);
     }
 
- public function index()
-{
-    $treatments = Treatment::all();
-    return view('pages.treatment.index', compact('treatments'));
-}
+    public function index(Request $request)
+    {
+        $treatments = Treatment::query()
+            ->when($request->nama, fn($q) => $q->where('nama', 'like', '%' . $request->nama . '%'))
+            ->when($request->status, fn($q) => $q->where('status', $request->status))
+            ->when($request->harga_min, fn($q) => $q->where('harga', '>=', $request->harga_min))
+            ->when($request->harga_max, fn($q) => $q->where('harga', '<=', $request->harga_max))
+            ->get();
 
-public function store(Request $request)
-{
-    $validated = $request->validate([
-        'nama'        => 'required|string|max:255',
-        'deskripsi'   => 'nullable|string',
-        'harga'       => 'required|integer|min:0',
-        'durasi'      => 'nullable|integer',
-        'foto'        => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-        'status'      => 'required|in:tersedia,tidak_tersedia',
-    ]);
-
-    // Upload foto jika ada
-    if ($request->hasFile('foto')) {
-        $validated['foto'] = $request->file('foto')->store('treatments', 'public');
+        return view('pages.treatment.index', compact('treatments'));
     }
 
-    Treatment::create($validated);
+    public function cetakPdf(Request $request)
+    {
+        $treatments = Treatment::query()
+            ->when($request->nama, fn($q) => $q->where('nama', 'like', '%' . $request->nama . '%'))
+            ->when($request->status, fn($q) => $q->where('status', $request->status))
+            ->when($request->harga_min, fn($q) => $q->where('harga', '>=', $request->harga_min))
+            ->when($request->harga_max, fn($q) => $q->where('harga', '<=', $request->harga_max))
+            ->get();
 
-    return redirect()
-        ->route('treatment.index')
-        ->with('success', 'Treatment berhasil ditambahkan.');
-}
+        $filterInfo = [
+            'nama'      => $request->nama,
+            'status'    => $request->status ? ($request->status == 'tersedia' ? 'Tersedia' : 'Tidak Tersedia') : null,
+            'harga_min' => $request->harga_min ? 'Rp ' . number_format($request->harga_min, 0, ',', '.') : null,
+            'harga_max' => $request->harga_max ? 'Rp ' . number_format($request->harga_max, 0, ',', '.') : null,
+        ];
 
+        $pdf = Pdf::loadView('pages.treatment.laporan-pdf', compact('treatments', 'filterInfo'))
+            ->setPaper('a4', 'landscape');
 
-    /**
-     * Display a single treatment.
-     */
+        return $pdf->stream('laporan-treatment-' . now()->format('Ymd-His') . '.pdf');
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'nama'        => 'required|string|max:255',
+            'deskripsi'   => 'nullable|string',
+            'harga'       => 'required|integer|min:0',
+            'durasi'      => 'nullable|integer',
+            'foto'        => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'status'      => 'required|in:tersedia,tidak_tersedia',
+        ]);
+
+        if ($request->hasFile('foto')) {
+            $validated['foto'] = $request->file('foto')->store('treatments', 'public');
+        }
+
+        Treatment::create($validated);
+
+        return redirect()
+            ->route('treatment.index')
+            ->with('success', 'Treatment berhasil ditambahkan.');
+    }
+
     public function show($id)
     {
         $treatment = Treatment::find($id);
@@ -65,9 +88,6 @@ public function store(Request $request)
         ]);
     }
 
-    /**
-     * Update treatment.
-     */
     public function update(Request $request, $id)
     {
         $treatment = Treatment::find($id);
@@ -88,7 +108,6 @@ public function store(Request $request)
             'status'      => 'sometimes|in:tersedia,tidak_tersedia',
         ]);
 
-        // Jika ada foto baru, hapus foto lama & upload baru
         if ($request->hasFile('foto')) {
             if ($treatment->foto) {
                 Storage::disk('public')->delete($treatment->foto);
@@ -97,12 +116,9 @@ public function store(Request $request)
         }
 
         $treatment->update($validated);
-    return redirect()->route('treatment.index')->with('success', 'Treatment berhasil diubah.');
+        return redirect()->route('treatment.index')->with('success', 'Treatment berhasil diubah.');
     }
 
-    /**
-     * Remove treatment.
-     */
     public function destroy($id)
     {
         $treatment = Treatment::find($id);
@@ -114,13 +130,12 @@ public function store(Request $request)
             ], 404);
         }
 
-        // hapus foto
         if ($treatment->foto) {
             Storage::disk('public')->delete($treatment->foto);
         }
 
         $treatment->delete();
 
-    return redirect()->route('treatment.index')->with('success', 'Treatment berhasil dihapus.');
+        return redirect()->route('treatment.index')->with('success', 'Treatment berhasil dihapus.');
     }
 }

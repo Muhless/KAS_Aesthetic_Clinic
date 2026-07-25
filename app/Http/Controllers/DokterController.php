@@ -20,11 +20,19 @@ class DokterController extends Controller
 }
 
     // get
-    public function index()
-    {
-        $dokters = Dokter::with('user')->get();
-        return view('pages.dokter.index', compact('dokters'));
-    }
+public function index(Request $request)
+{
+    $dokters = Dokter::with('user')
+        ->when($request->cari, function ($q) use ($request) {
+            $q->where(function ($q) use ($request) {
+                $q->where('nama', 'like', '%' . $request->cari . '%')
+                  ->orWhere('spesialis', 'like', '%' . $request->cari . '%');
+            });
+        })
+        ->get();
+
+    return view('pages.dokter.index', compact('dokters'));
+}
 
     public function detail(Dokter $dokter)
     {

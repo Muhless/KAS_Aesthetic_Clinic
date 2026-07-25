@@ -37,6 +37,65 @@
         </button>
     </div>
 
+    {{-- Filter --}}
+    <form method="GET" action="{{ route('produk.index') }}"
+        class="flex flex-wrap items-end gap-3 bg-white border border-black/10 rounded-sm p-3">
+
+        <div class="flex flex-col">
+            <label class="text-xs text-slate-500 mb-1">Nama</label>
+            <input type="text" name="nama" value="{{ request('nama') }}" placeholder="Cari nama produk..."
+                class="text-xs border border-slate-300 rounded px-2 py-1.5 w-44">
+        </div>
+
+        <div class="flex flex-col">
+            <label class="text-xs text-slate-500 mb-1">Kategori</label>
+            <select name="kategori" class="text-xs border border-slate-300 rounded px-2 py-1.5 w-36">
+                <option value="">Semua Kategori</option>
+                @foreach ($kategoris as $kategori)
+                <option value="{{ $kategori }}" @selected(request('kategori')==$kategori)>
+                    {{ $kategori }}
+                </option>
+                @endforeach
+            </select>
+        </div>
+
+        <div class="flex flex-col">
+            <label class="text-xs text-slate-500 mb-1">Status</label>
+            <select name="status" class="text-xs border border-slate-300 rounded px-2 py-1.5 w-36">
+                <option value="">Semua Status</option>
+                <option value="tersedia" @selected(request('status')=='tersedia' )>Tersedia</option>
+                <option value="tidak_tersedia" @selected(request('status')=='tidak_tersedia' )>Tidak Tersedia</option>
+            </select>
+        </div>
+
+        <div class="flex flex-col justify-center pb-1.5">
+            <label class="text-xs text-slate-500 inline-flex items-center gap-1.5">
+                <input type="checkbox" name="stok_menipis" value="1" @checked(request('stok_menipis'))>
+                Stok menipis (≤ 5)
+            </label>
+        </div>
+
+        <div class="flex gap-2">
+            <button type="submit"
+                class="text-xs px-3 py-1.5 bg-slate-700 hover:bg-slate-800 text-white rounded transition">
+                Terapkan
+            </button>
+            <a href="{{ route('produk.index') }}"
+                class="text-xs px-3 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-600 rounded transition">
+                Reset
+            </a>
+            <a href="{{ route('produk.laporan.cetak', request()->query()) }}" target="_blank"
+                class="text-xs px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white rounded transition inline-flex items-center gap-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0110.56 0m-10.56 0L6.34 18m10.94-4.171c.24.03.48.062.72.096m-.72-.096L17.66 18m0 0l.229 2.523a1.125 1.125 0 01-1.12 1.227H7.231c-.662 0-1.18-.568-1.12-1.227L6.34 18m11.32 0H6.34m6.85-6.65V4.5A2.25 2.25 0 0011 2.25h-2A2.25 2.25 0 006.75 4.5v6.85m10.5 0h-10.5" />
+                </svg>
+                Cetak PDF
+            </a>
+        </div>
+    </form>
+
     {{-- Grid --}}
     @if ($produks->isNotEmpty())
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
@@ -58,7 +117,11 @@
         </div>
         <h3 class="text-sm font-semibold text-slate-600 mb-1">Belum ada produk</h3>
         <p class="text-xs text-slate-400 text-center max-w-sm mb-4">
+            @if (request()->hasAny(['nama', 'kategori', 'status', 'stok_menipis']))
+            Tidak ada produk yang cocok dengan filter yang dipilih.
+            @else
             Tambahkan produk pertama untuk mulai mengelola inventori klinik.
+            @endif
         </p>
         <button @click="tambahProduk()"
             class="inline-flex items-center gap-1.5 cursor-pointer text-xs px-3 py-1.5 bg-blue-500 hover:bg-blue-600 text-white rounded-sm transition">

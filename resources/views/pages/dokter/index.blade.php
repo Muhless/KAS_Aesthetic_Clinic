@@ -39,14 +39,36 @@
         </button>
     </div>
 
+    {{-- Pencarian --}}
+    <form method="GET" action="{{ route('dokter.index') }}" class="flex items-center gap-2">
+        <div class="relative flex-1 max-w-sm">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                class="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M21 21l-4.35-4.35M17 10a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input type="text" name="cari" value="{{ request('cari') }}"
+                placeholder="Cari nama atau spesialis dokter..."
+                class="w-full text-xs border border-gray-300 rounded-md pl-9 pr-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        </div>
+        <button type="submit"
+            class="text-xs px-3 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md font-medium transition">
+            Cari
+        </button>
+        @if (request('cari'))
+        <a href="{{ route('dokter.index') }}"
+            class="text-xs px-3 py-2 bg-gray-200 hover:bg-gray-300 text-gray-600 rounded-md font-medium transition">
+            Reset
+        </a>
+        @endif
+    </form>
+
     {{-- Grid/List Dokter --}}
     @if ($dokters->isNotEmpty())
-    <div class="grid grid-flow-col auto-cols-[290px] gap-4 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-hide">
-
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         @foreach ($dokters as $dokter)
-        <div class="snap-start">
-            <x-dokter.card :dokter="$dokter" />
-        </div>
+        <x-dokter.card :dokter="$dokter" />
         @endforeach
     </div>
 
@@ -64,7 +86,11 @@
 
         <h3 class="text-sm font-semibold text-gray-700 mb-1">Belum ada dokter</h3>
         <p class="text-xs text-gray-400 text-center max-w-sm mb-4">
+            @if (request('cari'))
+            Tidak ada dokter yang cocok dengan pencarian "{{ request('cari') }}".
+            @else
             Data dokter masih kosong. Tambahkan dokter pertama untuk mulai mengelola tim klinik.
+            @endif
         </p>
 
         <button @click="tambahDokter()"

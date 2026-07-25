@@ -41,12 +41,13 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('reservasi', ReservasiController::class);
+    Route::get('/reservasi/laporan/cetak', [ReservasiController::class, 'cetakPdf'])->name('reservasi.laporan.cetak');
 
 
 
     Route::resource('pasien', PasienController::class);
     Route::get('/pasiens/{id}/api', [PasienController::class, 'api'])->name('pasiens.api');
-
+        Route::get('/pasien/laporan/cetak', [PasienController::class, 'cetakPdf'])->name('pasien.laporan.cetak');
 
 
     Route::resource('perawat', PerawatController::class);
@@ -68,11 +69,12 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('produk', ProdukController::class);
     Route::get('/produk/{id}/api', [ProdukController::class, 'api'])->name('produk.api');
-
+    Route::get('/produk/laporan/cetak', [ProdukController::class, 'cetakPdf'])->name('produk.laporan.cetak');
 
 
     Route::resource('treatment', TreatmentController::class);
     Route::get('/treatment/{id}/api', [TreatmentController::class, 'api'])->name('treatment.api');
+    Route::get('/treatment/laporan/cetak', [TreatmentController::class, 'cetakPdf'])->name('treatment.laporan.cetak');
 
 
 // Route spesifik/statis WAJIB di atas
