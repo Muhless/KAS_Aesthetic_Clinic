@@ -10,7 +10,6 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     {{-- Flatpickr CSS --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
@@ -21,13 +20,35 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/id.js"></script>
 </head>
 
-<body class="bg-slate-50 text-gray-900 min-h-screen">
+<body class="bg-slate-100 text-slate-800 min-h-screen">
     <div class="flex min-h-screen">
         @include('layouts.sidebar')
         <main class="flex-1 ml-64 min-h-screen overflow-y-auto">
             @yield('content')
         </main>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @stack('scripts')
+
+    <script>
+    function confirmLogout() {
+        Swal.fire({
+            title: 'Keluar?',
+            text: 'Apakah kamu yakin ingin keluar?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#ef4444',
+            cancelButtonColor: '#6b7280',
+            confirmButtonText: 'Ya, Keluar',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('logout-form').submit();
+            }
+        });
+    }
+    </script>
 </body>
 
 </html>

@@ -17,12 +17,19 @@ class PerawatController extends Controller
     return response()->json(['data' => $perawat]);
 }
 
-    // get
-    public function index()
-    {
-        $perawats = Perawat::with('user')->get();
-        return view('pages.perawat.index', compact('perawats'));
-    }
+ public function index(Request $request)
+{
+    $perawats = Perawat::with('user')
+        ->when($request->cari, function ($q) use ($request) {
+            $q->where(function ($q) use ($request) {
+                $q->where('nama', 'like', '%' . $request->cari . '%')
+                  ->orWhere('jadwal', 'like', '%' . $request->cari . '%');
+            });
+        })
+        ->get();
+
+    return view('pages.perawat.index', compact('perawats'));
+}
 
     public function detail($id)
     {
