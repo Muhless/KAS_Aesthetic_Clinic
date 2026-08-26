@@ -63,10 +63,10 @@
 
                 {{-- Nama --}}
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">
+                    <label for="nama" class="block text-sm font-medium text-slate-700 mb-1">
                         Nama Produk <span class="text-red-500">*</span>
                     </label>
-                    <input type="text" name="nama" :value="produk.nama" placeholder="Masukkan nama produk"
+                    <input type="text" name="nama" id="nama" :value="produk.nama" placeholder="Masukkan nama produk"
                         class="w-full px-2.5 py-1.5 text-sm rounded-sm border border-slate-400 bg-white text-slate-700 focus:outline-none focus:border-blue-500 focus:shadow-[0_0_0_0.2rem_rgba(59,130,246,0.25)] transition placeholder-slate-400 @error('nama') border-red-400 @enderror">
                     @error('nama')
                     <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
@@ -75,16 +75,16 @@
 
                 {{-- Kategori --}}
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">Kategori</label>
-                    <input type="text" name="kategori" :value="produk.kategori"
+                    <label for="kategori" class="block text-sm font-medium text-slate-700 mb-1">Kategori</label>
+                    <input type="text" name="kategori" id="kategori" :value="produk.kategori"
                         placeholder="Contoh: Skincare, Serum, Toner..."
                         class="w-full px-2.5 py-1.5 text-sm rounded-sm border border-slate-400 bg-white text-slate-700 focus:outline-none focus:border-blue-500 focus:shadow-[0_0_0_0.2rem_rgba(59,130,246,0.25)] transition placeholder-slate-400">
                 </div>
 
                 {{-- Deskripsi --}}
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">Deskripsi</label>
-                    <textarea name="deskripsi" rows="2" x-model="produk.deskripsi"
+                    <label for="deskripsi" class="block text-sm font-medium text-slate-700 mb-1">Deskripsi</label>
+                    <textarea name="deskripsi" id="deskripsi" rows="2" x-model="produk.deskripsi"
                         placeholder="Deskripsi singkat produk..."
                         class="w-full px-2.5 py-1.5 text-sm rounded-sm border border-slate-400 bg-white text-slate-700 focus:outline-none focus:border-blue-500 focus:shadow-[0_0_0_0.2rem_rgba(59,130,246,0.25)] transition placeholder-slate-400 resize-none">{{ old('deskripsi') }}</textarea>
                 </div>
@@ -92,12 +92,12 @@
                 <div class="grid grid-cols-2 gap-3">
                     {{-- Harga --}}
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">
+                        <label for="harga" class="block text-sm font-medium text-slate-700 mb-1">
                             Harga <span class="text-red-500">*</span>
                         </label>
                         <div class="relative">
                             <span class="absolute left-2.5 top-1/2 -translate-y-1/2 text-sm text-slate-500">Rp</span>
-                            <input type="number" name="harga" :value="produk.harga" min="0"
+                            <input type="number" name="harga" id="harga" :value="produk.harga" min="0"
                                 class="w-full pl-8 pr-2.5 py-1.5 text-sm rounded-sm border border-slate-400 bg-white text-slate-700 focus:outline-none focus:border-blue-500 focus:shadow-[0_0_0_0.2rem_rgba(59,130,246,0.25)] transition @error('harga') border-red-400 @enderror">
                         </div>
                         @error('harga')
@@ -107,10 +107,10 @@
 
                     {{-- Stok --}}
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">
+                        <label for="stok" class="block text-sm font-medium text-slate-700 mb-1">
                             Stok <span class="text-red-500">*</span>
                         </label>
-                        <input type="number" name="stok" :value="produk.stok" min="0"
+                        <input type="number" name="stok" id="stok" :value="produk.stok" min="0"
                             class="w-full px-2.5 py-1.5 text-sm rounded-sm border border-slate-400 bg-white text-slate-700 focus:outline-none focus:border-blue-500 focus:shadow-[0_0_0_0.2rem_rgba(59,130,246,0.25)] transition @error('stok') border-red-400 @enderror">
                         @error('stok')
                         <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
@@ -119,21 +119,21 @@
                 </div>
 
                 {{-- Status --}}
-                <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">Status</label>
-                    <div class="flex gap-4">
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="radio" name="status" value="tersedia" :checked="produk.status === 'tersedia'"
-                                class="w-4 h-4 accent-green-500">
-                            <span class="text-sm text-slate-700">Tersedia</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="radio" name="status" value="tidak_tersedia"
-                                :checked="produk.status === 'tidak_tersedia'" class="w-4 h-4 accent-red-500">
-                            <span class="text-sm text-slate-700">Tidak Tersedia</span>
-                        </label>
-                    </div>
-                </div>
+             <div>
+    <label class="block text-sm font-medium text-slate-700 mb-1">Status</label>
+    <div class="flex gap-4">
+        <label class="flex items-center gap-2 cursor-pointer">
+            <input type="radio" name="status" id="status_tersedia" value="tersedia" :checked="produk.status === 'tersedia'"
+                class="w-4 h-4 accent-green-500">
+            <span class="text-sm text-slate-700">Tersedia</span>
+        </label>
+        <label class="flex items-center gap-2 cursor-pointer">
+            <input type="radio" name="status" id="status_tidak_tersedia" value="tidak_tersedia"
+                :checked="produk.status === 'tidak_tersedia'" class="w-4 h-4 accent-red-500">
+            <span class="text-sm text-slate-700">Tidak Tersedia</span>
+        </label>
+    </div>
+</div>
 
             </div>
 
