@@ -96,7 +96,7 @@
                         <label for="nama" class="block text-sm font-medium text-slate-700 mb-1">
                             Nama Lengkap <span class="text-red-500">*</span>
                         </label>
-                        <input type="text" name="nama" :value="dokter.nama" placeholder="dr. Nama Lengkap, Sp.XX"
+                        <input type="text" name="nama" id="nama" :value="dokter.nama" placeholder="dr. Nama Lengkap, Sp.XX"
                             class="w-full px-2.5 py-1.5 text-sm rounded-sm border border-slate-400 bg-white text-slate-700 focus:outline-none focus:border-blue-500 focus:shadow-[0_0_0_0.2rem_rgba(59,130,246,0.25)] transition placeholder-slate-400 @error('nama') border-red-400 @enderror">
                         @error('nama')
                         <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
@@ -130,7 +130,7 @@
                         <label for="spesialis" class="block text-sm font-medium text-slate-700 mb-1">
                             Spesialisasi <span class="text-red-500">*</span>
                         </label>
-                        <input type="text" name="spesialis" :value="dokter.spesialis"
+                        <input type="text" name="spesialis" id="spesialis" :value="dokter.spesialis"
                             placeholder="Contoh: Kulit & Kelamin"
                             class="w-full px-2.5 py-1.5 text-sm rounded-sm border border-slate-400 bg-white text-slate-700 focus:outline-none focus:border-blue-500 focus:shadow-[0_0_0_0.2rem_rgba(59,130,246,0.25)] transition placeholder-slate-400 @error('spesialis') border-red-400 @enderror">
                         @error('spesialis')
@@ -143,7 +143,7 @@
                         <label for="no_telepon" class="block text-sm font-medium text-slate-700 mb-1">
                             Nomor Telepon
                         </label>
-                        <input type="text" name="no_telepon" :value="dokter.no_telepon" placeholder="08xxxxxxxxxx"
+                        <input type="text" name="no_telepon" id="no_telepon" :value="dokter.no_telepon" placeholder="08xxxxxxxxxx"
                             class="w-full px-2.5 py-1.5 text-sm rounded-sm border border-slate-400 bg-white text-slate-700 focus:outline-none focus:border-blue-500 focus:shadow-[0_0_0_0.2rem_rgba(59,130,246,0.25)] transition placeholder-slate-400 @error('no_telepon') border-red-400 @enderror">
                         @error('no_telepon')
                         <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
@@ -155,7 +155,7 @@
                         <label for="email" class="block text-sm font-medium text-slate-700 mb-1">
                             Email
                         </label>
-                        <input type="email" name="email" :value="dokter.email" placeholder="dokter@kasclinic.com"
+                        <input type="email" name="email" id="email" :value="dokter.email" placeholder="dokter@kasclinic.com"
                             class="w-full px-2.5 py-1.5 text-sm rounded-sm border border-slate-400 bg-white text-slate-700 focus:outline-none focus:border-blue-500 focus:shadow-[0_0_0_0.2rem_rgba(59,130,246,0.25)] transition placeholder-slate-400 @error('email') border-red-400 @enderror">
                         @error('email')
                         <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
