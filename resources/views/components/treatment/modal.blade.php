@@ -65,10 +65,10 @@
 
                 {{-- Nama --}}
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">
+                    <label for="nama" class="block text-sm font-medium text-slate-700 mb-1">
                         Nama Treatment <span class="text-red-500">*</span>
                     </label>
-                    <input type="text" name="nama" :value="treatment.nama"
+                    <input type="text" name="nama" id="nama" :value="treatment.nama"
                         placeholder="Contoh: Facial Glow, Laser Acne..."
                         class="w-full px-2.5 py-1.5 text-sm rounded-sm border border-slate-400 bg-white text-slate-700 focus:outline-none focus:border-blue-500 focus:shadow-[0_0_0_0.2rem_rgba(59,130,246,0.25)] transition placeholder-slate-400 @error('nama') border-red-400 @enderror">
                     @error('nama')
@@ -78,8 +78,8 @@
 
                 {{-- Deskripsi --}}
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">Deskripsi</label>
-                    <textarea name="deskripsi" rows="2" x-model="treatment.deskripsi"
+                    <label for="deskripsi" class="block text-sm font-medium text-slate-700 mb-1">Deskripsi</label>
+                    <textarea name="deskripsi" rows="2" id="deskripsi" x-model="treatment.deskripsi"
                         placeholder="Deskripsi singkat treatment..."
                         class="w-full px-2.5 py-1.5 text-sm rounded-sm border border-slate-400 bg-white text-slate-700 focus:outline-none focus:border-blue-500 focus:shadow-[0_0_0_0.2rem_rgba(59,130,246,0.25)] transition placeholder-slate-400 resize-none">{{ old('deskripsi') }}</textarea>
                 </div>
@@ -87,12 +87,12 @@
                 <div class="grid grid-cols-2 gap-3">
                     {{-- Harga --}}
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">
+                        <label for="harga" class="block text-sm font-medium text-slate-700 mb-1">
                             Harga <span class="text-red-500">*</span>
                         </label>
                         <div class="relative">
                             <span class="absolute left-2.5 top-1/2 -translate-y-1/2 text-sm text-slate-500">Rp</span>
-                            <input type="number" name="harga" :value="treatment.harga" min="0"
+                            <input type="number" name="harga" id="harga" :value="treatment.harga" min="0"
                                 class="w-full pl-8 pr-2.5 py-1.5 text-sm rounded-sm border border-slate-400 bg-white text-slate-700 focus:outline-none focus:border-blue-500 focus:shadow-[0_0_0_0.2rem_rgba(59,130,246,0.25)] transition @error('harga') border-red-400 @enderror">
                         </div>
                         @error('harga')
@@ -102,9 +102,9 @@
 
                     {{-- Durasi --}}
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Durasi (menit)</label>
+                        <label for="durasi" class="block text-sm font-medium text-slate-700 mb-1">Durasi (menit)</label>
                         <div class="relative">
-                            <input type="number" name="durasi" :value="treatment.durasi" min="0" placeholder="60"
+                            <input type="number" name="durasi" id="durasi" :value="treatment.durasi" min="0" placeholder="60"
                                 class="w-full px-2.5 pr-12 py-1.5 text-sm rounded-sm border border-slate-400 bg-white text-slate-700 focus:outline-none focus:border-blue-500 focus:shadow-[0_0_0_0.2rem_rgba(59,130,246,0.25)] transition placeholder-slate-400">
                             <span
                                 class="absolute right-2.5 top-1/2 -translate-y-1/2 text-xs text-slate-400 pointer-events-none">menit</span>
@@ -114,7 +114,7 @@
 
                 {{-- Status --}}
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">Status</label>
+                    <label for="status" class="block text-sm font-medium text-slate-700 mb-1">Status</label>
                     <div class="flex gap-4">
                         <label class="flex items-center gap-2 cursor-pointer">
                             <input type="radio" name="status" value="tersedia"
