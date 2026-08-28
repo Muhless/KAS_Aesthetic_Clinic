@@ -33,10 +33,11 @@
 
                 {{-- Pasien --}}
                 <div>
-                    <label class="block text-sm font-medium text-slate-600 mb-1">
+                    <label for="pasien_id" class="block text-sm font-medium text-slate-600 mb-1">
                         Pasien <span class="text-red-500">*</span>
                     </label>
                     <select name="pasien_id"
+                    id="pasien_id"
                         class="w-full px-3 py-2 text-sm border rounded focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition @error('pasien_id') border-red-400 @else border-slate-300 @enderror">
                         <option value="">Pilih Pasien</option>
                         @foreach (\App\Models\Pasien::orderBy('nama')->get() as $pasien)
@@ -50,10 +51,11 @@
 
                 {{-- Dokter --}}
                 <div>
-                    <label class="block text-sm font-medium text-slate-600 mb-1">
+                    <label for="dokter_id" class="block text-sm font-medium text-slate-600 mb-1">
                         Dokter
                     </label>
                     <select name="dokter_id"
+                    id="dokter_id"
                         class="w-full px-3 py-2 text-sm border border-slate-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition">
                         <option value="">Pilih Dokter</option>
                         @foreach (\App\Models\Dokter::orderBy('nama')->get() as $dokter)
