@@ -175,8 +175,8 @@
 
                 <div class="px-4 py-4">
                     <div>
-                        <label class="block text-sm font-medium text-slate-600 mb-1">Keluhan Pasien</label>
-                        <textarea name="keluhan" rows="3" x-model="antrian.keluhan" placeholder="Tuliskan keluhan pasien..."
+                        <label for="keluhan" class="block text-sm font-medium text-slate-600 mb-1">Keluhan Pasien</label>
+                        <textarea name="keluhan" id="keluhan" rows="3" x-model="antrian.keluhan" placeholder="Tuliskan keluhan pasien..."
                             class="w-full px-3 py-2 text-sm border border-slate-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition resize-none"></textarea>
                     </div>
                 </div>
