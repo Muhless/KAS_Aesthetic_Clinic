@@ -56,15 +56,15 @@
                         <h2 class="font-semibold text-gray-800 text-sm">Hasil Pemeriksaan</h2>
 
                         <div>
-                            <label class="text-xs text-gray-500 mb-1.5 block">Diagnosa</label>
-                            <textarea name="diagnosa" rows="3"
+                            <label for="diagnosa" class="text-xs text-gray-500 mb-1.5 block">Diagnosa</label>
+                            <textarea name="diagnosa" id="diagnosa" rows="3"
                                 class="w-full text-sm border border-gray-300 px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400 resize-none"
                                 placeholder="Tuliskan diagnosa...">{{ old('diagnosa', $pemeriksaan->diagnosa) }}</textarea>
                         </div>
 
                         <div>
-                            <label class="text-xs text-gray-500 mb-1.5 block">Tindakan</label>
-                            <textarea name="tindakan" rows="3"
+                            <label for="tindakan" class="text-xs text-gray-500 mb-1.5 block">Tindakan</label>
+                            <textarea name="tindakan" id="tindakan" rows="3"
                                 class="w-full text-sm border border-gray-300 px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400 resize-none"
                                 placeholder="Tuliskan tindakan yang dilakukan...">{{ old('tindakan', $pemeriksaan->tindakan) }}</textarea>
                         </div>
@@ -97,8 +97,8 @@
 
                         {{-- Catatan --}}
                         <div>
-                            <label class="text-xs text-gray-500 mb-1.5 block">Catatan Tambahan</label>
-                            <textarea name="catatan" rows="2"
+                            <label for="catatan" class="text-xs text-gray-500 mb-1.5 block">Catatan Tambahan</label>
+                            <textarea name="catatan" id="catatan" rows="2"
                                 class="w-full text-sm border border-gray-300 px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400 resize-none"
                                 placeholder="Catatan tambahan...">{{ old('catatan', $pemeriksaan->catatan) }}</textarea>
                         </div>

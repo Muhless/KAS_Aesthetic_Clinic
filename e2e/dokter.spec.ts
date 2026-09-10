@@ -46,3 +46,21 @@ test.afterEach(async ({ page }) => {
     await card.locator('button[type="submit"]').click();
     await expect(card).toHaveCount(0);
 });
+
+test.describe("Login as doctor", () => {
+    test.use({ storageState: "playwright/.auth/doctor.json" });
+
+    test("Doctor successfully examine the patient", async ({ page }) => {
+        await page.goto("http://127.0.0.1:8000/nakes");
+        await page.getByRole("link", { name: "Periksa" }).first().click();
+        await page.selectOption('select[name="treatment_id"]', {
+            label: "Laser Acne",
+        });
+        await page.getByLabel("diagnosa").fill("Wajah kusam dan berminyak");
+        await page.getByLabel("tindakan").fill("treatment laser 1x/minggu");
+        await page.getByLabel("Acne Serum").check();
+        await page.getByLabel("catatan").fill("2x sehari, pagi dan malam");
+        await page.getByRole("button", { name: "Simpan Pemeriksaan" }).click();
+        await expect(page).toHaveURL(/\/nakes$/);
+    });
+});

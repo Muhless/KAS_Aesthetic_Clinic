@@ -40,8 +40,4 @@ test("login with wrong password", async ({ page }) => {
 });
 
 
-test('Doctor successfully examine the patient', async ({page})=>{
-    await page.goto("http://127.0.0.1:8000/nakes");
-    await page.getByRole("button", { name: "Periksa" }).first().click();
-    await page.pause()
-})
+
