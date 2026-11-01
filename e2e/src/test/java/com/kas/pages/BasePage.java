@@ -6,6 +6,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.kas.config.Config;
@@ -48,5 +49,12 @@ public class BasePage {
 
     public void waitForUrlNotContains(String part) {
         wait.until(ExpectedConditions.not(ExpectedConditions.urlContains(part)));
+    }
+
+
+    // for select input
+    public void selectByText(By locator, String text) {
+        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+        new Select(element).selectByVisibleText(text);
     }
 }
