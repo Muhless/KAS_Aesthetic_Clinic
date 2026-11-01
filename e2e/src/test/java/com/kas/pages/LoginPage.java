@@ -2,6 +2,7 @@ package com.kas.pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class LoginPage extends BasePage {
     private final By usernameInput = By.cssSelector("input[name='username']");
@@ -24,7 +25,11 @@ public class LoginPage extends BasePage {
         click(submitButton);
     }
 
-    public String getErrorMessage(){
+    public String getErrorMessage() {
         return getText(errorMessage);
+    }
+
+    public boolean isOnDashboard() {
+        return wait.until(ExpectedConditions.urlContains("/dashboard"));
     }
 }

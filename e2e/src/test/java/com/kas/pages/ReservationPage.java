@@ -8,18 +8,18 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-public class DashboardPage extends BasePage {
+public class ReservationPage extends BasePage {
     private final By addButton = By.xpath("//button[normalize-space()='Tambah Reservasi']");
     private final By patientSelectBy = By.name("patient_id");
     private final By doctorSelectBy = By.name("doctor_id");
     private final By dateInputBy = By.cssSelector("input[placeholder='Pilih tanggal reservasi']");
     private final By submitButtonBy = By.cssSelector("button[type='submit']");
 
-    public DashboardPage(WebDriver driver) {
+    public ReservationPage(WebDriver driver) {
         super(driver);
     }
 
-    public DashboardPage goTo() {
+    public ReservationPage goTo() {
         open("/");
         return this;
     }
@@ -46,7 +46,7 @@ public class DashboardPage extends BasePage {
         wait.until(ExpectedConditions.elementToBeClickable(dayCell)).click();
     }
 
-    public void subbmitReservation() {
+    public void submitReservation() {
         click(submitButtonBy);
     }
 
