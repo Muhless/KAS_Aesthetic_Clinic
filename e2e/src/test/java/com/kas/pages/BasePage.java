@@ -3,6 +3,7 @@ package com.kas.pages;
 import java.time.Duration;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -49,6 +50,18 @@ public class BasePage {
 
     public void waitForUrlNotContains(String part) {
         wait.until(ExpectedConditions.not(ExpectedConditions.urlContains(part)));
+    }
+
+    public boolean isVisible(By locator) {
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(locator)).isDisplayed();
+    }
+
+    public boolean isElementPresent(By locator) {
+        return !driver.findElements(locator).isEmpty();
+    }
+
+    public Object executeScript(String script, Object... args) {
+        return ((JavascriptExecutor) driver).executeScript(script, args);
     }
 
 

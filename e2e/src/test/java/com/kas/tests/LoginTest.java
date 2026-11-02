@@ -1,5 +1,6 @@
 package com.kas.tests;
 
+import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -40,6 +41,12 @@ public class LoginTest extends BaseTest {
         LoginPage loginPage = new LoginPage(driver).goTo();
         loginPage.login("", "");
 
+        // Input punya atribut `required`, jadi browser menolak submit dan
+        // validasi HTML5 yang muncul (bukan pesan error dari server).
+        String validationMessage = driver.findElement(By.cssSelector("input[name='username']"))
+                .getAttribute("validationMessage");
+
+        Assert.assertFalse(validationMessage.isEmpty(), "Browser harus menolak submit form kosong");
         Assert.assertTrue(driver.getCurrentUrl().contains("/login"));
     }
 
@@ -58,6 +65,8 @@ public class LoginTest extends BaseTest {
         loginPage.login(username, Config.ADMIN_PASSWORD);
         loginPage.waitForUrlNotContains("/login");
 
-        Assert.assertFalse(driver.getCurrentUrl().contains("/login"));
+        // Dokter diarahkan ke halaman nakes, role lain ke dashboard.
+        String expectedPath = username.equals("dokter") ? "/nakes" : "/";
+        Assert.assertEquals(driver.getCurrentUrl(), Config.BASE_URL + expectedPath);
     }
 }

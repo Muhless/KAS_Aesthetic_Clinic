@@ -1,8 +1,12 @@
 package com.kas.pages;
 
+import java.time.Duration;
+
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class LoginPage extends BasePage {
     private final By usernameInput = By.cssSelector("input[name='username']");
@@ -25,11 +29,20 @@ public class LoginPage extends BasePage {
         click(submitButton);
     }
 
+
     public String getErrorMessage() {
-        return getText(errorMessage);
+        try {
+            return new WebDriverWait(driver, Duration.ofSeconds(5))
+                    .until(ExpectedConditions.visibilityOfElementLocated(errorMessage))
+                    .getText()
+                    .trim();
+        } catch (TimeoutException e) {
+            return "";
+        }
     }
 
-    public boolean isOnDashboard() {
-        return wait.until(ExpectedConditions.urlContains("/dashboard"));
+    public boolean isOnLoginPage() {
+        return isVisible(usernameInput) && driver.getCurrentUrl().contains("/login");
     }
+
 }
