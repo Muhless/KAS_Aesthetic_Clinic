@@ -8,7 +8,7 @@ import org.openqa.selenium.WebElement;
 
 public class ReservationPage extends BasePage {
 
-    private final By addButton = By.xpath("//button[normalize-space()='Tambah Reservasi']");
+    private final By addButton = By.xpath("(//button[normalize-space()='Tambah Reservasi'])[1]");
     private final By patientSelect = By.name("pasien_id");
     private final By doctorSelect = By.name("dokter_id");
     private final By dateInput = By.cssSelector("input[name='tanggal']");

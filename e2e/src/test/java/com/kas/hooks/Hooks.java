@@ -11,6 +11,11 @@ import io.cucumber.java.Before;
 
 public class Hooks {
 
+    @Before(order = -10)
+    public void resetDatabase() {
+        DatabaseReset.reset();
+    }
+
     @Before(order = 0)
     public void setUp() {
         ChromeOptions options = new ChromeOptions();

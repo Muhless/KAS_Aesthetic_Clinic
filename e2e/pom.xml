@@ -98,7 +98,7 @@
                                         <argument>-d</argument>
                                         <argument>${project.build.directory}/testng-output</argument>
                                         <argument>-testclass</argument>
-                                        <argument>com.kas.tests.LoginTest</argument>
+                                        <argument>com.kas.tests.LoginTest,com.kas.tests.ProductTest</argument>
                                     </arguments>
                                 </configuration>
                             </execution>

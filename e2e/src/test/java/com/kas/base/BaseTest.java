@@ -7,6 +7,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
 import com.kas.config.Config;
+import com.kas.hooks.DatabaseReset;
 
 public class BaseTest {
 
@@ -14,6 +15,8 @@ public class BaseTest {
 
     @BeforeMethod
     public void setUp() {
+        DatabaseReset.reset();
+
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--window-size=1366,768", "--no-sandbox", "--disable-dev-shm-usage");
 
