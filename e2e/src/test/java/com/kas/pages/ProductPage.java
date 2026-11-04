@@ -154,7 +154,6 @@ public class ProductPage extends BasePage {
         try {
             find(card(nama)).findElement(By.xpath(".//button[@title='Hapus']")).click();
         } catch (UnhandledAlertException e) {
-            // Dialog konfirmasi sudah terbuka, lanjut diterima di bawah.
         }
 
         wait.until(ExpectedConditions.alertIsPresent());
@@ -221,7 +220,8 @@ public class ProductPage extends BasePage {
     // --- Helper ---
 
     private By card(String nama) {
-        return By.xpath("//h2[normalize-space()=" + xpathLiteral(nama) + "]/ancestor::div[contains(@class,'h-full')][1]");
+        return By.xpath(
+                "//h2[normalize-space()=" + xpathLiteral(nama) + "]/ancestor::div[contains(@class,'h-full')][1]");
     }
 
     private void waitForDocumentReady() {
