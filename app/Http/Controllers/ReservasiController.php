@@ -94,7 +94,7 @@ class ReservasiController extends Controller
                       ->update(['status' => 'diproses']);
         }
 
-        return redirect()->back()->with('success', 'Pasien berhasil check-in.');
+        return redirect()->back()->with('success', 'Reservasi berhasil dibuat.');
     }
 
     public function update(Request $request, $id)
