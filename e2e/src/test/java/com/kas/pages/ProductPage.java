@@ -6,21 +6,22 @@ import java.util.stream.Collectors;
 import org.openqa.selenium.By;
 import org.openqa.selenium.UnhandledAlertException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+
+import com.kas.components.FormModal;
+import com.kas.components.Notification;
 
 public class ProductPage extends BasePage {
 
     private final By pageTitleBy = By.xpath("//h1[normalize-space()='Produk']");
-    private final By productNamesBy = By.xpath("//h2[contains(@class,'truncate')]");
+    private final By productNamesBy = By.cssSelector("[data-testid='product-name']");
     private final By emptyStateBy = By.xpath("//h3[normalize-space()='Belum ada produk']");
 
     // Tombol & modal
-    private final By addButtonBy = By.xpath("(//button[normalize-space()='Tambah Produk'])[1]");
-    private final By modalFormBy = By.xpath("//form[@enctype='multipart/form-data']");
-    private final By modalTitleBy = By.xpath("//h5[normalize-space()='Tambah Produk']");
-    private final By editModalTitleBy = By.xpath("//h5[normalize-space()='Edit Produk']");
-    private final By submitButtonBy = By.xpath("//form[@enctype='multipart/form-data']//button[@type='submit']");
+    private final By addButtonBy = By.cssSelector("[data-testid='add-product']");
+    private final By modalRootBy = By.cssSelector("[data-testid='product-modal']");
+    private final FormModal modal = new FormModal(driver, wait, modalRootBy,
+            By.cssSelector("[data-testid='product-modal'] h5"));
 
     // Field form
     private final By nameInputBy = By.id("nama");
@@ -32,11 +33,7 @@ public class ProductPage extends BasePage {
     private final By statusTidakTersediaBy = By.id("status_tidak_tersedia");
 
     // Notifikasi
-    private final By successToastBy = By.xpath("//h3[normalize-space()='Berhasil!']");
-    private final By successMessageBy = By.xpath("//h3[normalize-space()='Berhasil!']/following-sibling::p");
-    private final By errorToastBy = By.xpath("//h3[normalize-space()='Terjadi Kesalahan']");
-    private final By errorMessagesBy = By.xpath(
-            "//h3[normalize-space()='Terjadi Kesalahan']/ancestor::div[contains(@class,'z-50')]//li");
+    private final Notification notification = new Notification(driver, wait);
 
     // Filter
     private final By filterNameBy = By.xpath("//form[@method='GET']//input[@name='nama']");
@@ -91,12 +88,12 @@ public class ProductPage extends BasePage {
 
     public ProductPage clickAdd() {
         click(addButtonBy);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(modalTitleBy));
+        modal.waitUntilOpen();
         return this;
     }
 
     public boolean isModalOpen() {
-        return driver.findElements(modalFormBy).stream().anyMatch(WebElement::isDisplayed);
+        return modal.isOpen();
     }
 
     public ProductPage fillProduct(String nama, String kategori, String deskripsi, String harga, String stok) {
@@ -133,20 +130,17 @@ public class ProductPage extends BasePage {
     }
 
     public ProductPage submit() {
-        WebElement button = find(submitButtonBy);
-        button.click();
+        modal.submit();
 
         // Sukses maupun gagal validasi sama-sama redirect + menampilkan notifikasi.
-        wait.until(ExpectedConditions.or(
-                ExpectedConditions.visibilityOfElementLocated(successToastBy),
-                ExpectedConditions.visibilityOfElementLocated(errorToastBy)));
-        wait.until(ExpectedConditions.invisibilityOfElementLocated(modalFormBy));
+        notification.waitForResult();
+        modal.waitUntilClosed();
         return this;
     }
 
     public ProductPage clickEdit(String nama) {
         find(card(nama)).findElement(By.xpath(".//button[@title='Edit']")).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(editModalTitleBy));
+        modal.waitUntilOpen();
         return this;
     }
 
@@ -164,21 +158,19 @@ public class ProductPage extends BasePage {
     // --- Notifikasi ---
 
     public boolean hasSuccessMessage() {
-        return isVisible(successToastBy);
+        return notification.hasSuccess();
     }
 
     public String getSuccessMessage() {
-        return getText(successMessageBy).trim();
+        return notification.successMessage();
     }
 
     public boolean hasErrorMessage() {
-        return isVisible(errorToastBy);
+        return notification.hasError();
     }
 
     public List<String> getErrorMessages() {
-        return driver.findElements(errorMessagesBy).stream()
-                .map(element -> element.getText().trim())
-                .collect(Collectors.toList());
+        return notification.errorMessages();
     }
 
     // --- Filter ---
@@ -220,8 +212,8 @@ public class ProductPage extends BasePage {
     // --- Helper ---
 
     private By card(String nama) {
-        return By.xpath(
-                "//h2[normalize-space()=" + xpathLiteral(nama) + "]/ancestor::div[contains(@class,'h-full')][1]");
+        return By.xpath("//*[@data-testid='product-name'][normalize-space()=" + xpathLiteral(nama)
+                + "]/ancestor::*[@data-testid='product-card'][1]");
     }
 
     private void waitForDocumentReady() {

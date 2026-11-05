@@ -1,8 +1,5 @@
 package com.kas.hooks;
 
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-
 import com.kas.config.Config;
 import com.kas.pages.LoginPage;
 
@@ -18,14 +15,7 @@ public class Hooks {
 
     @Before(order = 0)
     public void setUp() {
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--window-size=1366,768", "--no-sandbox", "--disable-dev-shm-usage");
-
-        if (Config.HEADLESS) {
-            options.addArguments("--headless=new");
-        }
-
-        DriverManager.set(new ChromeDriver(options));
+        DriverManager.set(DriverFactory.create());
     }
 
     @Before(value = "@requiresLogin", order = 10)

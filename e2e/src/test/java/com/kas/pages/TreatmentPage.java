@@ -6,38 +6,34 @@ import java.util.stream.Collectors;
 import org.openqa.selenium.By;
 import org.openqa.selenium.UnhandledAlertException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+
+import com.kas.components.FormModal;
+import com.kas.components.Notification;
 
 public class TreatmentPage extends BasePage {
 
     private final By pageTitle = By.xpath("//h1[normalize-space()='Treatment']");
-    private final By treatmentNames = By.xpath("//p[contains(@class,'truncate')]");
+    private final By treatmentNames = By.cssSelector("[data-testid='treatment-name']");
     private final By emptyState = By.xpath("//h3[normalize-space()='Belum ada treatment']");
 
     // Tombol & modal
-    private final By addButton = By.xpath("(//button[normalize-space()='Tambah Treatment'])[1]");
-    private final By modalForm = By.xpath("//form[@enctype='multipart/form-data']");
-    private final By modalTitle = By.xpath("//h5[normalize-space()='Tambah Treatment']");
-    private final By editModalTitle = By.xpath("//h5[normalize-space()='Edit Treatment']");
-    private final By submitButton = By.xpath("//form[@enctype='multipart/form-data']//button[@type='submit']");
+    private final By addButton = By.cssSelector("[data-testid='add-treatment']");
+    private final By modalRoot = By.cssSelector("[data-testid='treatment-modal']");
+    private final FormModal modal = new FormModal(driver, wait, modalRoot,
+            By.cssSelector("[data-testid='treatment-modal'] h5"));
 
     // Field form
     private final By namaInput = By.id("nama");
     private final By deskripsiInput = By.id("deskripsi");
     private final By hargaInput = By.id("harga");
     private final By durasiInput = By.id("durasi");
-    private final By statusTersedia = By.xpath(
-            "//form[@enctype='multipart/form-data']//input[@name='status'][@value='tersedia']");
-    private final By statusTidakTersedia = By.xpath(
-            "//form[@enctype='multipart/form-data']//input[@name='status'][@value='tidak_tersedia']");
+    private final By statusTersedia = By.cssSelector("[data-testid='treatment-modal'] input[name='status'][value='tersedia']");
+    private final By statusTidakTersedia = By
+            .cssSelector("[data-testid='treatment-modal'] input[name='status'][value='tidak_tersedia']");
 
     // Notifikasi
-    private final By successToast = By.xpath("//h3[normalize-space()='Berhasil!']");
-    private final By successMessage = By.xpath("//h3[normalize-space()='Berhasil!']/following-sibling::p");
-    private final By errorToast = By.xpath("//h3[normalize-space()='Terjadi Kesalahan']");
-    private final By errorMessages = By.xpath(
-            "//h3[normalize-space()='Terjadi Kesalahan']/ancestor::div[contains(@class,'z-50')]//li");
+    private final Notification notification = new Notification(driver, wait);
 
     // Filter
     private final By filterNama = By.xpath("//form[@method='GET']//input[@name='nama']");
@@ -115,12 +111,12 @@ public class TreatmentPage extends BasePage {
 
     public TreatmentPage clickAdd() {
         click(addButton);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(modalTitle));
+        modal.waitUntilOpen();
         return this;
     }
 
     public boolean isModalOpen() {
-        return driver.findElements(modalForm).stream().anyMatch(WebElement::isDisplayed);
+        return modal.isOpen();
     }
 
     public TreatmentPage fillTreatment(String nama, String deskripsi, String harga, String durasi) {
@@ -154,20 +150,17 @@ public class TreatmentPage extends BasePage {
     }
 
     public TreatmentPage submit() {
-        WebElement button = find(submitButton);
-        button.click();
+        modal.submit();
 
         // Sukses maupun gagal validasi sama-sama redirect + menampilkan notifikasi.
-        wait.until(ExpectedConditions.or(
-                ExpectedConditions.visibilityOfElementLocated(successToast),
-                ExpectedConditions.visibilityOfElementLocated(errorToast)));
-        wait.until(ExpectedConditions.invisibilityOfElementLocated(modalForm));
+        notification.waitForResult();
+        modal.waitUntilClosed();
         return this;
     }
 
     public TreatmentPage clickEdit(String nama) {
         find(card(nama)).findElement(By.xpath(".//button[@title='Edit']")).click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(editModalTitle));
+        modal.waitUntilOpen();
         return this;
     }
 
@@ -186,21 +179,19 @@ public class TreatmentPage extends BasePage {
     // --- Notifikasi ---
 
     public boolean hasSuccessMessage() {
-        return isVisible(successToast);
+        return notification.hasSuccess();
     }
 
     public String getSuccessMessage() {
-        return getText(successMessage).trim();
+        return notification.successMessage();
     }
 
     public boolean hasErrorMessage() {
-        return isVisible(errorToast);
+        return notification.hasError();
     }
 
     public List<String> getErrorMessages() {
-        return driver.findElements(errorMessages).stream()
-                .map(element -> element.getText().trim())
-                .collect(Collectors.toList());
+        return notification.errorMessages();
     }
 
     // --- Filter ---
@@ -246,8 +237,8 @@ public class TreatmentPage extends BasePage {
     // --- Helper ---
 
     private By card(String nama) {
-        return By.xpath("//p[contains(@class,'truncate')][normalize-space()=" + xpathLiteral(nama)
-                + "]/ancestor::div[contains(@class,'overflow-hidden')][1]");
+        return By.xpath("//*[@data-testid='treatment-name'][normalize-space()=" + xpathLiteral(nama)
+                + "]/ancestor::*[@data-testid='treatment-card'][1]");
     }
 
     private void waitForDocumentReady() {
