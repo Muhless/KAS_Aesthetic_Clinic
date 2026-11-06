@@ -27,7 +27,7 @@
             <h1 class="text-xl font-semibold text-slate-700">Pasien</h1>
             <p class="text-xs text-slate-400">{{ $pasiens->count() }} Pasien terdaftar</p>
         </div>
-        <button @click="tambahPasien()"
+        <button @click="tambahPasien()" data-testid="add-patient"
             class="inline-flex items-center gap-1.5 cursor-pointer text-xs px-3 py-1.5 bg-blue-500 hover:bg-blue-600 text-white rounded transition">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor">

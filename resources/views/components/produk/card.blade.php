@@ -1,6 +1,6 @@
 @props(['produk'])
 
-<div
+<div data-testid="product-card"
     class="h-full bg-white rounded-sm shadow-[0_0.5rem_1rem_rgba(0,0,0,0.1)] border border-black/10 overflow-hidden flex flex-col">
 
     {{-- Gambar --}}
@@ -37,7 +37,7 @@
 
         {{-- Nama & Kategori --}}
         <div>
-            <h2 class="text-sm font-semibold text-slate-700 truncate">
+            <h2 data-testid="product-name" class="text-sm font-semibold text-slate-700 truncate">
                 {{ $produk->nama }}
             </h2>
             @if ($produk->kategori)

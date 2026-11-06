@@ -50,7 +50,7 @@ public class TreatmentTest extends BaseTest {
         TreatmentApi.create(nama, "Treatment untuk test edit", 150000, 60, "tersedia");
         treatmentPage.goTo();
 
-        treatmentPage.clickEdit(nama).fillName(nama + " Updated").submit();
+        treatmentPage.clickEdit(nama).fillTreatmentName(nama + " Updated").submit();
 
         Assert.assertTrue(treatmentPage.hasSuccessMessage(), "Pesan sukses edit treatment tidak muncul");
         Assert.assertEquals(treatmentPage.getSuccessMessage(), "Treatment berhasil diubah.");

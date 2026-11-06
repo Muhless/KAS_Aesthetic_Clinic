@@ -1,7 +1,7 @@
 {{-- resources/views/components/treatment/card.blade.php --}}
 @props(['treatment'])
 
-<div
+<div data-testid="treatment-card"
     class="bg-white rounded-sm shadow-[0_0.5rem_1rem_rgba(0,0,0,0.1)] border border-black/10 overflow-hidden flex flex-col">
 
     {{-- Gambar --}}
@@ -53,7 +53,7 @@
     <div class="flex flex-col grow p-3 gap-1.5">
 
         {{-- Nama --}}
-        <p class="text-sm font-semibold text-slate-700 truncate">
+        <p data-testid="treatment-name" class="text-sm font-semibold text-slate-700 truncate">
             {{ $treatment->nama }}
         </p>
 

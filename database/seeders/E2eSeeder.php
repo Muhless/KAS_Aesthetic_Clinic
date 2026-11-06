@@ -5,11 +5,12 @@ namespace Database\Seeders;
 use App\Models\Dokter;
 use App\Models\Pasien;
 use App\Models\Produk;
+use App\Models\Treatment;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
 /**
- * Data minimum agar skenario e2e Cucumber bisa dijalankan.
+ * Data minimum agar skenario e2e bisa dijalankan.
  * Jalankan hanya pada database testing:
  *   php artisan db:seed --class=E2eSeeder --env=testing --force
  */
@@ -44,6 +45,16 @@ class E2eSeeder extends Seeder
                 'kategori' => 'Perawatan',
                 'harga' => 100000,
                 'stok' => 10,
+                'status' => 'tersedia',
+            ]
+        );
+
+        Treatment::firstOrCreate(
+            ['nama' => 'Treatment E2E'],
+            [
+                'deskripsi' => 'Treatment untuk pengujian e2e',
+                'harga' => 150000,
+                'durasi' => 60,
                 'status' => 'tersedia',
             ]
         );

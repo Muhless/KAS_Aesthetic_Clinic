@@ -27,7 +27,7 @@
             <h1 class="text-xl font-semibold text-slate-700">Treatment</h1>
             <p class="text-xs text-slate-400">{{ $treatments->count() }} treatment terdaftar</p>
         </div>
-        <button @click="tambahTreatment()"
+        <button @click="tambahTreatment()" data-testid="add-treatment"
             class="inline-flex items-center gap-1.5 cursor-pointer text-xs px-3 py-1.5 bg-blue-500 hover:bg-blue-600 text-white rounded-sm transition">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor">

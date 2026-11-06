@@ -1,7 +1,6 @@
 package com.kas.pages;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.UnhandledAlertException;
@@ -10,11 +9,12 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.kas.components.FormModal;
 import com.kas.components.Notification;
+import com.kas.components.RecordList;
 
 public class TreatmentPage extends BasePage {
 
     private final By pageTitle = By.xpath("//h1[normalize-space()='Treatment']");
-    private final By treatmentNames = By.cssSelector("[data-testid='treatment-name']");
+    private final RecordList treatments = new RecordList(driver, wait, "treatment-name", "treatment-card");
     private final By emptyState = By.xpath("//h3[normalize-space()='Belum ada treatment']");
 
     // Tombol & modal
@@ -57,13 +57,7 @@ public class TreatmentPage extends BasePage {
     }
 
     public int treatmentCount() {
-        return driver.findElements(treatmentNames).size();
-    }
-
-    public List<String> treatmentNames() {
-        return driver.findElements(treatmentNames).stream()
-                .map(element -> element.getText().trim())
-                .collect(Collectors.toList());
+        return treatments.count();
     }
 
     public boolean hasEmptyState() {
@@ -71,44 +65,42 @@ public class TreatmentPage extends BasePage {
     }
 
     public boolean hasTreatment(String nama) {
-        return !driver.findElements(card(nama)).isEmpty();
+        return treatments.has(nama);
     }
 
     public TreatmentPage waitForTreatment(String nama) {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(card(nama)));
+        treatments.waitFor(nama);
         return this;
     }
 
     public TreatmentPage waitForTreatmentGone(String nama) {
-        wait.until(ExpectedConditions.invisibilityOfElementLocated(card(nama)));
+        treatments.waitForGone(nama);
         return this;
     }
 
     // --- Data kartu ---
-
     public String getPrice(String nama) {
-        return find(card(nama))
+        return treatments.item(nama)
                 .findElement(By.xpath(".//span[contains(@class,'font-bold')]"))
                 .getText()
                 .trim();
     }
 
     public String getStatus(String nama) {
-        return find(card(nama))
+        return treatments.item(nama)
                 .findElement(By.xpath(".//div[contains(@class,'right-2')]/span"))
                 .getText()
                 .trim();
     }
 
     public String getDuration(String nama) {
-        return find(card(nama))
+        return treatments.item(nama)
                 .findElement(By.xpath(".//div[contains(@class,'left-2')]//span"))
                 .getText()
                 .trim();
     }
 
     // --- Tambah / edit / hapus treatment ---
-
     public TreatmentPage clickAdd() {
         click(addButton);
         modal.waitUntilOpen();
@@ -119,6 +111,7 @@ public class TreatmentPage extends BasePage {
         return modal.isOpen();
     }
 
+    //NOTE - this is for add data
     public TreatmentPage fillTreatment(String nama, String deskripsi, String harga, String durasi) {
         if (nama != null) {
             type(namaInput, nama);
@@ -135,7 +128,8 @@ public class TreatmentPage extends BasePage {
         return this;
     }
 
-    public TreatmentPage fillName(String nama) {
+//NOTE: This is for edit data,
+    public TreatmentPage fillTreatmentName(String nama) {
         type(namaInput, nama);
         return this;
     }
@@ -151,22 +145,20 @@ public class TreatmentPage extends BasePage {
 
     public TreatmentPage submit() {
         modal.submit();
-
-        // Sukses maupun gagal validasi sama-sama redirect + menampilkan notifikasi.
         notification.waitForResult();
         modal.waitUntilClosed();
         return this;
     }
 
     public TreatmentPage clickEdit(String nama) {
-        find(card(nama)).findElement(By.xpath(".//button[@title='Edit']")).click();
+        treatments.item(nama).findElement(By.xpath(".//button[@title='Edit']")).click();
         modal.waitUntilOpen();
         return this;
     }
 
     public TreatmentPage deleteTreatment(String nama) {
         try {
-            find(card(nama)).findElement(By.xpath(".//button[@title='Hapus']")).click();
+            treatments.item(nama).findElement(By.xpath(".//button[@title='Hapus']")).click();
         } catch (UnhandledAlertException e) {
             // Dialog konfirmasi sudah terbuka, lanjut diterima di bawah.
         }
@@ -177,7 +169,6 @@ public class TreatmentPage extends BasePage {
     }
 
     // --- Notifikasi ---
-
     public boolean hasSuccessMessage() {
         return notification.hasSuccess();
     }
@@ -195,7 +186,6 @@ public class TreatmentPage extends BasePage {
     }
 
     // --- Filter ---
-
     public TreatmentPage filterByName(String nama) {
         type(filterNama, nama);
         return applyFilter("nama=");
@@ -235,36 +225,7 @@ public class TreatmentPage extends BasePage {
     }
 
     // --- Helper ---
-
-    private By card(String nama) {
-        return By.xpath("//*[@data-testid='treatment-name'][normalize-space()=" + xpathLiteral(nama)
-                + "]/ancestor::*[@data-testid='treatment-card'][1]");
-    }
-
     private void waitForDocumentReady() {
         wait.until(driver -> "complete".equals(executeScript("return document.readyState")));
-    }
-
-    /**
-     * Bungkus teks jadi literal XPath yang aman, termasuk nama treatment yang
-     * mengandung tanda kutip.
-     */
-    private static String xpathLiteral(String value) {
-        if (!value.contains("'")) {
-            return "'" + value + "'";
-        }
-        if (!value.contains("\"")) {
-            return "\"" + value + "\"";
-        }
-
-        String[] parts = value.split("'");
-        StringBuilder literal = new StringBuilder("concat(");
-        for (int i = 0; i < parts.length; i++) {
-            if (i > 0) {
-                literal.append(", \"'\", ");
-            }
-            literal.append("'").append(parts[i]).append("'");
-        }
-        return literal.append(")").toString();
     }
 }

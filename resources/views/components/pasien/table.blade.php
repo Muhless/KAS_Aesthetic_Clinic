@@ -13,7 +13,8 @@
 
             <tbody>
                 @forelse ($pasiens as $pasien)
-                    <tr class="border-b border-black/10 even:bg-slate-50 hover:bg-slate-100 transition cursor-pointer"
+                    <tr data-testid="patient-row"
+                        class="border-b border-black/10 even:bg-slate-50 hover:bg-slate-100 transition cursor-pointer"
                         onclick="window.location.href='{{ route('pasien.show', $pasien->id) }}'">
 
                         <td class="px-3 py-2.5 text-slate-500 text-center">
@@ -26,7 +27,7 @@
                                 <div class="w-7 h-7 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-semibold text-xs shrink-0">
                                     {{ strtoupper(substr($pasien->nama, 0, 1)) }}
                                 </div>
-                                <span class="font-medium text-slate-700">
+                                <span data-testid="patient-name" class="font-medium text-slate-700">
                                     {{ $pasien->nama }}
                                 </span>
                             </div>

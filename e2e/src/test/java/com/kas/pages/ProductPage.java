@@ -1,7 +1,6 @@
 package com.kas.pages;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.UnhandledAlertException;
@@ -10,11 +9,12 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.kas.components.FormModal;
 import com.kas.components.Notification;
+import com.kas.components.RecordList;
 
 public class ProductPage extends BasePage {
 
     private final By pageTitleBy = By.xpath("//h1[normalize-space()='Produk']");
-    private final By productNamesBy = By.cssSelector("[data-testid='product-name']");
+    private final RecordList products = new RecordList(driver, wait, "product-name", "product-card");
     private final By emptyStateBy = By.xpath("//h3[normalize-space()='Belum ada produk']");
 
     // Tombol & modal
@@ -57,13 +57,11 @@ public class ProductPage extends BasePage {
     }
 
     public int productCount() {
-        return driver.findElements(productNamesBy).size();
+        return products.count();
     }
 
     public List<String> productNames() {
-        return driver.findElements(productNamesBy).stream()
-                .map(element -> element.getText().trim())
-                .collect(Collectors.toList());
+        return products.names();
     }
 
     public boolean hasEmptyState() {
@@ -71,16 +69,16 @@ public class ProductPage extends BasePage {
     }
 
     public boolean hasProduct(String nama) {
-        return !driver.findElements(card(nama)).isEmpty();
+        return products.has(nama);
     }
 
     public ProductPage waitForProduct(String nama) {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(card(nama)));
+        products.waitFor(nama);
         return this;
     }
 
     public ProductPage waitForProductGone(String nama) {
-        wait.until(ExpectedConditions.invisibilityOfElementLocated(card(nama)));
+        products.waitForGone(nama);
         return this;
     }
 
@@ -139,14 +137,14 @@ public class ProductPage extends BasePage {
     }
 
     public ProductPage clickEdit(String nama) {
-        find(card(nama)).findElement(By.xpath(".//button[@title='Edit']")).click();
+        products.item(nama).findElement(By.xpath(".//button[@title='Edit']")).click();
         modal.waitUntilOpen();
         return this;
     }
 
     public ProductPage deleteProduct(String nama) {
         try {
-            find(card(nama)).findElement(By.xpath(".//button[@title='Hapus']")).click();
+            products.item(nama).findElement(By.xpath(".//button[@title='Hapus']")).click();
         } catch (UnhandledAlertException e) {
         }
 
@@ -211,35 +209,7 @@ public class ProductPage extends BasePage {
 
     // --- Helper ---
 
-    private By card(String nama) {
-        return By.xpath("//*[@data-testid='product-name'][normalize-space()=" + xpathLiteral(nama)
-                + "]/ancestor::*[@data-testid='product-card'][1]");
-    }
-
     private void waitForDocumentReady() {
         wait.until(driver -> "complete".equals(executeScript("return document.readyState")));
-    }
-
-    /**
-     * Bungkus teks jadi literal XPath yang aman, termasuk nama produk yang
-     * mengandung tanda kutip.
-     */
-    private static String xpathLiteral(String value) {
-        if (!value.contains("'")) {
-            return "'" + value + "'";
-        }
-        if (!value.contains("\"")) {
-            return "\"" + value + "\"";
-        }
-
-        String[] parts = value.split("'");
-        StringBuilder literal = new StringBuilder("concat(");
-        for (int i = 0; i < parts.length; i++) {
-            if (i > 0) {
-                literal.append(", \"'\", ");
-            }
-            literal.append("'").append(parts[i]).append("'");
-        }
-        return literal.append(")").toString();
     }
 }

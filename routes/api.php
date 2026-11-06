@@ -1,20 +1,19 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\TreatmentController;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\DokterController;
-use App\Http\Controllers\PasienController;
-use App\Http\Controllers\PerawatController;
-use App\Http\Controllers\ProdukController;
-use App\Http\Controllers\ReservasiController;
-use App\Http\Controllers\TreatmentController;
-
-   Route::get('/dokter', [DokterController::class, 'api']);
-
-    Route::get('/dokter/detail/{id}', [DokterController::class, 'detail'])->name('dokter.detail');
-    Route::apiResource('perawat', PerawatController::class);
-    Route::apiResource('pasien', PasienController::class);
-    Route::apiResource('treatment', TreatmentController::class);
-    Route::apiResource('produk', ProdukController::class);
-    Route::apiResource('reservasi', ReservasiController::class);
+/*
+ * API JSON untuk kebutuhan pengujian e2e (membuat/mengubah/menghapus data
+ * lewat HTTP, tanpa harus melewati UI).
+ *
+ * Memakai session auth (middleware "web") supaya bisa memakai akun admin yang
+ * sama dengan UI; CSRF token dikirim lewat header X-CSRF-TOKEN.
+ */
+Route::middleware(['web', 'auth'])->group(function () {
+    Route::get('/treatment', [TreatmentController::class, 'index'])->name('api.treatment.index');
+    Route::get('/treatment/{id}', [TreatmentController::class, 'show'])->name('api.treatment.show');
+    Route::post('/treatment', [TreatmentController::class, 'store'])->name('api.treatment.store');
+    Route::match(['put', 'patch'], '/treatment/{id}', [TreatmentController::class, 'update'])->name('api.treatment.update');
+    Route::delete('/treatment/{id}', [TreatmentController::class, 'destroy'])->name('api.treatment.destroy');
+});

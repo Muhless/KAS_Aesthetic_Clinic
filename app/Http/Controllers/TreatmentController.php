@@ -24,6 +24,10 @@ class TreatmentController extends Controller
             ->when($request->harga_max, fn($q) => $q->where('harga', '<=', $request->harga_max))
             ->get();
 
+        if ($request->expectsJson()) {
+            return response()->json(['data' => $treatments]);
+        }
+
         return view('pages.treatment.index', compact('treatments'));
     }
 
@@ -37,8 +41,8 @@ class TreatmentController extends Controller
             ->get();
 
         $filterInfo = [
-            'nama'      => $request->nama,
-            'status'    => $request->status ? ($request->status == 'tersedia' ? 'Tersedia' : 'Tidak Tersedia') : null,
+            'nama' => $request->nama,
+            'status' => $request->status ? ($request->status == 'tersedia' ? 'Tersedia' : 'Tidak Tersedia') : null,
             'harga_min' => $request->harga_min ? 'Rp ' . number_format($request->harga_min, 0, ',', '.') : null,
             'harga_max' => $request->harga_max ? 'Rp ' . number_format($request->harga_max, 0, ',', '.') : null,
         ];
@@ -52,19 +56,23 @@ class TreatmentController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nama'        => 'required|string|max:255',
-            'deskripsi'   => 'nullable|string',
-            'harga'       => 'required|integer|min:0',
-            'durasi'      => 'nullable|integer',
-            'foto'        => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'status'      => 'required|in:tersedia,tidak_tersedia',
+            'nama' => 'required|string|max:255',
+            'deskripsi' => 'nullable|string',
+            'harga' => 'required|integer|min:0',
+            'durasi' => 'nullable|integer',
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'status' => 'required|in:tersedia,tidak_tersedia',
         ]);
 
         if ($request->hasFile('foto')) {
             $validated['foto'] = $request->file('foto')->store('treatments', 'public');
         }
 
-        Treatment::create($validated);
+        $treatment = Treatment::create($validated);
+
+        if ($request->expectsJson()) {
+            return response()->json(['data' => $treatment], 201);
+        }
 
         return redirect()
             ->route('treatment.index')
@@ -100,12 +108,12 @@ class TreatmentController extends Controller
         }
 
         $validated = $request->validate([
-            'nama'        => 'sometimes|string|max:255',
-            'deskripsi'   => 'sometimes|nullable|string',
-            'harga'       => 'sometimes|integer|min:0',
-            'durasi'      => 'sometimes|nullable|integer',
-            'foto'        => 'sometimes|nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'status'      => 'sometimes|in:tersedia,tidak_tersedia',
+            'nama' => 'sometimes|string|max:255',
+            'deskripsi' => 'sometimes|nullable|string',
+            'harga' => 'sometimes|integer|min:0',
+            'durasi' => 'sometimes|nullable|integer',
+            'foto' => 'sometimes|nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'status' => 'sometimes|in:tersedia,tidak_tersedia',
         ]);
 
         if ($request->hasFile('foto')) {
@@ -116,10 +124,15 @@ class TreatmentController extends Controller
         }
 
         $treatment->update($validated);
+
+        if ($request->expectsJson()) {
+            return response()->json(['data' => $treatment]);
+        }
+
         return redirect()->route('treatment.index')->with('success', 'Treatment berhasil diubah.');
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $treatment = Treatment::find($id);
 
@@ -135,6 +148,10 @@ class TreatmentController extends Controller
         }
 
         $treatment->delete();
+
+        if ($request->expectsJson()) {
+            return response()->json(['success' => true]);
+        }
 
         return redirect()->route('treatment.index')->with('success', 'Treatment berhasil dihapus.');
     }
