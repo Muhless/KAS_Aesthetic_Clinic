@@ -101,11 +101,43 @@ public class PatientPage extends BasePage {
         return this;
     }
 
+    /**
+     * Mengisi tanggal lahir lewat API flatpickr.
+     *
+     * Input yang terlihat dibuat oleh flatpickr (alt input, readonly) dan nilai
+     * yang di-submit ada di input hidden. Karena itu sendKeys tidak dipakai.
+     */
+    public PatientPage setBirthDate(String isoDate) {
+        executeScript(
+                "const input = document.querySelector(\"[data-testid='patient-modal'] input[name='tanggal_lahir']\");"
+                        + "input._flatpickr.setDate(arguments[0], true);",
+                isoDate);
+        return this;
+    }
+
     public PatientPage submit() {
         modal.submit();
         notification.waitForResult();
         modal.waitUntilClosed();
         return this;
+    }
+
+    // --- Notifikasi ---
+
+    public boolean hasSuccessMessage() {
+        return notification.hasSuccess();
+    }
+
+    public String getSuccessMessage() {
+        return notification.successMessage();
+    }
+
+    public boolean hasErrorMessage() {
+        return notification.hasError();
+    }
+
+    public List<String> getErrorMessages() {
+        return notification.errorMessages();
     }
 
     public PatientPage openPatient(String name) {
@@ -129,21 +161,5 @@ public class PatientPage extends BasePage {
         waitForUrlNotContains("/pasien/");
         notification.waitForResult();
         return this;
-    }
-
-    public boolean hasSuccessMessage() {
-        return notification.hasSuccess();
-    }
-
-    public String getSuccessMessage() {
-        return notification.successMessage();
-    }
-
-    public boolean hasErrorMessage() {
-        return notification.hasError();
-    }
-
-    public List<String> getErrorMessages() {
-        return notification.errorMessages();
     }
 }
