@@ -26,7 +26,6 @@ public class PatientPage extends BasePage {
     private final By maleGender = By.cssSelector("[data-testid='patient-modal'] input[name='jenis_kelamin'][value='L']");
     private final By femaleGender = By.cssSelector("[data-testid='patient-modal'] input[name='jenis_kelamin'][value='P']");
     private final By phoneInput = By.cssSelector("[data-testid='patient-modal'] input[name='nomor_telepon']");
-    private final By birthDateSelect = By.cssSelector("[data-testid='patient-modal'] input[type='text'][placeholder='Pilih tanggal lahir']");
 
     public PatientPage(WebDriver driver) {
         super(driver);

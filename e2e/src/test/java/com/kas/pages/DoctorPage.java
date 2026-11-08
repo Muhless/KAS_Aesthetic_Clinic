@@ -73,7 +73,6 @@ public class DoctorPage extends BasePage {
     }
 
     // --- Tambah / edit / hapus dokter ---
-
     public DoctorPage clickAdd() {
         click(addButton);
         modal.waitUntilOpen();
@@ -87,9 +86,10 @@ public class DoctorPage extends BasePage {
     /**
      * Mengisi field dokter di modal tambah.
      *
-     * Tanggal lahir tidak termasuk karena diisi lewat {@link #setBirthDate(String)}
-     * (flatpickr), dan wajib dipanggil sebelum {@link #submit()} pada mode tambah.
-     * Username/password hanya terlihat saat menambah, bukan saat mengedit.
+     * Tanggal lahir tidak termasuk karena diisi lewat
+     * {@link #setBirthDate(String)} (flatpickr), dan wajib dipanggil sebelum
+     * {@link #submit()} pada mode tambah. Username/password hanya terlihat saat
+     * menambah, bukan saat mengedit.
      */
     public DoctorPage fillDoctor(String name, String specialization, String phoneNumber, String email,
             String consultationCost, String username, String password) {
@@ -148,7 +148,6 @@ public class DoctorPage extends BasePage {
         return this;
     }
 
-  
     public DoctorPage deleteDoctor(String nama) {
         try {
             doctors.item(nama).findElement(By.cssSelector("[data-testid='delete-doctor']")).click();
@@ -164,7 +163,6 @@ public class DoctorPage extends BasePage {
     }
 
     // --- Notifikasi ---
-
     public boolean hasSuccessMessage() {
         return notification.hasSuccess();
     }
@@ -179,5 +177,11 @@ public class DoctorPage extends BasePage {
 
     public List<String> getErrorMessages() {
         return notification.errorMessages();
+    }
+
+    public DoctorPage openDoctor(String name) {
+        doctors.item(name).click();
+        waitForUrlContains("/pasien/");
+        return this;
     }
 }
