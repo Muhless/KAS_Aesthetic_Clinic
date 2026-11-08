@@ -129,8 +129,6 @@ public class ProductPage extends BasePage {
 
     public ProductPage submit() {
         modal.submit();
-
-        // Sukses maupun gagal validasi sama-sama redirect + menampilkan notifikasi.
         notification.waitForResult();
         modal.waitUntilClosed();
         return this;

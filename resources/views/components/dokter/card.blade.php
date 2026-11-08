@@ -1,6 +1,6 @@
 @props(['dokter'])
 
-<div class="bg-white rounded-sm shadow-[0_0.5rem_1rem_rgba(0,0,0,0.1)] border border-black/10 overflow-hidden">
+<div data-testid="doctor-card" class="bg-white rounded-sm shadow-[0_0.5rem_1rem_rgba(0,0,0,0.1)] border border-black/10 overflow-hidden">
 
     {{-- Foto Dokter --}}
     <div class="relative bg-slate-100 cursor-pointer"
@@ -10,7 +10,7 @@
 
         {{-- Actions --}}
         <div class="absolute top-2 right-2 flex gap-1.5">
-            <button type="button" @click.stop="editDokter({{ $dokter['id'] }})"
+            <button type="button" data-testid="edit-doctor" @click.stop="editDokter({{ $dokter['id'] }})"
                 class="w-7 h-7 bg-blue-500 hover:bg-blue-600 text-white rounded-sm flex items-center justify-center transition">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-3.5 h-3.5">
                     <path
@@ -22,7 +22,7 @@
                 onsubmit="return confirm('Yakin ingin menghapus {{ $dokter['nama'] }}?')" @click.stop>
                 @csrf
                 @method('DELETE')
-                <button type="submit"
+                <button type="submit" data-testid="delete-doctor"
                     class="w-7 h-7 bg-red-500 hover:bg-red-600 text-white rounded-sm flex items-center justify-center transition">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-3.5 h-3.5">
                         <path fill-rule="evenodd"
@@ -39,7 +39,7 @@
 
         {{-- Name & Specialty --}}
         <div class="mb-2">
-            <h3 class="text-sm font-semibold text-slate-700 truncate">
+            <h3 data-testid="doctor-name" class="text-sm font-semibold text-slate-700 truncate">
                 {{ $dokter['nama'] }}
             </h3>
             <p class="text-xs font-medium text-blue-500 truncate">{{ $dokter['spesialis'] ?? '—' }}</p>
