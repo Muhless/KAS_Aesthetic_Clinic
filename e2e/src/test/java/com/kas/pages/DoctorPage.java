@@ -178,10 +178,4 @@ public class DoctorPage extends BasePage {
     public List<String> getErrorMessages() {
         return notification.errorMessages();
     }
-
-    public DoctorPage openDoctor(String name) {
-        doctors.item(name).click();
-        waitForUrlContains("/pasien/");
-        return this;
-    }
 }
