@@ -83,14 +83,6 @@ public class DoctorPage extends BasePage {
         return modal.isOpen();
     }
 
-    /**
-     * Mengisi field dokter di modal tambah.
-     *
-     * Tanggal lahir tidak termasuk karena diisi lewat
-     * {@link #setBirthDate(String)} (flatpickr), dan wajib dipanggil sebelum
-     * {@link #submit()} pada mode tambah. Username/password hanya terlihat saat
-     * menambah, bukan saat mengedit.
-     */
     public DoctorPage fillDoctor(String name, String specialization, String phoneNumber, String email,
             String consultationCost, String username, String password) {
         if (name != null) {

@@ -12,16 +12,16 @@ import com.kas.pages.LoginPage;
 public class LoginTest extends BaseTest {
 
     @Test
-    public void userValidBisaLogin() {
+    public void loginWithValidData() {
         LoginPage loginPage = new LoginPage(driver).goTo();
         loginPage.login(Config.ADMIN_USERNAME, Config.ADMIN_PASSWORD);
-        loginPage.waitForUrlContains("/");
+        loginPage.waitForUrlNotContains("/login");
 
-        Assert.assertTrue(driver.getCurrentUrl().contains("/"));
+        Assert.assertEquals(driver.getCurrentUrl(), Config.BASE_URL + "/");
     }
 
     @Test
-    public void passwordSalahMenampilkanError() {
+    public void loginWithWrongPassword() {
         LoginPage loginPage = new LoginPage(driver).goTo();
         loginPage.login(Config.ADMIN_USERNAME, "password-salah");
 
@@ -29,7 +29,7 @@ public class LoginTest extends BaseTest {
     }
 
     @Test
-    public void usernameTidakTerdaftarMenampilkanError() {
+    public void loginWithUsernameNotRegistered() {
         LoginPage loginPage = new LoginPage(driver).goTo();
         loginPage.login("user-tidak-ada", Config.ADMIN_PASSWORD);
 
@@ -37,12 +37,9 @@ public class LoginTest extends BaseTest {
     }
 
     @Test
-    public void formKosongTidakBisaLogin() {
+    public void loginWithEmptyForm() {
         LoginPage loginPage = new LoginPage(driver).goTo();
         loginPage.login("", "");
-
-        // Input punya atribut `required`, jadi browser menolak submit dan
-        // validasi HTML5 yang muncul (bukan pesan error dari server).
         String validationMessage = driver.findElement(By.cssSelector("input[name='username']"))
                 .getAttribute("validationMessage");
 
@@ -50,23 +47,22 @@ public class LoginTest extends BaseTest {
         Assert.assertTrue(driver.getCurrentUrl().contains("/login"));
     }
 
-    @DataProvider(name = "semuaRole")
-    public Object[][] semuaRole() {
-        return new Object[][] {
-                { "admin" },
-                { "dokter" },
-                { "perawat" }
+    @DataProvider(name = "allRole")
+    public Object[][] allRole() {
+        return new Object[][]{
+            {"admin", "/"},
+            {"dokter", "/nakes"},
+            {"perawat", "/"}
         };
     }
 
-    @Test(dataProvider = "semuaRole")
-    public void semuaRoleBisaLogin(String username) {
+    @Test(dataProvider = "allRole")
+    public void allRoleCanLogin(String username, String expectedRoute) {
         LoginPage loginPage = new LoginPage(driver).goTo();
         loginPage.login(username, Config.ADMIN_PASSWORD);
         loginPage.waitForUrlNotContains("/login");
 
-        // Dokter diarahkan ke halaman nakes, role lain ke dashboard.
-        String expectedPath = username.equals("dokter") ? "/nakes" : "/";
-        Assert.assertEquals(driver.getCurrentUrl(), Config.BASE_URL + expectedPath);
+        Assert.assertEquals(driver.getCurrentUrl(), Config.BASE_URL + expectedRoute);
     }
+
 }

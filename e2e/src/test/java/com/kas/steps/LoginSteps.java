@@ -41,7 +41,6 @@ public class LoginSteps {
         assertFalse(DriverManager.get().getCurrentUrl().contains("/login"));
     }
 
-    // login with invalid data
     @When("user login as {string} with password {string}")
     public void user_login_as_with_password(String username, String password) {
         if (loginPage == null) {
