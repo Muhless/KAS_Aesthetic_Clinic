@@ -4,7 +4,10 @@ import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import com.kas.components.Notification;
 import com.kas.components.RecordList;
 
 /**
@@ -25,6 +28,10 @@ public class NakesPage extends BasePage {
     private final By patientKeluhan = By.cssSelector("[data-testid='nakes-keluhan']");
     private final By visitStatus = By.cssSelector("[data-testid='nakes-status']");
     private final By callButton = By.cssSelector("[data-testid='nakes-panggil']");
+    private final By periksaLink = By.cssSelector("[data-testid='nakes-periksa']");
+    private final By hasilLink = By.cssSelector("[data-testid='nakes-hasil']");
+
+    private final Notification notification = new Notification(driver, wait);
 
     public NakesPage(WebDriver driver) {
         super(driver);
@@ -90,8 +97,60 @@ public class NakesPage extends BasePage {
 
     /** Menekan tombol "Panggil" pada baris pasien. */
     public NakesPage callPatient(String nama) {
-        visits.item(nama).findElement(callButton).click();
+        click(visits.item(nama).findElement(callButton));
+        waitForPatientStatus(nama, "Dipanggil");
         return this;
+    }
+
+    /** True kalau baris pasien punya tombol/link "Periksa" (status dipanggil). */
+    public boolean hasPeriksaLink(String nama) {
+        return !visits.item(nama).findElements(periksaLink).isEmpty();
+    }
+
+    /** True kalau baris pasien punya link "Hasil" (status selesai). */
+    public boolean hasHasilLink(String nama) {
+        return !visits.item(nama).findElements(hasilLink).isEmpty();
+    }
+
+    /**
+     * Membuka form pemeriksaan dari baris pasien.
+     *
+     * Navigasi dilakukan sekali lewat href. Klik berulang (click/Actions/JS)
+     * bisa memicu beberapa request sekaligus sehingga halaman ter-reload lagi
+     * saat test sedang mengisi form, dan semua isian jadi hilang.
+     */
+    public ExaminationPage clickPeriksa(String nama) {
+        WebElement link = visits.item(nama).findElement(periksaLink);
+        String href = link.getAttribute("href");
+
+        if (href == null || href.isBlank()) {
+            throw new IllegalStateException("Link Periksa tidak punya href untuk pasien " + nama);
+        }
+
+        driver.get(href);
+        wait.until(ExpectedConditions.urlContains("/pemeriksaan/"));
+
+        ExaminationPage page = new ExaminationPage(driver);
+        page.waitUntilReady();
+        return page;
+    }
+
+    /** Membuka kembali hasil pemeriksaan dari baris pasien. */
+    public ExaminationPage clickHasil(String nama) {
+        click(visits.item(nama).findElement(hasilLink));
+
+        ExaminationPage page = new ExaminationPage(driver);
+        page.waitUntilReady();
+        return page;
+    }
+
+    public boolean hasSuccessMessage() {
+        notification.waitForResult();
+        return notification.hasSuccess();
+    }
+
+    public String successMessage() {
+        return notification.successMessage();
     }
 
     // --- Statistik ---

@@ -6,16 +6,17 @@
                     <div class="space-y-3">
                         <div class="flex items-center justify-between py-2 border-b border-gray-50">
                             <span class="text-xs text-gray-500">Total Pemasukan</span>
-                            <span class="text-sm font-bold text-green-600">Rp
+                            <span class="text-sm font-bold text-green-600" data-testid="keuangan-ringkasan-total">Rp
                                 {{ number_format($pemasukanBulanIni, 0, ',', '.') }}</span>
                         </div>
                         <div class="flex items-center justify-between py-2 border-b border-gray-50">
                             <span class="text-xs text-gray-500">Jumlah Transaksi</span>
-                            <span class="text-sm font-semibold text-gray-800">{{ $totalTransaksi }}</span>
+                            <span class="text-sm font-semibold text-gray-800"
+                                data-testid="keuangan-ringkasan-jumlah">{{ $totalTransaksi }}</span>
                         </div>
                         <div class="flex items-center justify-between py-2">
                             <span class="text-xs text-gray-500">Rata-rata per Transaksi</span>
-                            <span class="text-sm font-semibold text-gray-800">
+                            <span class="text-sm font-semibold text-gray-800" data-testid="keuangan-ringkasan-rata">
                                 Rp
                                 {{ $totalTransaksi > 0 ? number_format($pemasukanBulanIni / $totalTransaksi, 0, ',', '.') : 0 }}
                             </span>

@@ -17,7 +17,7 @@
             </svg>
         </a>
         <div>
-            <h1 class="text-xl font-semibold text-slate-700">Detail Pembayaran</h1>
+            <h1 class="text-xl font-semibold text-slate-700" data-testid="keuangan-detail-title">Detail Pembayaran</h1>
             <p class="text-xs text-slate-400">Pembayaran #{{ $pembayaran->id }}</p>
         </div>
     </div>
@@ -34,12 +34,14 @@
                     <h5 class="font-semibold text-slate-700 text-sm m-0">Informasi Pembayaran</h5>
                     @if ($pembayaran->status === 'lunas')
                     <span
-                        class="inline-flex items-center gap-1.5 px-2 py-1 rounded-sm text-xs font-medium bg-green-500 text-white">
+                        class="inline-flex items-center gap-1.5 px-2 py-1 rounded-sm text-xs font-medium bg-green-500 text-white"
+                        data-testid="keuangan-detail-status">
                         Lunas
                     </span>
                     @else
                     <span
-                        class="inline-flex items-center gap-1.5 px-2 py-1 rounded-sm text-xs font-medium bg-red-500 text-white">
+                        class="inline-flex items-center gap-1.5 px-2 py-1 rounded-sm text-xs font-medium bg-red-500 text-white"
+                        data-testid="keuangan-detail-status">
                         Belum Bayar
                     </span>
                     @endif
@@ -47,7 +49,7 @@
                 <div class="p-4 grid grid-cols-2 gap-3">
                     <div>
                         <p class="text-xs text-slate-400 mb-1">Total Harga</p>
-                        <p class="text-lg font-bold text-slate-700">Rp
+                        <p class="text-lg font-bold text-slate-700" data-testid="keuangan-detail-total">Rp
                             {{ number_format($pembayaran->total_harga, 0, ',', '.') }}</p>
                     </div>
                     <div>
@@ -172,6 +174,7 @@
         <div class="space-y-4">
             @if ($pembayaran->status === 'lunas')
             <a href="{{ route('keuangan.cetak', $pembayaran->id) }}" target="_blank"
+                data-testid="keuangan-cetak-struk"
                 class="w-full py-2 bg-slate-600 hover:bg-slate-700 text-white text-sm font-medium rounded-sm transition text-center block">
                 Cetak Struk
             </a>
@@ -186,7 +189,7 @@
                         {{ strtoupper(substr($pembayaran->pelayanan->pasien->nama ?? '?', 0, 1)) }}
                     </div>
                     <div>
-                        <p class="font-semibold text-slate-700 text-sm">
+                        <p class="font-semibold text-slate-700 text-sm" data-testid="keuangan-detail-pasien">
                             {{ $pembayaran->pelayanan->pasien->nama ?? '—' }}</p>
                         <p class="text-xs text-slate-400">{{ $pembayaran->pelayanan->pasien->no_rm ?? '' }}</p>
                     </div>
@@ -233,11 +236,11 @@
                         <input type="hidden" name="metode_bayar" value="cash">
                         <div>
                             <label class="text-xs text-slate-500 mb-1 block">Catatan (opsional)</label>
-                            <textarea name="catatan" rows="2"
+                            <textarea name="catatan" rows="2" data-testid="keuangan-detail-catatan"
                                 class="w-full text-sm rounded-sm border border-slate-400 px-2.5 py-1.5 focus:outline-none focus:border-blue-500 focus:shadow-[0_0_0_0.2rem_rgba(59,130,246,0.25)] transition resize-none"
                                 placeholder="Tambahkan catatan..."></textarea>
                         </div>
-                        <button type="submit"
+                        <button type="submit" data-testid="keuangan-tandai-lunas"
                             class="w-full py-2 bg-green-500 hover:bg-green-600 text-white text-sm font-medium rounded-sm transition"
                             onclick="return confirm('Tandai pembayaran ini sebagai lunas?')">
                             Tandai Lunas

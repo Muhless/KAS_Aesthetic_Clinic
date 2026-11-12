@@ -5,10 +5,12 @@
 @section('content')
 <div class="p-6 space-y-6">
 
+    <x-notification />
+
     {{-- Header --}}
     <div class="flex items-center justify-between">
         <div>
-            <h1 class="text-2xl font-bold text-gray-800">
+            <h1 class="text-2xl font-bold text-gray-800" data-testid="nakes-greeting">
                 Selamat datang, {{ $dokter->nama ?? auth()->user()->username }} 👋
             </h1>
             <p class="text-sm text-gray-400 mt-1">{{ now()->translatedFormat('l, d F Y') }}</p>
@@ -21,7 +23,7 @@
         {{-- Menunggu --}}
         <div class="bg-amber-500 rounded-lg shadow-sm text-white relative overflow-hidden">
             <div class="px-5 py-4">
-                <p class="text-3xl font-bold leading-tight">{{ $totalMenunggu }}</p>
+                <p class="text-3xl font-bold leading-tight" data-testid="nakes-total-menunggu">{{ $totalMenunggu }}</p>
                 <p class="text-sm text-amber-50 mt-1">Menunggu</p>
                 <p class="text-xs text-amber-100/80">Pasien hari ini</p>
             </div>
@@ -36,7 +38,7 @@
         {{-- Dipanggil --}}
         <div class="bg-blue-500 rounded-lg shadow-sm text-white relative overflow-hidden">
             <div class="px-5 py-4">
-                <p class="text-3xl font-bold leading-tight">{{ $totalDipanggil }}</p>
+                <p class="text-3xl font-bold leading-tight" data-testid="nakes-total-dipanggil">{{ $totalDipanggil }}</p>
                 <p class="text-sm text-blue-50 mt-1">Dipanggil</p>
                 <p class="text-xs text-blue-100/80">Sedang diperiksa</p>
             </div>
@@ -51,7 +53,7 @@
         {{-- Selesai --}}
         <div class="bg-emerald-500 rounded-lg shadow-sm text-white relative overflow-hidden">
             <div class="px-5 py-4">
-                <p class="text-3xl font-bold leading-tight">{{ $totalSelesai }}</p>
+                <p class="text-3xl font-bold leading-tight" data-testid="nakes-total-selesai">{{ $totalSelesai }}</p>
                 <p class="text-sm text-emerald-50 mt-1">Selesai</p>
                 <p class="text-xs text-emerald-100/80">Hari ini</p>
             </div>

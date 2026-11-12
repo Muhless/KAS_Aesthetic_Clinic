@@ -1,19 +1,24 @@
 package utils;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.mindrot.jbcrypt.BCrypt;
 
 public class TestDataHelper {
 
-    private static final String URL = "jdbc:mysql://localhost:3306/kas_test";
-    private static final String USER = "root";
-    private static final String PASSWORD = "";
+   
+    private static final String[] DATABASE = bacaDatabaseDariEnv();
 
     public static final String DOKTER_USERNAME = "dokter_test";
     public static final String DOKTER_PASSWORD = "password123";
@@ -28,7 +33,55 @@ public class TestDataHelper {
     }
 
     private static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(URL, USER, PASSWORD);
+        return DriverManager.getConnection(DATABASE[0], DATABASE[1], DATABASE[2]);
+    }
+
+    private static String[] bacaDatabaseDariEnv() {
+        Map<String, String> env = new HashMap<>();
+        File envFile = new File(cariProjectRoot(), ".env.testing");
+
+        if (envFile.isFile()) {
+            try {
+                for (String line : Files.readAllLines(envFile.toPath(), StandardCharsets.UTF_8)) {
+                    String trimmed = line.trim();
+                    if (trimmed.isEmpty() || trimmed.startsWith("#") || !trimmed.contains("=")) {
+                        continue;
+                    }
+
+                    int separator = trimmed.indexOf('=');
+                    String key = trimmed.substring(0, separator).trim();
+                    String value = trimmed.substring(separator + 1).trim();
+
+                    if (value.length() >= 2
+                            && ((value.startsWith("\"") && value.endsWith("\""))
+                                    || (value.startsWith("'") && value.endsWith("'")))) {
+                        value = value.substring(1, value.length() - 1);
+                    }
+
+                    env.putIfAbsent(key, value);
+                }
+            } catch (IOException e) {
+                throw new IllegalStateException("Gagal membaca .env.testing", e);
+            }
+        }
+
+        String host = System.getProperty("dbHost", env.getOrDefault("DB_HOST", "127.0.0.1"));
+        String port = System.getProperty("dbPort", env.getOrDefault("DB_PORT", "3306"));
+        String database = System.getProperty("dbName", env.getOrDefault("DB_DATABASE", "kas_test"));
+        String user = System.getProperty("dbUser", env.getOrDefault("DB_USERNAME", "root"));
+        String password = System.getProperty("dbPassword", env.getOrDefault("DB_PASSWORD", ""));
+
+        return new String[] {"jdbc:mysql://" + host + ":" + port + "/" + database, user, password};
+    }
+
+    private static File cariProjectRoot() {
+        File dir = new File(System.getProperty("user.dir")).getAbsoluteFile();
+
+        while (dir != null && !new File(dir, "artisan").isFile()) {
+            dir = dir.getParentFile();
+        }
+
+        return dir != null ? dir : new File(System.getProperty("user.dir"));
     }
 
     private static long insert(Connection conn, String sql, Object... params) throws SQLException {

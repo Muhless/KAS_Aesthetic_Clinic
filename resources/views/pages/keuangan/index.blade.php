@@ -7,7 +7,7 @@
 
     {{-- Header --}}
     <div class="border-b border-black/10 pb-3">
-        <h1 class="text-xl font-semibold text-slate-700">Keuangan</h1>
+        <h1 class="text-xl font-semibold text-slate-700" data-testid="keuangan-title">Keuangan</h1>
         <p class="text-xs text-slate-400">Laporan pemasukan klinik</p>
     </div>
 
@@ -17,7 +17,8 @@
         {{-- Hari Ini --}}
         <div class="bg-blue-500 rounded-sm shadow-[0_0.5rem_1rem_rgba(0,0,0,0.1)] text-white relative overflow-hidden">
             <div class="p-4">
-                <p class="text-xl font-bold">Rp {{ number_format($pemasukanHariIni, 0, ',', '.') }}</p>
+                <p class="text-xl font-bold" data-testid="keuangan-pemasukan-hari-ini">Rp
+                    {{ number_format($pemasukanHariIni, 0, ',', '.') }}</p>
                 <p class="text-sm">Hari Ini</p>
             </div>
             <div class="absolute -right-2 -bottom-3 opacity-25">
@@ -32,7 +33,8 @@
         {{-- Bulan Ini --}}
         <div class="bg-green-500 rounded-sm shadow-[0_0.5rem_1rem_rgba(0,0,0,0.1)] text-white relative overflow-hidden">
             <div class="p-4">
-                <p class="text-xl font-bold">Rp {{ number_format($pemasukanBulanIni, 0, ',', '.') }}</p>
+                <p class="text-xl font-bold" data-testid="keuangan-pemasukan-bulan-ini">Rp
+                    {{ number_format($pemasukanBulanIni, 0, ',', '.') }}</p>
                 <p class="text-sm">Bulan Ini</p>
             </div>
             <div class="absolute -right-2 -bottom-3 opacity-25">
@@ -50,7 +52,7 @@
         <div
             class="bg-yellow-500 rounded-sm shadow-[0_0.5rem_1rem_rgba(0,0,0,0.1)] text-white relative overflow-hidden">
             <div class="p-4">
-                <p class="text-xl font-bold">{{ $totalTransaksi }}</p>
+                <p class="text-xl font-bold" data-testid="keuangan-total-transaksi">{{ $totalTransaksi }}</p>
                 <p class="text-sm">Transaksi</p>
             </div>
             <div class="absolute -right-2 -bottom-3 opacity-25">
@@ -65,7 +67,7 @@
         {{-- Belum Bayar --}}
         <div class="bg-red-500 rounded-sm shadow-[0_0.5rem_1rem_rgba(0,0,0,0.1)] text-white relative overflow-hidden">
             <div class="p-4">
-                <p class="text-xl font-bold">{{ $totalBelumBayar }}</p>
+                <p class="text-xl font-bold" data-testid="keuangan-belum-bayar">{{ $totalBelumBayar }}</p>
                 <p class="text-sm">Belum Bayar</p>
             </div>
             <div class="absolute -right-2 -bottom-3 opacity-25">

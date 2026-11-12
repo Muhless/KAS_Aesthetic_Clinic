@@ -13,7 +13,7 @@
         <form action="{{ route('keuangan.index') }}" method="GET" class="flex flex-wrap items-center gap-2"
             x-data="{ periode: '{{ $periode ?? 'bulanan' }}' }">
 
-            <select name="periode" x-model="periode" onchange="this.form.submit()"
+            <select name="periode" x-model="periode" onchange="this.form.submit()" data-testid="keuangan-periode"
                 class="text-xs border border-gray-200 rounded-lg px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400 text-gray-700">
                 <option value="harian" {{ ($periode ?? '') == 'harian' ? 'selected' : '' }}>Harian</option>
                 <option value="bulanan" {{ ($periode ?? 'bulanan') == 'bulanan' ? 'selected' : '' }}>Bulanan</option>
@@ -21,12 +21,12 @@
             </select>
 
             {{-- Input Tanggal (Harian) --}}
-            <input type="date" name="tanggal" x-show="periode === 'harian'" x-cloak
+            <input type="date" name="tanggal" x-show="periode === 'harian'" x-cloak data-testid="keuangan-tanggal"
                 value="{{ $tanggal ?? now()->format('Y-m-d') }}" onchange="this.form.submit()"
                 class="text-xs border border-gray-200 rounded-lg px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400 text-gray-700">
 
             {{-- Input Bulan + Tahun (Bulanan) --}}
-            <select name="bulan" x-show="periode === 'bulanan'" x-cloak onchange="this.form.submit()"
+            <select name="bulan" x-show="periode === 'bulanan'" x-cloak onchange="this.form.submit()" data-testid="keuangan-bulan"
                 class="text-xs border border-gray-200 rounded-lg px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400 text-gray-700">
                 @foreach (range(1, 12) as $m)
                 <option value="{{ $m }}" {{ (int) $bulan == $m ? 'selected' : '' }}>
@@ -37,7 +37,7 @@
 
             {{-- Input Tahun (Bulanan & Tahunan) --}}
             <select name="tahun" x-show="periode === 'bulanan' || periode === 'tahunan'" x-cloak
-                onchange="this.form.submit()"
+                onchange="this.form.submit()" data-testid="keuangan-tahun"
                 class="text-xs border border-gray-200 rounded-lg px-2.5 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400 text-gray-700">
                 @foreach (range(now()->year, now()->year - 5) as $y)
                 <option value="{{ $y }}" {{ (int) $tahun == $y ? 'selected' : '' }}>{{ $y }}</option>
@@ -46,7 +46,7 @@
 
             {{-- Tombol Cetak PDF --}}
             <a href="{{ route('keuangan.laporan.cetak', request()->only(['periode', 'tanggal', 'bulan', 'tahun'])) }}"
-                target="_blank"
+                target="_blank" data-testid="keuangan-cetak-pdf"
                 class="inline-flex items-center gap-1.5 text-xs px-3 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor">
@@ -70,21 +70,22 @@
             </thead>
             <tbody class="divide-y divide-gray-50">
                 @forelse ($transaksis as $transaksi)
-                <tr class="hover:bg-gray-50 transition">
+                <tr class="hover:bg-gray-50 transition" data-testid="keuangan-riwayat-row"
+                    data-id="{{ $transaksi->id }}">
                     <td class="px-5 py-3.5">
                         <div class="flex items-center gap-2.5">
                             <div
                                 class="w-7 h-7 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center font-semibold text-xs shrink-0">
                                 {{ strtoupper(substr($transaksi->pelayanan->pasien->nama ?? '?', 0, 1)) }}
                             </div>
-                            <span
-                                class="font-medium text-gray-800">{{ $transaksi->pelayanan->pasien->nama ?? '—' }}</span>
+                            <span class="font-medium text-gray-800"
+                                data-testid="keuangan-riwayat-pasien">{{ $transaksi->pelayanan->pasien->nama ?? '—' }}</span>
                         </div>
                     </td>
                     <td class="px-5 py-3.5 text-gray-500 text-xs">
                         {{ \Carbon\Carbon::parse($transaksi->dibayar_pada)->translatedFormat('d M Y, H:i') }}
                     </td>
-                    <td class="px-5 py-3.5">
+                    <td class="px-5 py-3.5" data-testid="keuangan-riwayat-metode">
                         @if ($transaksi->metode_bayar == 'cash')
                         <span class="text-xs px-2 py-1 rounded-full bg-green-50 text-green-700 font-medium">Cash</span>
                         @elseif ($transaksi->metode_bayar == 'transfer')
@@ -97,7 +98,8 @@
                         <span class="text-gray-300">—</span>
                         @endif
                     </td>
-                    <td class="px-5 py-3.5 text-right font-semibold text-gray-800">
+                    <td class="px-5 py-3.5 text-right font-semibold text-gray-800"
+                        data-testid="keuangan-riwayat-total">
                         Rp {{ number_format($transaksi->total_harga, 0, ',', '.') }}
                     </td>
                 </tr>
@@ -112,7 +114,8 @@
                                         d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                                 </svg>
                             </div>
-                            <p class="text-sm font-medium text-gray-500">Belum ada transaksi</p>
+                            <p class="text-sm font-medium text-gray-500" data-testid="keuangan-riwayat-empty">Belum ada
+                                transaksi</p>
                         </div>
                     </td>
                 </tr>

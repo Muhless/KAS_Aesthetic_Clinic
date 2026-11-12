@@ -1,16 +1,16 @@
 @props(['perawat'])
 
-<div class="bg-white rounded-sm shadow-[0_0.5rem_1rem_rgba(0,0,0,0.1)] border border-black/10 overflow-hidden">
+<div data-testid="nurse-card" class="bg-white rounded-sm shadow-[0_0.5rem_1rem_rgba(0,0,0,0.1)] border border-black/10 overflow-hidden">
 
     {{-- Foto Perawat --}}
     <div class="relative bg-slate-100">
-        <img src="{{ $perawat['foto'] ? asset('storage/' . $perawat['foto']) : asset('images/default.png') }}"
+        <img data-testid="nurse-photo" src="{{ $perawat['foto'] ? asset('storage/' . $perawat['foto']) : asset('images/default.png') }}"
             alt="{{ $perawat['nama'] }}"
             class="w-full h-48 object-cover object-top" />
 
         {{-- Actions --}}
         <div class="absolute top-2 right-2 flex gap-1.5">
-            <button type="button" @click.stop="editPerawat({{ $perawat['id'] }})"
+            <button type="button" data-testid="edit-nurse" @click.stop="editPerawat({{ $perawat['id'] }})"
                 class="w-7 h-7 bg-blue-500 hover:bg-blue-600 text-white rounded-sm flex items-center justify-center transition">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-3.5 h-3.5">
                     <path
@@ -22,7 +22,7 @@
                 onsubmit="return confirm('Yakin ingin menghapus {{ $perawat['nama'] }}?')" @click.stop>
                 @csrf
                 @method('DELETE')
-                <button type="submit"
+                <button type="submit" data-testid="delete-nurse"
                     class="w-7 h-7 bg-red-500 hover:bg-red-600 text-white rounded-sm flex items-center justify-center transition">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-3.5 h-3.5" viewBox="0 0 24 24">
                         <path fill-rule="evenodd"
@@ -38,7 +38,7 @@
     <div class="p-3">
 
         {{-- Name --}}
-        <h3 class="text-sm font-semibold text-slate-700 mb-2 truncate">
+        <h3 data-testid="nurse-name" class="text-sm font-semibold text-slate-700 mb-2 truncate">
             {{ $perawat['nama'] }}
         </h3>
 

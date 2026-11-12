@@ -21,20 +21,21 @@
                 </thead>
                 <tbody class="divide-y divide-slate-50">
                     @forelse($pembayarans as $pembayaran)
-                        <tr class="hover:bg-slate-50/50 transition-colors">
+                        <tr class="hover:bg-slate-50/50 transition-colors" data-testid="keuangan-row"
+                            data-id="{{ $pembayaran->id }}">
                             <td class="px-5 py-4 text-slate-500 font-mono text-xs">#{{ $pembayaran->id }}</td>
 
                             <td class="px-5 py-4">
-                                <p class="font-medium text-slate-800">{{ $pembayaran->pelayanan->pasien->nama ?? '—' }}
+                                <p class="font-medium text-slate-800" data-testid="keuangan-pasien">{{ $pembayaran->pelayanan->pasien->nama ?? '—' }}
                                 </p>
                                 <p class="text-xs text-slate-400 mt-0.5">Pelayanan #{{ $pembayaran->pelayanan_id }}</p>
                             </td>
 
-                            <td class="px-5 py-4 font-semibold text-slate-800">
+                            <td class="px-5 py-4 font-semibold text-slate-800" data-testid="keuangan-total">
                                 Rp {{ number_format($pembayaran->total_harga, 0, ',', '.') }}
                             </td>
 
-                            <td class="px-5 py-4">
+                            <td class="px-5 py-4" data-testid="keuangan-status">
                                 @if ($pembayaran->status === 'lunas')
                                     <span
                                         class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-600">
@@ -55,7 +56,7 @@
                             </td>
 
                             <td class="px-5 py-4">
-                                <a href="{{ route('keuangan.show', $pembayaran->id) }}"
+                                <a href="{{ route('keuangan.show', $pembayaran->id) }}" data-testid="keuangan-detail"
                                     class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-primary-600 bg-primary-50 hover:bg-primary-100 rounded-lg transition-all">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
                                         class="size-3.5">
@@ -78,7 +79,7 @@
                                             d="M4 4a2 2 0 0 1 2-2h4.586A2 2 0 0 1 12 2.586L15.414 6A2 2 0 0 1 16 7.414V16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4Z"
                                             clip-rule="evenodd" />
                                     </svg>
-                                    <p class="text-sm text-slate-400">Belum ada data pembayaran</p>
+                                    <p class="text-sm text-slate-400" data-testid="keuangan-empty-state">Belum ada data pembayaran</p>
                                 </div>
                             </td>
                         </tr>

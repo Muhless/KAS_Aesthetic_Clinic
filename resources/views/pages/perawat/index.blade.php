@@ -21,7 +21,6 @@
     }">
     <x-notification />
 
-    {{-- Header --}}
     <div class="flex items-center justify-between border-b border-black/10 pb-3">
         <div>
             <h1 class="text-xl font-semibold text-slate-700">Perawat</h1>
@@ -29,7 +28,7 @@
                 {{ $perawats->count() }} Perawat terdaftar
             </p>
         </div>
-        <button @click="tambahPerawat()"
+        <button @click="tambahPerawat()" data-testid="add-nurse"
             class="inline-flex items-center gap-1.5 cursor-pointer text-xs px-3 py-1.5 bg-blue-500 hover:bg-blue-600 text-white rounded-sm transition">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor">

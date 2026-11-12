@@ -79,6 +79,7 @@ public final class ApiSession {
                 .header("X-CSRF-TOKEN", csrfToken);
 
         HttpRequest request = switch (method) {
+            case "GET" -> builder.GET().build();
             case "POST" -> builder.POST(HttpRequest.BodyPublishers.ofString(body)).build();
             case "DELETE" -> builder.DELETE().build();
             default -> throw new IllegalArgumentException("Method tidak didukung: " + method);

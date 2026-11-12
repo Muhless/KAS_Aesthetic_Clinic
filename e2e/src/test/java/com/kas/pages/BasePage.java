@@ -31,13 +31,61 @@ public class BasePage {
     }
 
     protected void click(By locator) {
-        wait.until(ExpectedConditions.elementToBeClickable(locator)).click();
+        click(wait.until(ExpectedConditions.elementToBeClickable(locator)));
+    }
+
+    protected void click(WebElement element) {
+        scrollToCenter(element);
+
+        // Di layout ini ChromeDriver kadang mengirim klik ke koordinat yang
+        // salah (container konten memakai overflow-y-auto), sehingga tidak ada
+        // event click sama sekali. Deteksi lalu fallback ke JS click.
+        executeScript("window.__kasClickDelivered = false;"
+                + "document.addEventListener('click', function handler() {"
+                + "  window.__kasClickDelivered = true;"
+                + "  document.removeEventListener('click', handler, true);"
+                + "}, true);");
+
+        element.click();
+
+        boolean delivered;
+        try {
+            delivered = Boolean.TRUE.equals(executeScript("return window.__kasClickDelivered"));
+        } catch (RuntimeException e) {
+            // Dokumen sudah berganti karena klik memicu navigasi.
+            delivered = true;
+        }
+
+        if (!delivered) {
+            try {
+                executeScript("arguments[0].click()", element);
+            } catch (org.openqa.selenium.StaleElementReferenceException e) {
+                // Navigasi sudah terjadi lewat klik pertama.
+            }
+        }
+    }
+
+    /**
+     * Container konten memakai {@code overflow-y-auto}, sehingga Selenium
+     * kadang menghitung posisi klik di luar viewport dan kliknya tidak
+     * terkirim. Scroll eksplisit ke tengah viewport membuat klik konsisten.
+     */
+    protected void scrollToCenter(WebElement element) {
+        executeScript("arguments[0].scrollIntoView({block: 'center', inline: 'center'});", element);
     }
 
     protected void type(By locator, String text) {
         WebElement element = find(locator);
         element.clear();
         element.sendKeys(text);
+
+        if (!text.equals(element.getDomProperty("value"))) {
+            executeScript(
+                    "arguments[0].value = arguments[1];"
+                            + "arguments[0].dispatchEvent(new Event('input', {bubbles: true}));"
+                            + "arguments[0].dispatchEvent(new Event('change', {bubbles: true}));",
+                    element, text);
+        }
     }
 
     protected String getText(By locator) {

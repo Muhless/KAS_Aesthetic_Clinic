@@ -18,8 +18,8 @@
             </svg>
         </a>
         <div>
-            <h1 class="text-lg font-semibold text-gray-800">Form Pemeriksaan</h1>
-            <p class="text-sm text-gray-400 mt-0.5">
+            <h1 class="text-lg font-semibold text-gray-800" data-testid="pemeriksaan-title">Form Pemeriksaan</h1>
+            <p class="text-sm text-gray-400 mt-0.5" data-testid="pemeriksaan-patient">
                 {{ $pemeriksaan->pelayanan->pasien->nama }} —
                 Antrian #{{ $pemeriksaan->pelayanan->nomor_antrian }}
             </p>
@@ -30,7 +30,8 @@
 
         {{-- Kolom Kiri: Form --}}
         <div class="lg:col-span-2">
-            <form method="POST" action="{{ route('pemeriksaan.update', $pemeriksaan->id) }}">
+            <form method="POST" action="{{ route('pemeriksaan.update', $pemeriksaan->id) }}"
+                data-testid="pemeriksaan-form">
                 @csrf
                 @method('PATCH')
 
@@ -39,7 +40,7 @@
                     {{-- Treatment --}}
                     <div class="bg-white border border-gray-200 shadow-sm p-5">
                         <h2 class="font-semibold text-gray-800 text-sm mb-4">Treatment</h2>
-                        <select name="treatment_id"
+                        <select name="treatment_id" data-testid="pemeriksaan-treatment"
                             class="w-full text-sm border border-gray-300 px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400 text-gray-700">
                             <option value="">— Pilih Treatment —</option>
                             @foreach ($treatments as $treatment)
@@ -57,14 +58,14 @@
 
                         <div>
                             <label for="diagnosa" class="text-xs text-gray-500 mb-1.5 block">Diagnosa</label>
-                            <textarea name="diagnosa" id="diagnosa" rows="3"
+                            <textarea name="diagnosa" id="diagnosa" rows="3" data-testid="pemeriksaan-diagnosa"
                                 class="w-full text-sm border border-gray-300 px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400 resize-none"
                                 placeholder="Tuliskan diagnosa...">{{ old('diagnosa', $pemeriksaan->diagnosa) }}</textarea>
                         </div>
 
                         <div>
                             <label for="tindakan" class="text-xs text-gray-500 mb-1.5 block">Tindakan</label>
-                            <textarea name="tindakan" id="tindakan" rows="3"
+                            <textarea name="tindakan" id="tindakan" rows="3" data-testid="pemeriksaan-tindakan"
                                 class="w-full text-sm border border-gray-300 px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400 resize-none"
                                 placeholder="Tuliskan tindakan yang dilakukan...">{{ old('tindakan', $pemeriksaan->tindakan) }}</textarea>
                         </div>
@@ -79,9 +80,10 @@
                             <label class="text-xs text-gray-500 mb-2 block">Produk / Resep</label>
                             <div class="space-y-2 max-h-48 overflow-y-auto pr-1">
                                 @foreach ($produks as $produk)
-                                <label
+                                <label data-testid="pemeriksaan-produk-item" data-nama="{{ $produk->nama }}"
                                     class="flex items-center gap-3 p-2.5 border border-gray-200 hover:bg-gray-50 cursor-pointer transition">
                                     <input type="checkbox" name="produk_ids[]" value="{{ $produk->id }}"
+                                        data-testid="pemeriksaan-produk"
                                         {{ $pemeriksaan->produks->contains($produk->id) ? 'checked' : '' }}
                                         class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-400">
                                     <div class="flex-1 min-w-0">
@@ -98,7 +100,7 @@
                         {{-- Catatan --}}
                         <div>
                             <label for="catatan" class="text-xs text-gray-500 mb-1.5 block">Catatan Tambahan</label>
-                            <textarea name="catatan" id="catatan" rows="2"
+                            <textarea name="catatan" id="catatan" rows="2" data-testid="pemeriksaan-catatan"
                                 class="w-full text-sm border border-gray-300 px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400 resize-none"
                                 placeholder="Catatan tambahan...">{{ old('catatan', $pemeriksaan->catatan) }}</textarea>
                         </div>
@@ -110,7 +112,7 @@
                             class="px-5 py-2.5 text-sm text-gray-600 hover:text-gray-800 border border-gray-300 hover:bg-gray-50 transition-all">
                             Batal
                         </a>
-                        <button type="submit"
+                        <button type="submit" data-testid="pemeriksaan-submit"
                             class="px-5 py-2.5 text-sm font-medium bg-indigo-600 hover:bg-indigo-700 text-white transition-all">
                             Simpan Pemeriksaan
                         </button>

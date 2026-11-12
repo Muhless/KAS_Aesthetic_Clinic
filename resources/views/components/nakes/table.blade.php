@@ -4,7 +4,7 @@
         <h2 class="font-semibold text-gray-800 text-sm">Pasien Hari Ini</h2>
     </div>
     <div class="overflow-x-auto">
-        <table class="w-full text-sm">
+        <table class="w-full text-sm" data-testid="nakes-table">
             <thead>
                 <tr class="bg-gray-50 text-xs text-gray-500 uppercase tracking-wider">
                     <th class="px-5 py-3 text-left font-semibold w-12">No</th>
@@ -16,7 +16,7 @@
             </thead>
             <tbody class="divide-y divide-gray-100">
                 @forelse ($pelayanans as $pelayanan)
-                <tr class="hover:bg-gray-50 transition">
+                <tr class="hover:bg-gray-50 transition" data-testid="nakes-visit-row">
                     <td class="px-5 py-3.5">
                         <div
                             class="w-7 h-7 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-xs">
@@ -29,22 +29,22 @@
                                 class="w-7 h-7 rounded-full bg-gray-100 text-gray-600 flex items-center justify-center font-semibold text-xs shrink-0">
                                 {{ strtoupper(substr($pelayanan->pasien->nama, 0, 1)) }}
                             </div>
-                            <span class="font-medium text-gray-800">{{ $pelayanan->pasien->nama }}</span>
+                            <span class="font-medium text-gray-800" data-testid="nakes-patient-name">{{ $pelayanan->pasien->nama }}</span>
                         </div>
                     </td>
-                    <td class="px-5 py-3.5 text-gray-500 max-w-xs truncate">
+                    <td class="px-5 py-3.5 text-gray-500 max-w-xs truncate" data-testid="nakes-keluhan">
                         {{ $pelayanan->keluhan ?? '—' }}
                     </td>
                     <td class="px-5 py-3.5">
                         @if ($pelayanan->status == 'menunggu')
                         <span
-                            class="text-xs px-2.5 py-1 rounded-full bg-amber-100 text-amber-700 font-medium">Menunggu</span>
+                            class="text-xs px-2.5 py-1 rounded-full bg-amber-100 text-amber-700 font-medium" data-testid="nakes-status">Menunggu</span>
                         @elseif ($pelayanan->status == 'dipanggil')
                         <span
-                            class="text-xs px-2.5 py-1 rounded-full bg-blue-100 text-blue-700 font-medium">Dipanggil</span>
+                            class="text-xs px-2.5 py-1 rounded-full bg-blue-100 text-blue-700 font-medium" data-testid="nakes-status">Dipanggil</span>
                         @else
                         <span
-                            class="text-xs px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-700 font-medium">Selesai</span>
+                            class="text-xs px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-700 font-medium" data-testid="nakes-status">Selesai</span>
                         @endif
                     </td>
                     <td class="px-5 py-3.5 text-center">
@@ -52,7 +52,7 @@
                         <form action="{{ route('pelayanan.update', $pelayanan->id) }}" method="POST">
                             @csrf @method('PUT')
                             <input type="hidden" name="status" value="dipanggil">
-                            <button type="submit" title="Panggil"
+                            <button type="submit" title="Panggil" data-testid="nakes-panggil"
                                 class="w-7 h-7 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-full flex items-center justify-center transition">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none"
                                     viewBox="0 0 24 24" stroke="currentColor">
@@ -63,6 +63,7 @@
                         </form>
                         @elseif ($pelayanan->status == 'dipanggil' && $pelayanan->pemeriksaan)
                         <a href="{{ route('pemeriksaan.edit', $pelayanan->pemeriksaan->id) }}"
+                            data-testid="nakes-periksa"
                             class="inline-flex items-center gap-1 text-xs px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 rounded-md transition font-medium">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor">
@@ -73,6 +74,7 @@
                         </a>
                         @elseif ($pelayanan->status == 'selesai' && $pelayanan->pemeriksaan)
                         <a href="{{ route('pemeriksaan.edit', $pelayanan->pemeriksaan->id) }}"
+                            data-testid="nakes-hasil"
                             class="inline-flex items-center gap-1 text-xs px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-600 rounded-md transition font-medium">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor">
@@ -97,7 +99,7 @@
                                         d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
                                 </svg>
                             </div>
-                            <p class="text-sm font-medium text-gray-500">Tidak ada pasien hari ini</p>
+                            <p class="text-sm font-medium text-gray-500" data-testid="nakes-empty-state">Tidak ada pasien hari ini</p>
                         </div>
                     </td>
                 </tr>

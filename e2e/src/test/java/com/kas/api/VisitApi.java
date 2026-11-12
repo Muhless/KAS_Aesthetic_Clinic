@@ -2,6 +2,7 @@ package com.kas.api;
 
 import java.net.http.HttpResponse;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.openqa.selenium.json.Json;
@@ -12,6 +13,8 @@ import org.openqa.selenium.json.Json;
  *
  * Satu panggilan membuat Pasien + Pelayanan hari ini sekaligus, karena halaman
  * /nakes hanya menampilkan Pelayanan hari ini milik dokter yang login.
+ * Kalau status bukan "menunggu", endpoint juga membuat Pemeriksaan (beserta
+ * Pembayaran) sehingga skenario "Periksa" bisa disiapkan tanpa UI.
  * Endpoint ini hanya aktif saat APP_ENV=testing.
  */
 public final class VisitApi {
@@ -22,31 +25,54 @@ public final class VisitApi {
     }
 
     /** Id record yang dibuat, dipakai untuk assertion atau pembersihan. */
-    public record Visit(long pasienId, long pelayananId) {
+    public record Visit(long pasienId, long pelayananId, Long pemeriksaanId, String pemeriksaanEditUrl) {
+
+        public boolean hasPemeriksaan() {
+            return pemeriksaanId != null && pemeriksaanId > 0;
+        }
     }
 
     /**
-     * Membuat pasien beserta pelayanan hari ini untuk dokter tertentu.
+     * Membuat pasien beserta pelayanan hari ini (status menunggu) untuk
+     * dokter tertentu.
      *
      * @param namaPasien nama pasien (sebaiknya unik per test)
      * @param usernameDokter username user dokter pemilik pelayanan
      * @param keluhan keluhan pasien, boleh {@code null}
      */
     public static Visit createForDokter(String namaPasien, String usernameDokter, String keluhan) {
-        ApiSession session = ApiSession.login();
+        return createForDokter(namaPasien, usernameDokter, keluhan, "menunggu");
+    }
 
+    /**
+     * Sama seperti {@link #createForDokter(String, String, String)}, tapi
+     * status kunjungan bisa ditentukan.
+     */
+    public static Visit createForDokter(String namaPasien, String usernameDokter, String keluhan, String status) {
         Map<String, Object> payload = new LinkedHashMap<>();
         payload.put("nama_pasien", namaPasien);
         payload.put("username_dokter", usernameDokter);
         payload.put("keluhan", keluhan);
+        payload.put("status", status);
 
-        HttpResponse<String> response = session.sendJson("POST", "/api/e2e/visits", JSON.toJson(payload));
-        requireStatus(response, 201, "membuat kunjungan");
+        return create(payload);
+    }
 
-        Map<String, Object> data = dataOf(response);
-        return new Visit(
-                ((Number) data.get("pasien_id")).longValue(),
-                ((Number) data.get("pelayanan_id")).longValue());
+    /**
+     * Membuat kunjungan yang sudah siap diperiksa: pasien + pelayanan
+     * berstatus "dipanggil" + pemeriksaan kosong + produk yang dipilih.
+     */
+    public static Visit createExamined(String namaPasien, String usernameDokter, String keluhan,
+            long treatmentId, List<Long> produkIds) {
+        Map<String, Object> payload = new LinkedHashMap<>();
+        payload.put("nama_pasien", namaPasien);
+        payload.put("username_dokter", usernameDokter);
+        payload.put("keluhan", keluhan);
+        payload.put("status", "dipanggil");
+        payload.put("treatment_id", treatmentId);
+        payload.put("produk_ids", produkIds);
+
+        return create(payload);
     }
 
     /** Menghapus pelayanan (dan pasiennya kalau tidak punya kunjungan lain). */
@@ -54,6 +80,23 @@ public final class VisitApi {
         ApiSession session = ApiSession.login();
         HttpResponse<String> response = session.sendJson("DELETE", "/api/e2e/visits/" + pelayananId, null);
         requireStatus(response, 200, "menghapus kunjungan " + pelayananId);
+    }
+
+    private static Visit create(Map<String, Object> payload) {
+        ApiSession session = ApiSession.login();
+        HttpResponse<String> response = session.sendJson("POST", "/api/e2e/visits", JSON.toJson(payload));
+        requireStatus(response, 201, "membuat kunjungan");
+
+        Map<String, Object> data = dataOf(response);
+        return new Visit(
+                ((Number) data.get("pasien_id")).longValue(),
+                ((Number) data.get("pelayanan_id")).longValue(),
+                asLong(data.get("pemeriksaan_id")),
+                (String) data.get("pemeriksaan_edit_url"));
+    }
+
+    private static Long asLong(Object value) {
+        return value instanceof Number number ? number.longValue() : null;
     }
 
     @SuppressWarnings("unchecked")
