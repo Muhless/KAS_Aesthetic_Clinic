@@ -11,7 +11,7 @@ import com.kas.components.FormModal;
 import com.kas.components.Notification;
 import com.kas.components.RecordList;
 
-public class TreatmentPage extends BasePage {
+public class TreatmentPage extends BasePage implements Notifiable {
 
     private final By pageTitle = By.xpath("//h1[normalize-space()='Treatment']");
     private final RecordList treatments = new RecordList(driver, wait, "treatment-name", "treatment-card");

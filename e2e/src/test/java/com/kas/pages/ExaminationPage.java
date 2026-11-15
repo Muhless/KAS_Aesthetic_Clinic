@@ -14,7 +14,7 @@ import com.kas.components.Notification;
  * Form pemeriksaan dokter di /pemeriksaan/{id}/edit: pilih treatment, isi
  * hasil pemeriksaan, centang produk, lalu simpan.
  */
-public class ExaminationPage extends BasePage {
+public class ExaminationPage extends BasePage implements Notifiable {
 
     private final By title = By.cssSelector("[data-testid='pemeriksaan-title']");
     private final By patient = By.cssSelector("[data-testid='pemeriksaan-patient']");
@@ -128,6 +128,21 @@ public class ExaminationPage extends BasePage {
 
     public String successMessage() {
         return notification.successMessage();
+    }
+
+    @Override
+    public String getSuccessMessage() {
+        return successMessage();
+    }
+
+    @Override
+    public boolean hasErrorMessage() {
+        return notification.hasError();
+    }
+
+    @Override
+    public List<String> getErrorMessages() {
+        return notification.errorMessages();
     }
 
     private WebElement productItem(String nama) {

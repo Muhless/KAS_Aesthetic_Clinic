@@ -9,7 +9,7 @@ import com.kas.components.FormModal;
 import com.kas.components.Notification;
 import com.kas.components.RecordList;
 
-public class PatientPage extends BasePage {
+public class PatientPage extends BasePage implements Notifiable {
 
     private final By pageTitle = By.xpath("(//h1[normalize-space()='Pasien'])");
     private final RecordList patients = new RecordList(driver, wait, "patient-name", "patient-row");

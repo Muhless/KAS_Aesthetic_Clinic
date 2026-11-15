@@ -11,7 +11,7 @@ import com.kas.components.FormModal;
 import com.kas.components.Notification;
 import com.kas.components.RecordList;
 
-public class ProductPage extends BasePage {
+public class ProductPage extends BasePage implements Notifiable {
 
     private final By pageTitleBy = By.xpath("//h1[normalize-space()='Produk']");
     private final RecordList products = new RecordList(driver, wait, "product-name", "product-card");

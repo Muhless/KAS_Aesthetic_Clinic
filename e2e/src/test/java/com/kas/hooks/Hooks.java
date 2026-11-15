@@ -2,6 +2,7 @@ package com.kas.hooks;
 
 import com.kas.config.Config;
 import com.kas.pages.LoginPage;
+import com.kas.support.ScenarioContext;
 
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
@@ -15,6 +16,7 @@ public class Hooks {
 
     @Before(order = 0)
     public void setUp() {
+        ScenarioContext.reset();
         DriverManager.set(DriverFactory.create());
     }
 

@@ -15,7 +15,7 @@ import com.kas.components.RecordList;
  * Halaman keuangan admin: daftar pembayaran, riwayat transaksi, ringkasan
  * bulanan (/keuangan) dan detail pembayaran (/keuangan/{id}).
  */
-public class FinancePage extends BasePage {
+public class FinancePage extends BasePage implements Notifiable {
 
     // --- Index ---
     private final By pageTitle = By.cssSelector("[data-testid='keuangan-title']");
@@ -295,11 +295,18 @@ public class FinancePage extends BasePage {
         return notification.successMessage();
     }
 
+    @Override
+    public String getSuccessMessage() {
+        return successMessage();
+    }
+
+    @Override
     public boolean hasErrorMessage() {
         return notification.hasError();
     }
 
-    public List<String> errorMessages() {
+    @Override
+    public List<String> getErrorMessages() {
         return notification.errorMessages();
     }
 

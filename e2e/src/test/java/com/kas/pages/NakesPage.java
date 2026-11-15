@@ -14,7 +14,7 @@ import com.kas.components.RecordList;
  * Dashboard dokter di /nakes: sapaan, statistik harian, dan tabel
  * "Pasien Hari Ini" milik dokter yang login.
  */
-public class NakesPage extends BasePage {
+public class NakesPage extends BasePage implements Notifiable {
 
     private final By greeting = By.cssSelector("[data-testid='nakes-greeting']");
     private final RecordList visits = new RecordList(driver, wait, "nakes-patient-name", "nakes-visit-row");
@@ -151,6 +151,21 @@ public class NakesPage extends BasePage {
 
     public String successMessage() {
         return notification.successMessage();
+    }
+
+    @Override
+    public String getSuccessMessage() {
+        return successMessage();
+    }
+
+    @Override
+    public boolean hasErrorMessage() {
+        return notification.hasError();
+    }
+
+    @Override
+    public List<String> getErrorMessages() {
+        return notification.errorMessages();
     }
 
     // --- Statistik ---
