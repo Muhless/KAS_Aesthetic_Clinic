@@ -29,6 +29,11 @@ public final class DriverFactory {
             options.addArguments("--headless=new");
         }
 
+        // Jangan biarkan ChromeDriver menutup alert (mis. confirm() saat menandai
+        // pembayaran lunas) di tengah perintah lain. Test yang butuh alert akan
+        // menerimanya sendiri lewat switchTo().alert().
+        options.setUnhandledPromptBehaviour(org.openqa.selenium.UnexpectedAlertBehaviour.IGNORE);
+
         return new ChromeDriver(chromeDriverService(), options);
     }
 

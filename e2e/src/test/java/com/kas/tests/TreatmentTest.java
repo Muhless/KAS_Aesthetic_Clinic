@@ -15,7 +15,7 @@ public class TreatmentTest extends BaseTest {
     private TreatmentPage treatmentPage;
 
     @BeforeMethod(alwaysRun = true)
-    public void loginAndOpenTreatmentPage() {
+    public void loginDanBukaHalamanTreatment() {
         LoginPage loginPage = new LoginPage(driver).goTo();
         loginPage.login(Config.ADMIN_USERNAME, Config.ADMIN_PASSWORD);
         loginPage.waitForUrlNotContains("/login");
@@ -25,13 +25,13 @@ public class TreatmentTest extends BaseTest {
     }
 
     @Test
-    public void daftarTreatmentTampil() {
+    public void menampilkanDataTreatment() {
         Assert.assertTrue(treatmentPage.treatmentCount() > 0 || treatmentPage.hasEmptyState(),
                 "Daftar treatment tidak tampil (tidak ada kartu treatment maupun empty state)");
     }
 
     @Test
-    public void tambahTreatmentBerhasil() {
+    public void menambahDataTreatment() {
         treatmentPage.clickAdd()
                 .fillTreatment("New Treatment", "Treatment for whitening skin", "200000", "60")
                 .selectStatus("tersedia")
@@ -45,7 +45,7 @@ public class TreatmentTest extends BaseTest {
     }
 
     @Test
-    public void successfullyEditTreatment() {
+    public void mengubahDataTreatment() {
         String nama = uniqueName("Treatment Edit");
         TreatmentApi.create(nama, "Treatment untuk test edit", 150000, 60, "tersedia");
         treatmentPage.goTo();
@@ -60,7 +60,7 @@ public class TreatmentTest extends BaseTest {
     }
 
     @Test
-    public void successfullyDeleteTreatment() {
+    public void menghapusDataTreatment() {
         String nama = uniqueName("Treatment Hapus");
         TreatmentApi.create(nama, "Treatment untuk test hapus", 150000, 60, "tersedia");
         treatmentPage.goTo();

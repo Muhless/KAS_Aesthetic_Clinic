@@ -3,6 +3,7 @@
 @section('title', 'Keuangan - KAS Aesthetic Clinic')
 
 @section('content')
+<x-notification />
 <div class="p-4 space-y-4">
 
     {{-- Header --}}

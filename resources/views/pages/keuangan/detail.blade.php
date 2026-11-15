@@ -3,6 +3,7 @@
 @section('title', 'Detail Pembayaran - KAS Aesthetic Clinic')
 
 @section('content')
+<x-notification />
 <div class="p-4 space-y-4">
 
     {{-- Header --}}
@@ -54,7 +55,7 @@
                     </div>
                     <div>
                         <p class="text-xs text-slate-400 mb-1">Metode Bayar</p>
-                        <p class="text-sm font-medium text-slate-700">{{ $pembayaran->metode_bayar ?? '—' }}</p>
+                        <p class="text-sm font-medium text-slate-700" data-testid="keuangan-detail-metode">{{ $pembayaran->metode_bayar ?? '—' }}</p>
                     </div>
                     <div>
                         <p class="text-xs text-slate-400 mb-1">Dibayar Pada</p>
@@ -73,7 +74,7 @@
                     @if ($pembayaran->catatan)
                     <div class="col-span-2">
                         <p class="text-xs text-slate-400 mb-1">Catatan</p>
-                        <p class="text-sm text-slate-700">{{ $pembayaran->catatan }}</p>
+                        <p class="text-sm text-slate-700" data-testid="keuangan-detail-catatan-nilai">{{ $pembayaran->catatan }}</p>
                     </div>
                     @endif
                 </div>
