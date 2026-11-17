@@ -1,0 +1,129 @@
+name: E2E
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      run_testng:
+        description: Jalankan suite TestNG juga (paritas Cucumber)
+        type: boolean
+        default: false
+
+concurrency:
+  group: e2e-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  BASE_URL: http://127.0.0.1:8001
+
+jobs:
+  bdd:
+    name: BDD (Cucumber)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: kas_test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -proot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, dom, fileinfo, gd, pdo_mysql, pdo_sqlite, sqlite3, zip
+          coverage: none
+          tools: composer:v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+
+      - name: Cache Composer packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/composer
+          key: composer-${{ runner.os }}-${{ hashFiles('composer.lock') }}
+          restore-keys: composer-${{ runner.os }}-
+
+      - name: Install PHP dependencies
+        run: composer install --no-interaction --no-progress --prefer-dist
+
+      - name: Prepare testing environment
+        run: |
+          cp .env.testing.example .env.testing
+          sed -i "s|^APP_KEY=.*|APP_KEY=base64:$(openssl rand -base64 32)|" .env.testing
+          sed -i "s|^DB_PASSWORD=.*|DB_PASSWORD=root|" .env.testing
+          php artisan config:clear
+
+      - name: Migrate testing database
+        run: php artisan migrate --env=testing --force
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Build frontend assets
+        run: npm run build
+
+      - name: Start application
+        run: |
+          mkdir -p storage/logs
+          nohup php artisan serve --env=testing --host=127.0.0.1 --port=8001 \
+            > storage/logs/serve.log 2>&1 < /dev/null &
+          for i in $(seq 1 60); do
+            if curl -fsS "$BASE_URL/login" > /dev/null; then
+              echo "Server siap setelah ${i} detik"
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "Server tidak siap setelah 60 detik"
+          cat storage/logs/serve.log
+          exit 1
+
+      - name: Run Cucumber suite
+        working-directory: e2e
+        run: mvn -B test -DbaseUrl=${{ env.BASE_URL }} -Dheadless=true
+
+      - name: Run TestNG suite
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.run_testng }}
+        working-directory: e2e
+        run: mvn -B test -Ptestng -DskipTests -DbaseUrl=${{ env.BASE_URL }} -Dheadless=true
+
+      - name: Upload e2e reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-reports
+          path: |
+            e2e/target/surefire-reports
+            e2e/target/failure-artifacts
+            e2e/target/testng-output
+            storage/logs/laravel.log
+            storage/logs/serve.log
+          if-no-files-found: ignore
+          retention-days: 7

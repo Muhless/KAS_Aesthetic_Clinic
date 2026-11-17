@@ -1,0 +1,145 @@
+name: Performance
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Setiap hari 18:00 UTC (01:00 WIB)
+    - cron: '0 18 * * *'
+
+concurrency:
+  group: performance-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  BASE_URL: http://127.0.0.1:8001
+  JMETER_VERSION: '5.6.3'
+
+jobs:
+  jmeter:
+    name: JMeter smoke
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: kas_test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -proot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, dom, fileinfo, gd, pdo_mysql, pdo_sqlite, sqlite3, zip
+          coverage: none
+          tools: composer:v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Cache Composer packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/composer
+          key: composer-${{ runner.os }}-${{ hashFiles('composer.lock') }}
+          restore-keys: composer-${{ runner.os }}-
+
+      - name: Cache JMeter
+        id: jmeter-cache
+        uses: actions/cache@v4
+        with:
+          path: ~/apache-jmeter-${{ env.JMETER_VERSION }}
+          key: jmeter-${{ env.JMETER_VERSION }}-${{ runner.os }}
+
+      - name: Install JMeter
+        if: steps.jmeter-cache.outputs.cache-hit != 'true'
+        run: |
+          curl -sSL "https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-${JMETER_VERSION}.tgz" -o /tmp/jmeter.tgz
+          tar -xzf /tmp/jmeter.tgz -C "$HOME"
+
+      - name: Install PHP dependencies
+        run: composer install --no-interaction --no-progress --prefer-dist
+
+      - name: Prepare testing environment
+        run: |
+          cp .env.testing.example .env.testing
+          sed -i "s|^APP_KEY=.*|APP_KEY=base64:$(openssl rand -base64 32)|" .env.testing
+          sed -i "s|^DB_PASSWORD=.*|DB_PASSWORD=root|" .env.testing
+          php artisan config:clear
+
+      - name: Migrate and seed testing database
+        run: |
+          php artisan migrate --env=testing --force
+          php artisan e2e:reset --env=testing
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Build frontend assets
+        run: npm run build
+
+      - name: Start application
+        run: |
+          mkdir -p storage/logs
+          nohup php artisan serve --env=testing --host=127.0.0.1 --port=8001 \
+            > storage/logs/serve.log 2>&1 < /dev/null &
+          for i in $(seq 1 60); do
+            if curl -fsS "$BASE_URL/login" > /dev/null; then
+              echo "Server siap setelah ${i} detik"
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "Server tidak siap setelah 60 detik"
+          cat storage/logs/serve.log
+          exit 1
+
+      - name: Run JMeter smoke test
+        run: |
+          export PATH="$HOME/apache-jmeter-${JMETER_VERSION}/bin:$PATH"
+          ./jmeter/run.sh \
+            -Jhost=127.0.0.1 -Jport=8001 \
+            -Jthreads=2 -Jloops=1 -JdoctorThreads=1 -JdoctorLoops=1 \
+            -JthinkTime=0
+
+      - name: Fail on failed samples
+        run: |
+          python3 - <<'PY'
+          import csv
+          import sys
+
+          rows = list(csv.DictReader(open("jmeter/results/result.jtl")))
+          failed = [row for row in rows if row["success"] != "true"]
+
+          print(f"{len(rows)} sample, {len(failed)} gagal")
+          for row in failed[:20]:
+              print(f"  {row['label']}: {row['responseCode']} {row['failureMessage']}")
+
+          sys.exit(1 if failed else 0)
+          PY
+
+      - name: Upload JMeter report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jmeter-report
+          path: |
+            jmeter/results
+            storage/logs/serve.log
+          if-no-files-found: ignore
+          retention-days: 14
